@@ -1,0 +1,68 @@
+{
+  "paragraphs": [
+    {
+      "text": "import org.apache.spark.sql.functions._",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-14 20:34:28.116",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql.functions._\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571085249276_1024938294",
+      "id": "20191014-203409_1763711758",
+      "dateCreated": "2019-10-14 20:34:09.276",
+      "dateStarted": "2019-10-14 20:34:28.219",
+      "dateFinished": "2019-10-14 20:34:55.806",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "anonymous",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1571085268128_444892539",
+      "id": "20191014-203428_1482484864",
+      "dateCreated": "2019-10-14 20:34:28.128",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "/SVCC/1-SparkIntro",
+  "id": "2EPW233GF",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

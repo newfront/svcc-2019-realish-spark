@@ -22,6 +22,35 @@ Additional Docker Resources:
 1. 2 or more cpu cores.
 2. 8gb/ram or higher.
 
+### Running the Follow Along Environment
+1. Starting the Zeppelin Environment: `cd /path/to/svcc-2019-realish-spark/ && ./run.sh deploy && ./run.sh start`
+2. Stopping the environment: `cd /path/to/svcc-2019-realish-spark/ && ./run.sh stop`
+3. Zeppelin Info: "https://zeppelin.apache.org/docs/latest/interpreter/spark.html"
+
+### Configurations
+1. **Zeppelin Configuration** http://localhost:8080/#/configuration
+2. **Zeppelin Interpreters**  http://localhost:8080/#/interpreter (configure spark here)
+3. If you want to use `spark-redis` from Zeppelin. Update the Zeppelin Interpreter for Spark and under `Dependencies` add `com.redislabs:spark-redis:2.0.4` and restart the interpreter.
+
+Suggested Spark Configurations (double the docker cores, use 1g less than total docker memory allocation)
+~~~bash
+spark.cores.max: 4
+spark.executor.memory: 3g
+~~~
+
+#### Optional: Enhancing your Zeppelin Experience (Bring new Spark version)
+1. Jump onto the docker process: `docker exec -it zeppelin bash`
+2. VIEW env variables: `cat /conf/zeppelin-env.sh.template`
+3. SEE `SPARK_HOME`. You can now point this to locally installed SPARK
+~~~
+brew install wget && cd ~/Desktop && wget http://mirror.cc.columbia.edu/pub/software/apache/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz && tar -xvzf spark-2.4.4-bin-hadoop2.7.tgz && mv spark-2.4.4-bin-hadoop2.7 spark-2.4.4
+
+curl -XGET http://mirror.cc.columbia.edu/pub/software/apache/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz > ~/Desktop/spark-2.4.4.tgz && cd ~/Desktop && tar -xvzf spark-2.4.4.tgz && rm spark-2.4.4.tgz
+~~~
+
+4. Now `export SPARK_HOME=~/spark`
+5. Use `./run.sh deployCustom` to now use your own local Spark
+
 ### Session Overview
 
 #### A Gentle Introduction to Apache Spark DataFrames (10 minutes)

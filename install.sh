@@ -2,9 +2,8 @@
 
 ROOT_DIR=`pwd`
 
-function buildBase() {
-    echo "building the redis and zeppelin docker containers"
-    echo "nothing to do yet"
+function buildBase {
+    echo "nothing to do here after all"
 }
 
-buildBase()
+buildBase

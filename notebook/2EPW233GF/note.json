@@ -1,9 +1,792 @@
 {
   "paragraphs": [
     {
-      "text": "import org.apache.spark.sql.functions._",
+      "title": "Setting up the environment",
+      "text": "%spark\nimport spark.implicits._\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.types._\n\nval wineReviewsJson \u003d spark.read.json(\"/svccdata/winereviews.json\")\n",
       "user": "anonymous",
-      "dateUpdated": "2019-10-14 20:34:28.116",
+      "dateUpdated": "2019-10-18 15:57:20.713",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import spark.implicits._\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.types._\nwineReviewsJson: org.apache.spark.sql.DataFrame \u003d [country: string, description: string ... 11 more fields]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://769952f6d004:4040/jobs/job?id\u003d0"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571085249276_1024938294",
+      "id": "20191014-203409_1763711758",
+      "dateCreated": "2019-10-14 20:34:09.276",
+      "dateStarted": "2019-10-18 15:57:20.918",
+      "dateFinished": "2019-10-18 15:58:00.885",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Exploring the Inferred Schema",
+      "text": "%spark\nval dataStructure \u003d wineReviewsJson.schema\nwineReviewsJson.printSchema",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 15:58:00.911",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- country: string (nullable \u003d true)\n |-- description: string (nullable \u003d true)\n |-- designation: string (nullable \u003d true)\n |-- points: string (nullable \u003d true)\n |-- price: long (nullable \u003d true)\n |-- province: string (nullable \u003d true)\n |-- region_1: string (nullable \u003d true)\n |-- region_2: string (nullable \u003d true)\n |-- taster_name: string (nullable \u003d true)\n |-- taster_twitter_handle: string (nullable \u003d true)\n |-- title: string (nullable \u003d true)\n |-- variety: string (nullable \u003d true)\n |-- winery: string (nullable \u003d true)\n\ndataStructure: org.apache.spark.sql.types.StructType \u003d StructType(StructField(country,StringType,true), StructField(description,StringType,true), StructField(designation,StringType,true), StructField(points,StringType,true), StructField(price,LongType,true), StructField(province,StringType,true), StructField(region_1,StringType,true), StructField(region_2,StringType,true), StructField(taster_name,StringType,true), StructField(taster_twitter_handle,StringType,true), StructField(title,StringType,true), StructField(variety,StringType,true), StructField(winery,StringType,true))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571085268128_444892539",
+      "id": "20191014-203428_1482484864",
+      "dateCreated": "2019-10-14 20:34:28.128",
+      "dateStarted": "2019-10-18 15:58:01.108",
+      "dateFinished": "2019-10-18 15:58:02.404",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "The DataFrame schema is your Friend",
+      "text": "%spark\n/* schema.toDDL is spark-2.4.x feature - SEE Optional: Enhancing your Zeppelin Experience (Bring new Spark version) in the README */\nwineReviewsJson.schema.toDDL",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 15:58:02.407",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res2: String \u003d `country` STRING,`description` STRING,`designation` STRING,`points` STRING,`price` BIGINT,`province` STRING,`region_1` STRING,`region_2` STRING,`taster_name` STRING,`taster_twitter_handle` STRING,`title` STRING,`variety` STRING,`winery` STRING\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571407816699_-1373314028",
+      "id": "20191018-141016_1106158775",
+      "dateCreated": "2019-10-18 14:10:16.699",
+      "dateStarted": "2019-10-18 15:58:02.807",
+      "dateFinished": "2019-10-18 15:58:03.378",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Use implicit schema to define complex StructType easily",
+      "text": "%spark\nval structFromDDL \u003d StructType.fromDDL(wineReviewsJson.schema.toDDL)",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 15:58:03.400",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "structFromDDL: org.apache.spark.sql.types.StructType \u003d StructType(StructField(country,StringType,true), StructField(description,StringType,true), StructField(designation,StringType,true), StructField(points,StringType,true), StructField(price,LongType,true), StructField(province,StringType,true), StructField(region_1,StringType,true), StructField(region_2,StringType,true), StructField(taster_name,StringType,true), StructField(taster_twitter_handle,StringType,true), StructField(title,StringType,true), StructField(variety,StringType,true), StructField(winery,StringType,true))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571407838467_1333526399",
+      "id": "20191018-141038_1181959740",
+      "dateCreated": "2019-10-18 14:10:38.467",
+      "dateStarted": "2019-10-18 15:58:03.697",
+      "dateFinished": "2019-10-18 15:58:04.579",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Skipping Schema Inference. Good for Life",
+      "text": "%spark\nval wineReviewsJsonNotInferred \u003d spark.read.option(\"inferSchema\", \"false\").schema(structFromDDL).json(\"/svccdata/winereviews.json\")",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 15:58:04.582",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "wineReviewsJsonNotInferred: org.apache.spark.sql.DataFrame \u003d [country: string, description: string ... 11 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571411994516_136157690",
+      "id": "20191018-151954_1050495261",
+      "dateCreated": "2019-10-18 15:19:54.516",
+      "dateStarted": "2019-10-18 15:58:04.911",
+      "dateFinished": "2019-10-18 15:58:05.708",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Create a Temp SQL View",
+      "text": "%spark\nwineReviewsJsonNotInferred.createOrReplaceTempView(\"winereviews\")",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 15:58:05.712",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1571412343583_-689196167",
+      "id": "20191018-152543_1943150697",
+      "dateCreated": "2019-10-18 15:25:43.583",
+      "dateStarted": "2019-10-18 15:58:05.973",
+      "dateFinished": "2019-10-18 15:58:06.519",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Look at the SQL Schema",
+      "text": "%sql\ndesc winereviews",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 15:58:06.551",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "col_name": "string",
+                      "data_type": "string",
+                      "comment": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "col_name\tdata_type\tcomment\ncountry\tstring\tnull\ndescription\tstring\tnull\ndesignation\tstring\tnull\npoints\tstring\tnull\nprice\tbigint\tnull\nprovince\tstring\tnull\nregion_1\tstring\tnull\nregion_2\tstring\tnull\ntaster_name\tstring\tnull\ntaster_twitter_handle\tstring\tnull\ntitle\tstring\tnull\nvariety\tstring\tnull\nwinery\tstring\tnull\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571412491402_-428181052",
+      "id": "20191018-152811_1597872720",
+      "dateCreated": "2019-10-18 15:28:11.402",
+      "dateStarted": "2019-10-18 15:58:06.836",
+      "dateFinished": "2019-10-18 15:58:07.690",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Simplify finding Missing Values",
+      "text": "%spark\ndef missingValues(df: DataFrame) \u003d {\n    df.schema.map {\n        case StructField(name: String, _: StringType, _, _) \u003d\u003e\n            // will do isNull orEmpty check here - and count as missing values\n            (name, df.where(col(name).isNull.or(col(name).equalTo(\"\"))).count())\n        case StructField(name: String, _, _, _) \u003d\u003e\n            (name, df.where(col(name).isNull).count)\n    }.toDF(\"name\", \"missing\")\n}",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 16:08:35.251",
+      "config": {
+        "colWidth": 6.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "missingValues: (df: org.apache.spark.sql.DataFrame)org.apache.spark.sql.DataFrame\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571412639636_2023183746",
+      "id": "20191018-153039_94775573",
+      "dateCreated": "2019-10-18 15:30:39.637",
+      "dateStarted": "2019-10-18 15:58:07.862",
+      "dateFinished": "2019-10-18 15:58:10.630",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Compute the Missing Values",
+      "text": "%spark\nwineReviewsJsonNotInferred.persist\nval missingData \u003d missingValues(wineReviewsJsonNotInferred)\nmissingData.createOrReplaceTempView(\"missing\")",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 16:08:38.866",
+      "config": {
+        "colWidth": 6.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "missingData: org.apache.spark.sql.DataFrame \u003d [name: string, missing: bigint]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://769952f6d004:4040/jobs/job?id\u003d14",
+            "http://769952f6d004:4040/jobs/job?id\u003d15",
+            "http://769952f6d004:4040/jobs/job?id\u003d16",
+            "http://769952f6d004:4040/jobs/job?id\u003d17",
+            "http://769952f6d004:4040/jobs/job?id\u003d18",
+            "http://769952f6d004:4040/jobs/job?id\u003d19",
+            "http://769952f6d004:4040/jobs/job?id\u003d20",
+            "http://769952f6d004:4040/jobs/job?id\u003d21",
+            "http://769952f6d004:4040/jobs/job?id\u003d22",
+            "http://769952f6d004:4040/jobs/job?id\u003d23",
+            "http://769952f6d004:4040/jobs/job?id\u003d24",
+            "http://769952f6d004:4040/jobs/job?id\u003d25",
+            "http://769952f6d004:4040/jobs/job?id\u003d26"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571412846886_942517976",
+      "id": "20191018-153406_1460369176",
+      "dateCreated": "2019-10-18 15:34:06.886",
+      "dateStarted": "2019-10-18 15:59:30.528",
+      "dateFinished": "2019-10-18 15:59:33.989",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Explore the Missing Values",
+      "text": "%sql\nselect * from missing ORDER BY missing ASC",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 16:11:29.778",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {
+                    "columns": [
+                      {
+                        "name": "name",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      },
+                      {
+                        "name": "missing",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      }
+                    ],
+                    "scrollFocus": {},
+                    "selection": [],
+                    "grouping": {
+                      "grouping": [],
+                      "aggregations": [],
+                      "rowExpandedStates": {}
+                    },
+                    "treeView": {},
+                    "pagination": {
+                      "paginationCurrentPage": 1.0,
+                      "paginationPageSize": 250.0
+                    }
+                  },
+                  "tableColumnTypeState": {
+                    "updated": false,
+                    "names": {
+                      "name": "string",
+                      "missing": "string"
+                    }
+                  },
+                  "updated": false,
+                  "initialized": false,
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  }
+                }
+              },
+              "commonSetting": {}
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "name\tmissing\npoints\t0\nwinery\t0\ntitle\t0\ndescription\t0\nvariety\t1\nprovince\t63\ncountry\t63\nprice\t8996\nregion_1\t21247\ntaster_name\t26244\ntaster_twitter_handle\t31213\ndesignation\t37465\nregion_2\t79460\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://769952f6d004:4040/jobs/job?id\u003d45"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571412879254_818671906",
+      "id": "20191018-153439_369719891",
+      "dateCreated": "2019-10-18 15:34:39.254",
+      "dateStarted": "2019-10-18 16:11:25.321",
+      "dateFinished": "2019-10-18 16:11:25.472",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Simplify finding Distinct Values",
+      "text": "%spark\ndef distinctColumnValues(df: DataFrame): DataFrame \u003d {\n    df.schema.map { r \u003d\u003e\n      (r.name, df.where(col(r.name).isNotNull)\n        .select(col(r.name))\n        .distinct()\n        .count())\n    }.toDF(\"name\", \"distinct\")\n}",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 16:08:24.397",
+      "config": {
+        "colWidth": 6.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "distinctColumnValues: (df: org.apache.spark.sql.DataFrame)org.apache.spark.sql.DataFrame\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571414328063_-1454550239",
+      "id": "20191018-155848_1698724816",
+      "dateCreated": "2019-10-18 15:58:48.063",
+      "dateStarted": "2019-10-18 16:02:49.599",
+      "dateFinished": "2019-10-18 16:02:50.536",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Compute the Distinct Values",
+      "text": "%spark\nval distinctValues \u003d distinctColumnValues(wineReviewsJsonNotInferred)\ndistinctValues.createOrReplaceTempView(\"distinct\")",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 16:08:28.314",
+      "config": {
+        "colWidth": 6.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "distinctValues: org.apache.spark.sql.DataFrame \u003d [name: string, distinct: bigint]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://769952f6d004:4040/jobs/job?id\u003d27",
+            "http://769952f6d004:4040/jobs/job?id\u003d28",
+            "http://769952f6d004:4040/jobs/job?id\u003d29",
+            "http://769952f6d004:4040/jobs/job?id\u003d30",
+            "http://769952f6d004:4040/jobs/job?id\u003d31",
+            "http://769952f6d004:4040/jobs/job?id\u003d32",
+            "http://769952f6d004:4040/jobs/job?id\u003d33",
+            "http://769952f6d004:4040/jobs/job?id\u003d34",
+            "http://769952f6d004:4040/jobs/job?id\u003d35",
+            "http://769952f6d004:4040/jobs/job?id\u003d36",
+            "http://769952f6d004:4040/jobs/job?id\u003d37",
+            "http://769952f6d004:4040/jobs/job?id\u003d38",
+            "http://769952f6d004:4040/jobs/job?id\u003d39"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571414479108_1350495477",
+      "id": "20191018-160119_1503275317",
+      "dateCreated": "2019-10-18 16:01:19.108",
+      "dateStarted": "2019-10-18 16:02:52.833",
+      "dateFinished": "2019-10-18 16:03:39.757",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Explore the Distinct Values",
+      "text": "%sql\nselect * from distinct order by distinct ASC",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 16:04:57.362",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {
+                    "columns": [
+                      {
+                        "name": "name",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      },
+                      {
+                        "name": "distinct",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      }
+                    ],
+                    "scrollFocus": {},
+                    "selection": [],
+                    "grouping": {
+                      "grouping": [],
+                      "aggregations": [],
+                      "rowExpandedStates": {}
+                    },
+                    "treeView": {},
+                    "pagination": {
+                      "paginationCurrentPage": 1.0,
+                      "paginationPageSize": 250.0
+                    }
+                  },
+                  "tableColumnTypeState": {
+                    "names": {
+                      "name": "string",
+                      "distinct": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "name\tdistinct\ntaster_twitter_handle\t15\nregion_2\t17\ntaster_name\t19\npoints\t21\ncountry\t43\nprice\t390\nprovince\t425\nvariety\t707\nregion_1\t1229\nwinery\t16757\ndesignation\t37979\ntitle\t118840\ndescription\t119955\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://769952f6d004:4040/jobs/job?id\u003d41"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571414572640_386106004",
+      "id": "20191018-160252_1693927589",
+      "dateCreated": "2019-10-18 16:02:52.640",
+      "dateStarted": "2019-10-18 16:04:57.441",
+      "dateFinished": "2019-10-18 16:04:57.637",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nval wineReviewsSubset \u003d wineReviewsJsonNotInferred.select",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 16:07:29.313",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -21,35 +804,10 @@
         "params": {},
         "forms": {}
       },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "import org.apache.spark.sql.functions._\n"
-          }
-        ]
-      },
       "apps": [],
-      "jobName": "paragraph_1571085249276_1024938294",
-      "id": "20191014-203409_1763711758",
-      "dateCreated": "2019-10-14 20:34:09.276",
-      "dateStarted": "2019-10-14 20:34:28.219",
-      "dateFinished": "2019-10-14 20:34:55.806",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "user": "anonymous",
-      "config": {},
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "apps": [],
-      "jobName": "paragraph_1571085268128_444892539",
-      "id": "20191014-203428_1482484864",
-      "dateCreated": "2019-10-14 20:34:28.128",
+      "jobName": "paragraph_1571414794997_235268878",
+      "id": "20191018-160634_236446790",
+      "dateCreated": "2019-10-18 16:06:34.997",
       "status": "READY",
       "progressUpdateIntervalMs": 500
     }

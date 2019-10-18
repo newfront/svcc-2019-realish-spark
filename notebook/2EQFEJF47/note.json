@@ -1,0 +1,723 @@
+{
+  "paragraphs": [
+    {
+      "title": "Loading important parts from Part 1",
+      "text": "%spark\nimport spark.implicits._\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.types._\n\nval structTypeDDL \u003d \"`country` STRING,`description` STRING,`designation` STRING,`points`STRING,`price` BIGINT,`province` STRING,`region_1` STRING,`region_2` STRING,`taster_name` STRING,`taster_twitter_handle` STRING,`title` STRING,`variety` STRING,`winery` STRING\"\nval wineReviewSchema \u003d StructType.fromDDL(structTypeDDL)\n\nval wineReviews \u003d spark.read.option(\"inferSchema\", \"false\").schema(wineReviewSchema).json(\"/svccdata/winereviews.json\")\nwineReviews.persist()\nwineReviews.createOrReplaceTempView(\"reviews\")",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:32:45.869",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import spark.implicits._\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.types._\nstructTypeDDL: String \u003d `country` STRING,`description` STRING,`designation` STRING,`points`STRING,`price` BIGINT,`province` STRING,`region_1` STRING,`region_2` STRING,`taster_name` STRING,`taster_twitter_handle` STRING,`title` STRING,`variety` STRING,`winery` STRING\nwineReviewSchema: org.apache.spark.sql.types.StructType \u003d StructType(StructField(country,StringType,true), StructField(description,StringType,true), StructField(designation,StringType,true), StructField(points,StringType,true), StructField(price,LongType,true), StructField(province,StringType,true), StructField(region_1,StringType,true), StructField(region_2,StringType,true), StructField(taster_n..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571424475670_-759950399",
+      "id": "20191018-184755_741757872",
+      "dateCreated": "2019-10-18 18:47:55.670",
+      "dateStarted": "2019-10-18 19:32:45.904",
+      "dateFinished": "2019-10-18 19:32:49.431",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nselect winery, avg(points) as avg_rating from reviews where country \u003d \u0027France\u0027 AND region_1 \u003d \u0027Côtes de Provence\u0027 AND points \u003e 88 group by winery order by avg_rating desc",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:33:11.599",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "winery": "string",
+                      "avg_rating": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "winery",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "avg_rating",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "winery\tavg_rating\nChâteau la Vivonne\t92.0\nDomaine de la Croix\t92.0\nEstandon\t92.0\nDomaine du Clos Gautier\t92.0\nMirabeau\t92.0\nChâteau Grand Boise\t91.83333333333333\nChâteau Sainte Marguerite\t91.125\nFiguière\t91.0\nDomaine de la Bastide Blanche\t91.0\nJCB\t91.0\nChâteau Miraval\t91.0\nChâteau Sainte-Marguerite\t91.0\nDomaine Saint Andrieu\t91.0\nChâteau Minuty\t91.0\nChâteau d\u0027Esclans\t90.92592592592592\nChâteau Saint-Maur\t90.9090909090909\nChâteau Roubine\t90.85714285714286\nChâteau du Galoupet\t90.8\nChâteau la Gordonne\t90.75\nChâteau Rimauresq\t90.75\nDomaine Saint-André de Figuière\t90.72727272727273\nChâteau Riotor\t90.66666666666667\nChâteau de Berne\t90.625\nBernard Magrez\t90.55555555555556\nChâteau Sainte-Béatrice\t90.5\nChâteau de Roquefort\t90.5\nDomaine Clos Gautier\t90.5\nMaison Angelvin\t90.5\nChâteau du Carrubier\t90.5\nChâteau la Mascaronne\t90.42857142857143\nChâteau les Valentines\t90.375\nLes Maîtres Vignerons de la Presqu\u0027île de Saint-Tropez\t90.33333333333333\nChâteau de Pampelonne\t90.33333333333333\nDomaine du Grand Cros\t90.28571428571429\nLes Vignobles Gueissard\t90.25\nDomaines Ott\t90.22222222222223\nChâteau Léoube\t90.2\nDomaine Sainte-Marie\t90.16666666666667\nChâteau les Crostes\t90.0\nMathilde Chapoutier Sélection\t90.0\nClos Cibonne\t90.0\nDomaine des Mapliers\t90.0\nCellier Saint-Sidoine\t90.0\nDomaine du Clos d\u0027Alari\t90.0\nDomaine du Jas d\u0027Esclans\t90.0\nChâteau Hermitage Saint-Martin\t90.0\nChâteau Castel des Maures\t90.0\nDomaine Houchart\t90.0\nDomaine Gavoty\t90.0\nChâteau Carpe Diem\t90.0\nProvence Wine Maker\t90.0\nChâteau Rasque\t90.0\nChâteau Barbeiranne\t90.0\nChâteau des Bormettes\t90.0\nDomaine Jas d\u0027Esclans\t90.0\nDomaine les Fouques\t90.0\nChâteau des Demoiselles\t90.0\nLes Vins Bréban\t90.0\nChâteau de Léoube\t90.0\nChâteau Réal Martin\t90.0\nChâteau des Bertrands\t90.0\nChâteau Deffends\t90.0\nChâteau Sainte Roseline\t89.875\nChâteau de Brigue\t89.75\nDomaine Sorin\t89.66666666666667\nDomaine de l\u0027Amaurigue\t89.66666666666667\nDomaine de la Sauveuse\t89.5\nChâteau Barbanau\t89.5\nChâteau Ferry Lacombe\t89.5\nFabre en Provence\t89.5\nHecht \u0026 Bannier\t89.33333333333333\nChâteau de Pourcieux\t89.25\nDomaine de la Sanglière\t89.25\nChâteau Saint-Pierre\t89.2\nChâteau l\u0027Afrique\t89.0\nClos Saint-Joseph\t89.0\nMeulnart Père et Fils\t89.0\nChâteau Thuerry\t89.0\nCommanderie de Peyrassol\t89.0\nM. Chapoutier\t89.0\nDomaine du Dragon\t89.0\nDomaine Jacourette\t89.0\nChâteau de Saint-Martin\t89.0\nDomaine des Aspras\t89.0\nGassier\t89.0\nChâteau Saint-André de Figuière\t89.0\nRimauresq\t89.0\nDomaine de Caseneuve\t89.0\nVignobles de Saint-Tropez\t89.0\nChâteau des Sarrins\t89.0\nDomaine Val d\u0027Astier\t89.0\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://8cd5e54c20c5:4040/jobs/job?id\u003d130"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571425546276_-738762107",
+      "id": "20191018-190546_342063805",
+      "dateCreated": "2019-10-18 19:05:46.276",
+      "dateStarted": "2019-10-18 19:33:08.717",
+      "dateFinished": "2019-10-18 19:33:11.496",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nselect country, designation, points, price, variety, winery from reviews\nwhere designation IS NOT NULL\norder by price desc",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:33:51.640",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "country": "string",
+                      "designation": "string",
+                      "points": "string",
+                      "price": "string",
+                      "variety": "string",
+                      "winery": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "country\tdesignation\tpoints\tprice\tvariety\twinery\nUS\tRoger Rose Vineyard\t91\t2013\tChardonnay\tBlair\nAustria\tRied Loibenberg Smaragd\t94\t1100\tGrüner Veltliner\tEmmerich Knoll\nPortugal\t90-year Old Tawny\t97\t1000\tPort\tW. \u0026 J. Graham\u0027s\nPortugal\tColheita White\t94\t980\tPort\tKopke\nItaly\tRiserva\t94\t900\tSangiovese Grosso\tBiondi Santi\nAustralia\tGrange\t99\t850\tShiraz\tPenfolds\nAustralia\tGrange\t98\t850\tShiraz\tPenfolds\nAustralia\tHill of Grace\t96\t820\tShiraz\tHenschke\nFrance\tMorogues\t87\t800\tRosé\tDomaine Pellé\nItaly\tRiserva\t94\t800\tSangiovese\tBiondi Santi\nFrance\tClos du Mesnil Brut Blanc de Blancs\t99\t800\tChardonnay\tKrug\nPortugal\tColheita\t87\t790\tPort\tBurmester\nAustralia\tHill of Grace\t91\t780\tShiraz\tHenschke\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t97\t775\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t95\t775\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t95\t775\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t98\t775\tRiesling\tRobert Weil\nPortugal\tColheita Tawny\t93\t770\tPort\tKopke\nSpain\tEl Perer\t96\t770\tCarignan\tMarco Abella\nHungary\tEssencia\t94\t764\tFurmint\tRoyal Tokaji\nUS\tIntrepid\t92\t750\tSyrah\tLaw\nFrance\tBlanc de Blancs Brut\t92\t675\tChardonnay\tArmand de Brignac\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t96\t672\tRiesling\tRobert Weil\nFrance\tLes Quatre Journaux\t95\t650\tPinot Noir\tLouis Latour\nPortugal\tNacional Vintage\t100\t650\tPort\tQuinta do Noval\nFrance\tLe Montrachet\t96\t630\tChardonnay\tLouis Latour\nUS\tFamily Reserve\t94\t625\tCabernet Sauvignon\tYao Ming\nUS\tFamily Reserve\t98\t625\tCabernet Sauvignon\tYao Ming\nUS\tFamily Reserve\t97\t625\tCabernet Sauvignon\tYao Ming\nFrance\tLe Mesnil Blanc de Blancs Brut\t100\t617\tChardonnay\tSalon\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t97\t612\tRiesling\tRobert Weil\nSpain\tUnico Reserva Especial\t92\t600\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nFrance\tCristal Brut Rosé\t96\t600\tChampagne Blend\tLouis Roederer\nSpain\tTinus\t95\t600\tTempranillo\tGarcía Figuero\nFrance\tCristal Brut Rosé\t96\t595\tChampagne Blend\tLouis Roederer\nItaly\tCà d\u0027Morissio Riserva\t99\t595\tNebbiolo\tMascarello Giuseppe e Figlio\nPortugal\tNacional Vintage\t98\t595\tPort\tQuinta do Noval\nPortugal\tVery Old Single Harvest\t95\t588\tPort\tTaylor Fladgate\nFrance\tLes Quatre Journaux\t94\t580\tPinot Noir\tLouis Latour\nItaly\tRiserva\t95\t550\tSangiovese\tPoggio di Sotto\nItaly\tRiserva\t100\t550\tSangiovese\tBiondi Santi\nItaly\tRiserva\t96\t540\tSangiovese\tBiondi Santi\nFrance\tDomaine du Clos Frantin\t96\t530\tPinot Noir\tAlbert Bichot\nFrance\tChambertin Clos de Bèze Grand Cru\t96\t525\tPinot Noir\tDomaine Perrot-Minot\nFrance\tLe Mesnil Blanc de Blancs Brut\t98\t520\tChardonnay\tSalon\nGermany\tHattenheimer Wisselbrunnen Beernauslese Gold Cap\t90\t510\tRiesling\tBaron Knyphausen\nFrance\tMusigny\t96\t510\tPinot Noir\tDomaine Jacques Prieur\nItaly\tCosta Russi\t93\t500\tRed Blend\tGaja\nItaly\tSorì Tildin\t92\t500\tRed Blend\tGaja\nSpain\tUnico\t89\t500\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nFrance\tCuvée da Capo\t93\t500\tRhône-style Red Blend\tDomaine du Pegau\nGermany\tErbacher Marcobrunn Trockenbeerenauslese\t93\t500\tRiesling\tSchloss Reinhartshausen\nAustralia\tGrange\t96\t500\tShiraz\tPenfolds\nGermany\tErbacher Marcobrunn Trockenbeerenauslese\t93\t500\tRiesling\tSchloss Reinhartshausen\nItaly\tVigneto di Monte Lodoletta\t95\t500\tCorvina, Rondinella, Molinara\tDal Forno Romano\nAustralia\tBin 707\t95\t500\tCabernet Sauvignon\tPenfolds\nSpain\tUnico\t89\t500\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nUS\tDouble Plus Estate Grown\t93\t500\tCabernet Sauvignon\tHewitt\nPortugal\tPorto Envelhecido em Casco Colheita\t95\t499\tPort\tMessias\nPortugal\tReserva Velho\t93\t495\tRamisco\tAdega Viuva Gomes\nItaly\tSorì San Lorenzo\t96\t495\tNebbiolo\tGaja\nItaly\tCosta Russi\t95\t495\tNebbiolo\tGaja\nGermany\tTrockenbeerenauslese Goldlack\t97\t486\tRiesling\tSchloss Johannisberger\nFrance\tLes Demoiselles\t97\t476\tChardonnay\tLouis Jadot\nItaly\tVigneto di Monte Lodoletta\t96\t470\tCorvina, Rondinella, Molinara\tDal Forno Romano\nFrance\tCristal Rosé Brut\t95\t469\tChampagne Blend\tLouis Roederer\nFrance\tCristal Brut Rosé\t96\t469\tChampagne Blend\tLouis Roederer\nPortugal\tVintage\t95\t467\tPort\tDow\u0027s\nItaly\tMasseto\t100\t460\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t97\t460\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t95\t460\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t95\t460\tMerlot\tTenuta dell\u0027Ornellaia\nFrance\tBrut Rosé\t89\t450\tChampagne Blend\tArmand de Brignac\nFrance\tBrut Rosé\t89\t450\tChampagne Blend\tArmand de Brignac\nSpain\tClon de la Familia\t98\t450\tTinto Fino\tEmilio Moro\nPortugal\tBarca-Velha\t100\t450\tPortuguese Red\tCasa Ferreirinha\nItaly\tSorì San Lorenzo\t93\t450\tNebbiolo\tGaja\nSpain\tUnico\t91\t450\tTempranillo Blend\tVega Sicilia\nItaly\tRiserva\t97\t450\tSangiovese\tPoggio di Sotto\nFrance\tMC III Brut\t97\t450\tChampagne Blend\tMoët \u0026 Chandon\nUS\tLa Joie\t94\t450\tBordeaux-style Red Blend\tVerité\nSpain\tClon de la Familia\t93\t450\tTinto Fino\tEmilio Moro\nUS\tLa Muse\t100\t450\tBordeaux-style Red Blend\tVerité\nUS\tLe Desir\t97\t450\tBordeaux-style Red Blend\tVerité\nUS\tLa Joie\t96\t450\tBordeaux-style Red Blend\tVerité\nFrance\tLes Demoiselles\t96\t450\tChardonnay\tLouis Latour\nUS\tLa Muse\t93\t450\tBordeaux-style Red Blend\tVerité\nSpain\tUnico\t92\t450\tRed Blend\tVega Sicilia\nUS\tLe Desir\t97\t450\tBordeaux-style Red Blend\tVerité\nItaly\tCosta Russi\t95\t450\tNebbiolo\tGaja\nItaly\tSorì Tildin\t93\t450\tNebbiolo\tGaja\nGermany\tSerrig Schloss Saarsteiner Eiswein\t95\t448\tRiesling\tSchloss Saarstein\nGermany\tTrockenbeerenauslese\t97\t445\tRiesling\tSchloss Johannisberger\nItaly\tSorì San Lorenzo\t99\t440\tNebbiolo\tGaja\nGermany\tWehlener Sonnenuhr Trockenbeerenauslese\t96\t440\tRiesling\tS.A. Prüm\nGermany\tWehlener Sonnenuhr Vat 59 Trockenbeerenauslese\t94\t440\tRiesling\tS.A. Prüm\nItaly\tSorì Tildìn\t99\t440\tNebbiolo\tGaja\nGermany\tWehlener Sonnenuhr Trockenbeerenauslese Erste Lage\t97\t440\tRiesling\tS.A. Prüm\nPortugal\tBarca Velha\t99\t426\tPortuguese Red\tCasa Ferreirinha\nFrance\tLes Quatre Journaux\t93\t425\tPinot Noir\tLouis Latour\nItaly\tCosta Russi\t95\t420\tNebbiolo\tGaja\nItaly\tLodovico\t95\t419\tRed Blend\tTenuta di Biserno\nPortugal\tColheita Tawny\t96\t415\tPort\tBurmester\nFrance\tLes Forts de Latour\t95\t412\tBordeaux-style Red Blend\tChâteau Latour\nGermany\tMonzinger Frühlingsplätzchen Trockenbeerenauslese\t94\t400\tRiesling\tWeingut Weber\nFrance\tClos de Vougeot\t92\t400\tPinot Noir\tDomaine Henri Rebourseau\nChile\tViñedo Chadwick\t92\t400\tRed Blend\tErrazuriz\nItaly\tRiserva\t96\t400\tSangiovese\tBiondi Santi\nPortugal\tColheita Tawny\t96\t400\tPort\tMessias\nUS\tJG\u0027s Joie du Vin\t96\t400\tCabernet Sauvignon\tClos du Val\nItaly\tRedigaffi\t90\t400\tMerlot\tTua Rita\nChile\tViñedo Chadwick\t93\t400\tCabernet Sauvignon\tErrazuriz\nFrance\tBrut Rosé\t94\t400\tChampagne Blend\tKrug\nItaly\tRedigaffi\t94\t400\tMerlot\tTua Rita\nFrance\tLe Pigeonnier\t94\t400\tMalbec\tChâteau Lagrézette\nChile\tViñedo Chadwick\t92\t400\tCabernet Sauvignon\tErrazuriz\nFrance\tCuvée Héritiers Latour\t95\t399\tPinot Noir\tLouis Latour\nFrance\tFleur de Champagne Blanc de Blancs Brut\t91\t399\tChardonnay\tPerrier Jouët\nFrance\tLa Landonne\t93\t391\tSyrah\tDomaine Jean-Michel Gerin\nFrance\tBlanc de Blancs Vintage Brut\t96\t390\tChardonnay\tBarons de Rothschild\nFrance\tGrand Siècle Alexandra Brut Rosé\t95\t390\tChampagne Blend\tLaurent-Perrier\nGermany\tAbtsberg Beerenauslese Grosse Lage\t96\t388\tRiesling\tMaximin Grünhäuser\nFrance\tDomaine du Clos Frantin\t95\t385\tPinot Noir\tAlbert Bichot\nFrance\tDom Pérignon Brut Rosé\t95\t380\tChampagne Blend\tMoët \u0026 Chandon\nFrance\tLes Demoiselles\t93\t380\tChardonnay\tLouis Latour\nGermany\tKiedrich Gräfenberg Eiswein\t94\t376\tRiesling\tRobert Weil\nItaly\tTre Tine\t97\t375\tNebbiolo\tGiuseppe Rinaldi\nPortugal\tColheita Tawny\t95\t375\tPort\tKopke\nItaly\tMuffato della Sala\t91\t375\tWhite Blend\tMarchesi Antinori\nFrance\tEchézeaux\t95\t370\tPinot Noir\tDomaine Jacques Prieur\nFrance\tLa Richemonne Cuvée Ultra Premier Cru\t94\t365\tPinot Noir\tDomaine Perrot-Minot\nGermany\tKiedrich Gräfenberg Beerenauslese\t93\t365\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Eiswein\t92\t365\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Beerenauslese\t94\t365\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Beerenauslese\t96\t365\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Beerenauslese\t96\t365\tRiesling\tRobert Weil\nFrance\tChambertin\t95\t360\tPinot Noir\tDomaine Jacques Prieur\nFrance\tCharmes Chambertin\t93\t359\tPinot Noir\tLouis Latour\nFrance\tPetit Monts Premier Cru\t95\t357\tPinot Noir\tJoseph Drouhin\nFrance\tLes Amoureuses Premier Cru\t94\t355\tPinot Noir\tAlbert Bichot\nSpain\tTinus\t96\t351\tTempranillo\tGarcía Figuero\nFrance\tVieilles Vignes\t95\t350\tPinot Noir\tChâteau de la Tour\nAustralia\tAstralis\t95\t350\tSyrah\tClarendon Hills\nSpain\tViña El Pison\t94\t350\tTempranillo Blend\tArtadi\nFrance\tLe Mesnil Blanc de Blancs\t97\t350\tChardonnay\tSalon\nFrance\tPessac-Lï¿½ognan\t94\t350\tBordeaux-style Red Blend\tChâteau La Mission Haut-Brion\nItaly\tLa Mattonara Riserva\t90\t350\tRed Blend\tZymè\nFrance\tCuvée Héritiers Latour\t95\t350\tPinot Noir\tLouis Latour\nItaly\tRedigaffi\t94\t350\tMerlot\tTua Rita\nUS\tThe Surrealist\t90\t350\tBordeaux-style Red Blend\tJCB\nGermany\tTrockenbeerenauslese - 375 ml\t90\t350\tRiesling\tSchloss Vollrads\nFrance\tBrut\t96\t350\tChampagne Blend\tKrug\nGermany\tCasteller Schlossberg Eiswein\t94\t350\tRiesling\tCastell\nItaly\tLa Mattonara Riserva\t94\t350\tCorvina, Rondinella, Molinara\tZymè\nGermany\tErdener Prälat Goldkap Beerenauslese\t94\t350\tRiesling\tDr. Hermann\nFrance\tBrut\t95\t350\tChampagne Blend\tKrug\nFrance\tLegend Vintage\t95\t350\tRed Blend\tGérard Bertrand\nAustralia\tRare\t98\t350\tMuscadelle\tChambers Rosewood Vineyards\nAustralia\tRare\t100\t350\tMuscat\tChambers Rosewood Vineyards\nGermany\tRuppertsberger Reiterpfad Trockenbeerenauslese - 375 ml\t95\t333\tRiesling\tGeh. Rat Dr. von Bassermann-Jordan\nSouth Africa\tBook 17 XVII\t95\t330\tBordeaux-style Red Blend\tDe Toren\nItaly\tSolaia\t97\t325\tRed Blend\tMarchesi Antinori\nItaly\tSolaia\t94\t325\tRed Blend\tMarchesi Antinori\nItaly\tRiserva\t87\t325\tSangiovese\tArgiano\nUS\tRainin Vineyard\t95\t325\tCabernet Sauvignon\tHall\nItaly\tSolaia\t94\t325\tRed Blend\tMarchesi Antinori\nItaly\tRiserva\t87\t325\tSangiovese\tArgiano\nUS\tGrand Vin\t92\t325\tCabernet Sauvignon\tKapcsandy Family Winery\nSpain\tPrestigio Pago de las Solanas\t88\t325\tTempranillo\tMatarromera\nUS\tThe Bishop\t96\t325\tCabernet Sauvignon\tHall\nItaly\tSolaia\t97\t325\tRed Blend\tMarchesi Antinori\nUS\tThe Bishop\t95\t325\tCabernet Sauvignon\tHall\nGermany\tHochheimer Kirchenstück Beerenauslese\t95\t323\tRiesling\tDomdechant Werner\nGermany\tKiedrich Gräfenberg Beerenauslese\t94\t322\tRiesling\tRobert Weil\nPortugal\tColheita Tawny\t95\t320\tPort\tCálem\nFrance\tLa Combe d\u0027Orveau Cuvée Ultra Premier Cru\t94\t320\tPinot Noir\tDomaine Perrot-Minot\nRomania\tDulce\t85\t320\tRiesling\tSirena Dunarii\nFrance\tDom Pérignon Brut Rosé\t95\t320\tChampagne Blend\tMoët \u0026 Chandon\nFrance\tLes Demoiselles\t94\t320\tChardonnay\tLouis Latour\nHungary\tEszencia\t96\t320\tFurmint\tOremus\nItaly\tAlbori di Lampata\t88\t320\tRed Blend\tCapichera\nItaly\tMessorio\t99\t320\tMerlot\tLe Macchiole\nGermany\tTrittenheimer Apotheke Beerenauslese\t94\t317\tRiesling\tGrans-Fassian\nGermany\tHochheimer Domdechaney Trockenbeerenauslese Grosse Lage\t96\t316\tRiesling\tDomdechant Werner\nGermany\tHerrenberg Eiswein 82\t93\t316\tRiesling\tMaximin Grünhäuser\nItaly\tMessorio\t96\t315\tMerlot\tLe Macchiole\nGermany\tHerrenberg Eiswein\t93\t314\tRiesling\tMaximin Grünhäuser\nFrance\tCuvée Héritiers Latour\t94\t310\tPinot Noir\tLouis Latour\nFrance\tDomaine du Clos Frantin\t94\t306\tPinot Noir\tAlbert Bichot\nFrance\tCuvée Sir Winston Churchill Brut\t98\t305\tChampagne Blend\tPol Roger\nFrance\tCuvée Sir Winston Churchill Brut\t97\t305\tChampagne Blend\tPol Roger\nFrance\tClos de la Roche\t96\t304\tPinot Noir\tDomaine Dujac\nFrance\tClos de Saint-Denis\t95\t304\tPinot Noir\tDomaine Dujac\nSpain\tCirsion\t96\t303\tTempranillo\tBodegas Roda\nFrance\tLes Pucelles Premier Cru\t95\t303\tChardonnay\tDomaine Leflaive\nItaly\tPer Sempre\t90\t300\tSyrah\tTua Rita\nItaly\tPer Sempre\t90\t300\tSyrah\tTua Rita\nItaly\tBrunate\t98\t300\tNebbiolo\tGiuseppe Rinaldi\nPortugal\tSingle Harvest\t94\t300\tPort\tTaylor Fladgate\nFrance\tBelle Epoque Brut Rosé\t94\t300\tChampagne Blend\tPerrier Jouët\nItaly\tPer Sempre\t90\t300\tSyrah\tTua Rita\nItaly\t10 Anni Riserva\t87\t300\tRed Blend\tVilla Canestrari\nSpain\tTinus\t94\t300\tTempranillo\tGarcía Figuero\nChile\tTaita Wisdom in Wine Marchigue Vineyard\t91\t300\tRed Blend\tMontes\nItaly\tMessorio\t93\t300\tMerlot\tLe Macchiole\nFrance\tBelle Epoque Blanc de Blancs Brut\t95\t300\tChardonnay\tPerrier Jouët\nPortugal\tSingle Harvest\t95\t300\tPort\tTaylor Fladgate\nItaly\tMessorio\t92\t300\tMerlot\tLe Macchiole\nAustralia\tRare\t95\t300\tMuscat\tChambers Rosewood Vineyards\nUS\tFew and Far Between Vineyard\t94\t300\tCabernet Sauvignon\tHundred Acre\nSpain\tViña el Pison\t94\t300\tTempranillo\tArtadi\nFrance\tGrand Siècle Cuvée Alexandra Rosé Brut\t93\t300\tChampagne Blend\tLaurent-Perrier\nItaly\t10 Anni Riserva\t87\t300\tRed Blend\tVilla Canestrari\nUS\tLa Joie\t98\t300\tBordeaux-style Red Blend\tVerité\nItaly\tPer Sempre\t89\t300\tSyrah\tTua Rita\nItaly\tBricco Rocche\t92\t300\tNebbiolo\tCeretto\nFrance\tAÿ Vauzelle Terre\t96\t300\tPinot Noir\tJacquesson et Fils\nFrance\tDizy Corne Bautray\t95\t300\tChardonnay\tJacquesson et Fils\nFrance\tAvize Champ Gain Brut\t95\t300\tChardonnay\tJacquesson et Fils\nFrance\tBelle Epoque Brut Rosé\t95\t300\tChampagne Blend\tPerrier Jouët\nFrance\tGold Brut\t91\t300\tChampagne Blend\tArmand de Brignac\nChile\tTaita\t93\t300\tRed Blend\tMontes\nUS\tFew and Far Between Vineyard\t94\t300\tCabernet Sauvignon\tHundred Acre\nSpain\tViña El Pison\t95\t300\tTempranillo Blend\tArtadi\nUS\tERA\t99\t300\tBordeaux-style Red Blend\tAlpha Omega\nAustralia\tRare\t99\t300\tMuscadelle\tChambers Rosewood Vineyards\nFrance\tEchézeaux du Dessus\t95\t300\tPinot Noir\tDomaine Jayer-Gilles\nFrance\tBrut Rosé\t94\t299\tChampagne Blend\tKrug\nFrance\tCorton Bressandes\t94\t299\tPinot Noir\tDomaine Jacques Prieur\nFrance\tLe Pigeonnier\t93\t299\tMalbec\tChâteau Lagrézette\nFrance\tBâtard-Montrachet\t93\t299\tChardonnay\tLouis Latour\nItaly\tCase Basse\t92\t293\tSangiovese\tSoldera\nItaly\tSerre 10 Anni\t89\t292\tNebbiolo\tGianni Gagliardo\nGermany\tKiedrich Gräfenberg Beerenauslese\t95\t292\tRiesling\tRobert Weil\nPortugal\tVery Old Tawny Special Edition\t93\t290\tPort\tBarros\nFrance\tLe Pigeonnier\t94\t290\tMalbec\tChâteau Lagrézette\nSpain\tLes Tosses\t96\t290\tCarignan\tTerroir Al Límit\nUS\tIX Estate\t94\t290\tRed Blend\tColgin\nFrance\tBrut Rosé\t87\t290\tChampagne Blend\tKrug\nUS\tIX Estate\t99\t290\tRed Blend\tColgin\nFrance\tDom Pérignon Rosé\t90\t290\tChampagne Blend\tMoët \u0026 Chandon\nSpain\tLes Manyes\t95\t290\tGarnacha\tTerroir Al Límit\nFrance\tDom Ruinart Brut Rosé\t94\t286\tChampagne Blend\tRuinart\nFrance\tCuvée Héritiers Latour\t93\t280\tPinot Noir\tLouis Latour\nItaly\tLodovico\t96\t280\tRed Blend\tTenuta di Biserno\nFrance\tLes Amoureuses Premier Cru\t94\t280\tPinot Noir\tJoseph Drouhin\nGermany\tCasteller Schlossberg Trockenbeerenauslese\t90\t279\tSilvaner\tCastell\nFrance\tClos des Cortons Faiveley\t94\t279\tPinot Noir\tDomaine Faiveley\nUS\tPluribus\t94\t275\tBordeaux-style Red Blend\tBOND\nPortugal\tPêra-Manca\t94\t275\tPortuguese Red\tCartuxa\nUS\tMelbury\t95\t275\tBordeaux-style Red Blend\tBOND\nPortugal\tPêra-Manca\t94\t275\tPortuguese Red\tCartuxa\nUS\tPluribus\t91\t275\tBordeaux-style Red Blend\tBOND\nItaly\tRedigaffi\t95\t275\tMerlot\tTua Rita\nSouth Africa\tEstate Wine Black Label\t93\t275\tPinotage\tKanonkop\nUS\tMonogram\t93\t275\tPinot Noir\tDomaine Serene\nUS\tSt. Eden\t94\t275\tBordeaux-style Red Blend\tBOND\nUS\tBeckstoffer To Kalon Vineyard\t96\t275\tCabernet Sauvignon\tPaul Hobbs\nSouth Africa\tEstate Wine Black Label\t93\t275\tPinotage\tKanonkop\nFrance\tVinothèque Premier Cru Brut\t92\t275\tChampagne Blend\tJ. Dumangin Fils\nFrance\tDom Ruinart Brut Rosé\t95\t275\tChampagne Blend\tRuinart\nUS\tEisele\t98\t275\tCabernet Sauvignon\tAraujo\nFrance\tLes Pucelles Premier Cru\t94\t273\tChardonnay\tDomaine Leflaive\nFrance\tChambertin\t95\t272\tPinot Noir\tCamille Giroud\nGermany\tHochheimer Domdechaney Beerenauslese\t96\t271\tRiesling\tDomdechant Werner\nItaly\tBricco Rocche\t93\t270\tNebbiolo\tCeretto\nItaly\tCerretalto\t100\t270\tSangiovese Grosso\tCasanova di Neri\nFrance\tLa Grande Dame Brut Rosé\t93\t269\tChampagne Blend\tVeuve Clicquot Ponsardin\nPortugal\tVargellas Vinhas Velhas Vintage\t99\t268\tPort\tTaylor Fladgate\nUS\tHillside Select\t98\t265\tCabernet Sauvignon\tShafer\nFrance\tComtes de Champagne Brut Rosé\t94\t262\tChampagne Blend\tTaittinger\nUS\tPierra\t94\t260\tCabernet Sauvignon\tTurnbull\nFrance\tLes Pucelles Premier Cru\t95\t260\tChardonnay\tDomaine Leflaive\nUS\tCask 23 Estate\t92\t260\tCabernet Sauvignon\tStag\u0027s Leap Wine Cellars\nFrance\tLes Pucelles Premier Cru\t94\t260\tChardonnay\tDomaine Leflaive\nChile\tViñedo Chadwick\t92\t260\tCabernet Blend\tErrazuriz\nFrance\tLes Pucelles Premier Cru\t94\t260\tChardonnay\tDomaine Leflaive\nUS\tLa Muse\t94\t260\tBordeaux-style Red Blend\tVerité\nFrance\tLes Pucelles Premier Cru\t96\t260\tChardonnay\tDomaine Leflaive\nUS\tReserve\t95\t260\tCabernet Sauvignon\tJarvis\nItaly\tD\u0027Alceo\t95\t260\tRed Blend\tCastello dei Rampolla\nFrance\tCuvée Elisabeth Salmon Brut Rosé\t94\t260\tChampagne Blend\tBillecart-Salmon\nFrance\tBrut\t100\t259\tChampagne Blend\tKrug\nItaly\tRiserva\t93\t259\tSangiovese Grosso\tPoggio di Sotto\nSpain\tDon PX Reserva Especial\t93\t258\tPedro Ximénez\tBodegas Toro Albala, SL\nFrance\tCollection\t91\t255\tPinot Noir\tL. Tramier \u0026 Fils\nItaly\tSperss\t98\t255\tNebbiolo\tGaja\nSpain\tRoca Roja\t89\t255\tGarnacha\tMarco Abella\nSpain\tRoca Roja\t89\t255\tGarnacha\tMarco Abella\nFrance\tDe l\u0027Orée Ermitage\t93\t253\tRhône-style White Blend\tM. Chapoutier\nItaly\tBricco Rocche Bricco Rocche\t95\t252\tNebbiolo\tCeretto\nItaly\tLa Fabriseria Riserva\t93\t250\tRed Blend\tTedeschi\nUS\tBeckstoffer Las Piedras Heritage Single Vineyard\t94\t250\tCabernet Sauvignon\tGuarachi Family\nItaly\tGran Selezione\t92\t250\tSangiovese\tIsole e Olena\nUS\tReserve\t92\t250\tCabernet Sauvignon\tBello Family Vineyards\nFrance\tCuvée à Tempo\t87\t250\tRhône-style White Blend\tDomaine du Pegau\nSpain\tAAA\t91\t250\tRed Blend\tMarques de Griñon\nGermany\tBernkasteler alte Badstube am Doctorberg Trockenbeerenauslese - 375 ml\t93\t250\tRiesling\tDr. Pauly Bergweiler\nItaly\tMessorio\t94\t250\tMerlot\tLe Macchiole\nUS\tInsignia Estate Grown\t96\t250\tBordeaux-style Red Blend\tJoseph Phelps\nItaly\tBriccotto\t89\t250\tNebbiolo\tDomenico Clerico\nUS\tBeckstoffer To Kalon\t97\t250\tCabernet Sauvignon\tAlpha Omega\nSpain\tCirsion\t97\t250\tTempranillo\tBodegas Roda\nFrance\tClos Vougeot\t93\t250\tPinot Noir\tDomaine Bertagna\nUS\tJoy! Estate Bottled\t98\t250\tSparkling Blend\tIron Horse\nUS\tInsignia 40th Vintage Estate Grown\t98\t250\tBordeaux-style Red Blend\tJoseph Phelps\nUS\tINEO\t96\t250\tBordeaux-style Red Blend\tStaglin\nUS\tBackus Vineyard\t93\t250\tCabernet Sauvignon\tJoseph Phelps\nFrance\tBelle Epoque Brut Rosé\t94\t250\tChampagne Blend\tPerrier Jouët\nSpain\tAAA\t93\t250\tRed Blend\tMarques de Griñon\nGermany\tEiswein\t90\t250\tRiesling\tSchloss Vollrads\nPortugal\tReserva Especial\t97\t250\tPortuguese Red\tCasa Ferreirinha\nUS\tSunshine Valley Vineyard\t94\t250\tCabernet Sauvignon\tAlpha Omega\nItaly\tMasseto\t99\t250\tMerlot\tTenuta dell\u0027Ornellaia\nFrance\tCristal Vintage Brut\t100\t250\tChampagne Blend\tLouis Roederer\nFrance\tBelle Epoque Edition Première Brut\t95\t250\tChampagne Blend\tPerrier Jouët\nItaly\tFalletto\t95\t250\tNebbiolo\tBruno Giacosa\nUS\tHillside Select\t95\t250\tCabernet Sauvignon\tShafer\nFrance\tBelle Epoque Brut Rosé\t94\t250\tChampagne Blend\tPerrier Jouët\nItaly\tGran Selezione\t93\t250\tSangiovese\tIsole e Olena\nUS\tBeckstoffer Dr. Crane\t98\t250\tCabernet Sauvignon\tAlpha Omega\nUS\tBeckstoffer Georges III\t97\t250\tCabernet Sauvignon\tAlpha Omega\nItaly\tRiserva\t94\t250\tSangiovese\tLa Mannella\nFrance\tClos Saint-Denis\t94\t250\tPinot Noir\tDomaine Bertagna\nUS\tLeft Bank Abigail\u0027s Vineyard Domaine Barrien\t87\t250\tCabernet Sauvignon\tNathaniel Rose\nSpain\tAlabaster\t94\t250\tTinta de Toro\tTeso La Monja\nGermany\tBernkasteler Badstube Trockenbeerenauslese\t97\t250\tRiesling\tDr. Pauly Bergweiler\nUS\tBeckstoffer Missouri Hopper\t98\t250\tCabernet Sauvignon\tAlpha Omega\nUS\tStagecoach Vineyard\t99\t250\tCabernet Sauvignon\tAlpha Omega\nUS\tBeckstoffer Las Piedras\t98\t250\tCabernet Sauvignon\tAlpha Omega\nFrance\tCristal Brut\t95\t249\tChampagne Blend\tLouis Roederer\nFrance\tCuvée Héritiers Latour\t92\t249\tPinot Noir\tLouis Latour\nFrance\tCristal Brut\t97\t249\tChampagne Blend\tLouis Roederer\nFrance\tCristal Brut\t95\t249\tChampagne Blend\tLouis Roederer\nItaly\tRiserva\t88\t249\tRed Blend\tBuglioni\nSpain\tAurus\t94\t248\tTempranillo Blend\tFinca Allende\nSpain\tAurus\t94\t247\tTempranillo\tFinca Allende\nItaly\tMithas\t92\t245\tCorvina, Rondinella, Molinara\tCorte Sant\u0027 Alda\nGermany\tDeidesheimer Hohenmorgen Trockenbeerenauslese - 375 ml\t97\t245\tRiesling\tGeh. Rat Dr. von Bassermann-Jordan\nUS\tDarius II\t92\t245\tCabernet Sauvignon\tDarioush\nUS\tEstate Grown Cave Fermented Reserve\t96\t245\tCabernet Sauvignon\tJarvis\nSpain\tAlabaster\t94\t243\tTinta de Toro\tTeso La Monja\nSpain\tAlabaster\t93\t243\tTinta de Toro\tTeso La Monja\nItaly\td\u0027Alceo\t95\t242\tRed Blend\tCastello dei Rampolla\nItaly\tD\u0027Alceo\t94\t240\tCabernet Sauvignon\tCastello dei Rampolla\nUS\tInsignia Estate Grown\t95\t240\tBordeaux-style Red Blend\tJoseph Phelps\nItaly\tConteisa\t95\t240\tNebbiolo\tGaja\nPortugal\tSpecial Edition Tawny\t94\t240\tPort\tKopke\nUS\tReserve\t95\t240\tSyrah\tSilverback\nFrance\tCharmes Chambertin\t91\t240\tPinot Noir\tDomaine Henri Rebourseau\nFrance\tDomaine des Perdrix\t95\t240\tPinot Noir\tDomaines Devillard\nGermany\tForster Kirchenstück Beerenauslese 375 ml\t95\t239\tRiesling\tGeh. Rat Dr. von Bassermann-Jordan\nFrance\tLes Combettes Premier Cru\t95\t238\tChardonnay\tDomaine Leflaive\nGermany\tJohannisberg Wallhausen Erste Lage Trockenbeerenauslese\t94\t237\tRiesling\tPrinz Salm\nGermany\tBerg Roxheim Erste Lage Trockenbeerenauslese\t95\t237\tRiesling\tPrinz Salm\nItaly\tOcchio di Pernice\t99\t237\tPrugnolo Gentile\tAvignonesi\nFrance\tLes Beaux-Monts\t94\t236\tPinot Noir\tDomaine Dujac\nItaly\tBaffonero\t89\t236\tMerlot\tRocca di Frassinello\nGermany\tErdener Prälat GG Reserve Alte Reben Trocken\t93\t236\tRiesling\tDr. Loosen\nItaly\tBaffonero\t89\t236\tMerlot\tRocca di Frassinello\nChile\tKai\t92\t235\tCarmenère\tErrazuriz\nItaly\tSassicaia\t95\t235\tRed Blend\tTenuta San Guido\nChile\tKai\t89\t235\tCarmenère\tErrazuriz\nChile\tKai\t89\t235\tCarmenère\tErrazuriz\nChile\tKai\t90\t235\tCarmenère\tErrazuriz\nAustralia\tAttunga 1865\t94\t235\tShiraz\tKilikanoon\nUS\tBeckstoffer To Kalon Vineyard\t94\t235\tCabernet Sauvignon\tPaul Hobbs\nItaly\tSassicaia\t99\t235\tRed Blend\tTenuta San Guido\nSpain\tAlabaster\t93\t234\tTinta de Toro\tTeso La Monja\nGermany\tSerrig Schloss Saarsteiner Beerenauslese Goldkapsel\t94\t231\tRiesling\tSchloss Saarstein\nUS\tHillside Select\t94\t230\tCabernet Sauvignon\tShafer\nFrance\tCorton Charlemagne Grand Cru\t92\t230\tChardonnay\tJean-Luc and Paul Aegerter\nItaly\tKupra\t90\t230\tGrenache\tOasi degli Angeli\nArgentina\tVolturno Marchiori Vineyard\t91\t230\tCabernet Sauvignon\tViña Cobos\nFrance\tDomaine des Perdrix\t94\t230\tPinot Noir\tDomaines Devillard\nAustralia\tOld Bastard\t93\t230\tShiraz\tKaesler\nArgentina\tVolturno\t92\t230\tCabernet Sauvignon\tViña Cobos\nSpain\tValbuena 5\t94\t230\tTempranillo\tVega Sicilia\nFrance\tBrut\t88\t230\tChampagne Blend\tKrug\nItaly\tStropa\t87\t230\tCorvina, Rondinella, Molinara\tMonte dall\u0027Ora\nGermany\tHerrenberg Eiswein\t96\t228\tRiesling\tMaximin Grünhäuser\nItaly\tSassicaia\t94\t227\tRed Blend\tTenuta San Guido\nSpain\tAlabaster\t97\t227\tTinta de Toro\tTeso La Monja\nItaly\tSassicaia\t96\t227\tRed Blend\tTenuta San Guido\nItaly\tSassicaia\t97\t227\tRed Blend\tTenuta San Guido\nItaly\tFrancia\t95\t225\tNebbiolo\tGiacomo Conterno\nUS\tSage Mountain Vineyard Proprietary\t93\t225\tBordeaux-style Red Blend\tContinuum\nItaly\tMagma Rosso 10\t93\t225\tNerello Mascalese\tFrank Cornelissen\nUS\tVolcanic Hill\t93\t225\tCabernet Sauvignon\tDiamond Creek\nAustralia\tRunRig\t96\t225\tShiraz-Viognier\tTorbreck\nUS\tCask 23\t88\t225\tCabernet Sauvignon\tStag\u0027s Leap Wine Cellars\nItaly\tCerretta\t94\t225\tNebbiolo\tGiacomo Conterno\nUS\tPatriarch Winston Hill Vineyard\t93\t225\tCabernet Sauvignon\tFrank Family\nUS\tVolcanic Hill\t94\t225\tCabernet Sauvignon\tDiamond Creek\nAustralia\tRunRig\t94\t225\tShiraz-Viognier\tTorbreck\nFrance\tClos des Cortons Faiveley\t95\t225\tPinot Noir\tDomaine Faiveley\nUS\tWinston Hill Vineyard Patriarch\t93\t225\tCabernet Sauvignon\tFrank Family\nUS\tFamily Reserve\t92\t225\tCabernet Sauvignon\tYao Family Wines\nAustralia\tAstralis\t95\t225\tSyrah\tClarendon Hills\nFrance\tLes Combettes Premier Cru\t94\t225\tChardonnay\tDomaine Leflaive\nUS\tPatriarch Winston Hill Vineyard\t91\t225\tCabernet Sauvignon\tFrank Family\nUS\tNo. 1\t92\t225\tCabernet Sauvignon\tJCB\nSpain\tCastillo Ygay Gran Reserva Especial\t83\t225\tTempranillo Blend\tMarqués de Murrieta\nUS\tDarius II\t92\t225\tCabernet Sauvignon\tDarioush\nItaly\tMessorio\t93\t225\tMerlot\tLe Macchiole\nUS\tFortitude\t90\t225\tCabernet Sauvignon\tProvenance Vineyards\nAustralia\tAstralis\t94\t225\tSyrah\tClarendon Hills\nUS\tRed Rock Terrace\t91\t225\tCabernet Sauvignon\tDiamond Creek\nUS\tGravelly Meadow\t94\t225\tCabernet Sauvignon\tDiamond Creek\nUS\tRed Rock Terrace\t94\t225\tCabernet Sauvignon\tDiamond Creek\nUS\tMartha\u0027s Vineyard\t94\t225\tCabernet Sauvignon\tHeitz\nArgentina\tCobos Marchiori Vineyard\t95\t225\tMalbec\tViña Cobos\nUS\tHillside Select\t97\t225\tCabernet Sauvignon\tShafer\nFrance\tLes Combettes Premier Cru\t94\t225\tChardonnay\tDomaine Leflaive\nAustralia\tRunRig\t97\t225\tShiraz-Viognier\tTorbreck\nFrance\tLes Combottes\t93\t224\tPinot Noir\tDomaine Dujac\nFrance\tChâteau des Labourons\t88\t224\tGamay\tHenry Fessy\nFrance\tCuvée Elisabeth Salmon Brut Rosé\t94\t222\tChampagne Blend\tBillecart-Salmon\nFrance\tNoblesse d\u0027Or Vintage Brut\t87\t220\tChampagne Blend\tMichel Moritz\nFrance\tLes Suchots Premier Cru\t94\t220\tPinot Noir\tDomaine de Bellene\nItaly\tPalazzi\t93\t220\tMerlot\tTenuta di Trinoro\nItaly\tSassicaia\t97\t220\tRed Blend\tTenuta San Guido\nUS\tPritchard Hill\t94\t220\tCabernet Sauvignon\tChappellet\nUS\tBlueline Estate 36-24-36\t93\t220\tBordeaux-style Red Blend\tHourglass\nPortugal\tColheita Tawny\t95\t220\tPort\tKopke\nGermany\tCasteller Kugelspiel Eiswein\t96\t220\tSilvaner\tCastell\nSpain\tAlabaster\t95\t220\tTinta de Toro\tTeso La Monja\nUS\tEstate Bottled\t94\t219\tBordeaux-style Red Blend\tDominus\nSpain\tTermanthia\t95\t219\tTinta de Toro\tNumanthia\nFrance\tLe Mesnil Blanc de Blancs Brut\t96\t216\tChardonnay\tSalon\nUS\tHillside Select\t92\t215\tCabernet Sauvignon\tShafer\nItaly\tOrnellaia\t97\t215\tRed Blend\tTenuta dell\u0027Ornellaia\nItaly\tConteisa\t97\t215\tNebbiolo\tGaja\nItaly\tCerequio - 1.5 L\t93\t215\tNebbiolo\tDamilano\nArgentina\tMarchiori Vineyard Block C2\t92\t215\tMalbec\tViña Cobos\nFrance\tClos des Cortons Faiveley\t94\t215\tPinot Noir\tDomaine Faiveley\nItaly\tPreve Riserva\t87\t214\tNebbiolo\tGianni Gagliardo\nSpain\tMalleolus de Valderramiro\t92\t212\tTinto Fino\tEmilio Moro\nItaly\tMasseria\t90\t210\tNebbiolo\tVietti\nUS\tCask 23 Estate\t94\t210\tCabernet Sauvignon\tStag\u0027s Leap Wine Cellars\nItaly\tScrio\t90\t210\tSyrah\tLe Macchiole\nItaly\tVigneto La Casuccia Gran Selezione\t90\t210\tRed Blend\tCastello di Ama\nArgentina\tMarchiori Vineyard Block C2\t91\t210\tMalbec\tViña Cobos\nItaly\tBrunate\t89\t210\tNebbiolo\tVietti\nItaly\tOcchio di Pernice\t100\t210\tPrugnolo Gentile\tAvignonesi\nUS\tVecina\t92\t210\tBordeaux-style Red Blend\tBOND\nItaly\tVigneto Bellavista Gran Selezione\t90\t210\tRed Blend\tCastello di Ama\nItaly\tBriccolina Riserva\t96\t210\tNebbiolo\tRivetto\nUS\tReserve\t90\t210\tCabernet Sauvignon\tZD\nUS\tRubicon\t94\t210\tCabernet Sauvignon\tInglenook\nItaly\tLazzarito\t90\t210\tNebbiolo\tVietti\nItaly\tScrio\t90\t210\tSyrah\tLe Macchiole\nUS\tERA\t93\t210\tBordeaux-style Red Blend\tAlpha Omega\nGermany\tHochheimer Domdechaney Beerenauslese\t92\t210\tRiesling\tDomdechant Werner\nUS\tRubicon\t94\t210\tCabernet Sauvignon\tInglenook\nFrance\tClos Saint-Jacques Premier Cru\t95\t208\tPinot Noir\tLouis Jadot\nFrance\tLes Pucelles Premier Cru\t94\t208\tChardonnay\tLouis Jadot\nFrance\tLouis XV Brut Rosé\t92\t207\tChampagne Blend\tDe Venoge\nFrance\tClos Saint-Jacques Premier Cru\t94\t206\tPinot Noir\tLouis Jadot\nFrance\tComtes de Champagne Brut Rosé\t95\t204\tChampagne Blend\tTaittinger\nSpain\tMalleolus de Sanchomartin\t96\t204\tTinto del Pais\tEmilio Moro\nFrance\tClos Vougeot\t93\t203\tPinot Noir\tDomaine Jacques Prieur\nUS\tFortieth Anniversary Gravelly Meadow\t91\t200\tCabernet Sauvignon\tDiamond Creek\nPortugal\t30 Years Old Tawny\t96\t200\tPort\tNiepoort\nGermany\tAuslese\t94\t200\tRiesling\tSchloss Johannisberger\nUS\tAudentia Estate Grown\t90\t200\tCabernet Sauvignon\tStags\u0027 Leap Winery\nUS\tNo. 1\t90\t200\tCabernet Sauvignon\tJCB\nItaly\tRocche dell\u0027Annunziata Riserva\t94\t200\tNebbiolo\tPaolo Scavino\nPortugal\tStone Terraces Vintage\t97\t200\tPort\tW. \u0026 J. Graham\u0027s\nUS\tPedregal Vineyard\t95\t200\tCabernet Sauvignon\tRamey\nFrance\tLes Carruades de Lafite\t87\t200\tBordeaux-style Red Blend\tChâteau Lafite Rothschild\nItaly\tAlbesani Vigna Santo Stefano\t95\t200\tNebbiolo\tBruno Giacosa\nUS\tNo. 1\t93\t200\tCabernet Sauvignon\tJCB\nAustralia\tBin 707\t95\t200\tCabernet Sauvignon\tPenfolds\nUS\tM by Michael Mondavi\t93\t200\tCabernet Sauvignon\tMichael Mondavi Family Estate\nSpain\tTermanthia\t94\t200\tTinta de Toro\tNumanthia\nUS\tInsignia Estate Grown\t96\t200\tRed Blend\tJoseph Phelps\nAustralia\tMount Edelstone Vineyard\t95\t200\tShiraz\tHenschke\nItaly\tCannubi\t92\t200\tNebbiolo\tDamilano\nItaly\tMadonna delle Grazie\t99\t200\tSangiovese\tIl Marroneto\nUS\tNo. 1\t90\t200\tCabernet Sauvignon\tJCB\nUS\tNo. 10\t95\t200\tCabernet Sauvignon\tJCB\nUS\tSingle Berry Select\t95\t200\tRiesling\tChateau Ste. Michelle \u0026 Dr. Loosen\nUS\tFortis\t90\t200\tCabernet Sauvignon\tPine Ridge\nFrance\tClos des Goisses Brut\t94\t200\tChampagne Blend\tPhilipponnat\nUS\tNo 10\t90\t200\tCabernet Sauvignon\tJCB\nItaly\tRocche di Castiglione\t90\t200\tNebbiolo\tVietti\nUS\tGravelly Meadow\t94\t200\tCabernet Sauvignon\tDiamond Creek\nFrance\tAmour de Deutz Brut Rosé\t95\t200\tChampagne Blend\tDeutz\nChile\tGravas del Maipo\t91\t200\tSyrah\tConcha y Toro\nUS\tExzellenz Sacrashe Vineyard\t95\t200\tCabernet Sauvignon\tHall\nItaly\tMagma Rosso 6\t91\t200\tNerello Mascalese\tFrank Cornelissen\nUS\tInsignia\t95\t200\tRed Blend\tJoseph Phelps\nItaly\tIl Decennale\t90\t200\tSangiovese\tPoggio di Sotto\nUS\tFortieth Anniversary Volcanic Hill\t94\t200\tCabernet Sauvignon\tDiamond Creek\nFrance\tDizy Terres Rouges Extra Brut Rosé\t90\t200\tChampagne Blend\tJacquesson et Fils\nUS\tGravelly Meadow\t91\t200\tCabernet Sauvignon\tDiamond Creek\nFrance\tVinothèque Premier Cru Extra-Dry\t84\t200\tChampagne Blend\tJ. Dumangin Fils\nGermany\tBeerenauslese\t94\t200\tRiesling\tSchloss Vollrads\nGermany\tWehlener Sonnenuhr Beerenauslese Erste Lage\t96\t200\tRiesling\tS.A. Prüm\nUS\tEstate Grown Cave Fermented Reserve\t93\t200\tMerlot\tJarvis\nFrance\tPalmes d\u0027Or Vintage Brut Rosé\t84\t200\tChampagne Blend\tNicolas Feuillatte\nUS\tJamie\t95\t200\tCabernet Sauvignon\tJ. Davies\nFrance\tLe Mesnil Blanc de Blancs Brut\t93\t200\tChardonnay\tSalon\nSpain\tTermanthia\t95\t200\tTinta de Toro\tNumanthia\nFrance\tPalmes d\u0027Or Rosé\t85\t200\tChampagne Blend\tNicolas Feuillatte\nChile\tCarmín de Peumo\t91\t200\tCarmenère\tConcha y Toro\nUS\tVolcanic Hill\t94\t200\tCabernet Sauvignon\tDiamond Creek\nUS\tRed Rock Terrace\t93\t200\tCabernet Sauvignon\tDiamond Creek\nItaly\tMillecento\t91\t200\tSangiovese\tCastiglion del Bosco\nUS\tRed Rock Terrace\t95\t200\tCabernet Sauvignon\tDiamond Creek\nUS\tVolcanic Hill\t94\t200\tCabernet Sauvignon\tDiamond Creek\nItaly\tLa Fabriseria\t89\t200\tRed Blend\tTedeschi\nItaly\tOrnellaia\t97\t200\tRed Blend\tTenuta dell\u0027Ornellaia\nUS\tInsignia\t93\t200\tBordeaux-style Red Blend\tJoseph Phelps\nItaly\tAsili\t95\t200\tNebbiolo\tBruno Giacosa\nUS\tEstate Grown Audentia\t91\t200\tCabernet Sauvignon\tStags\u0027 Leap Winery\nUS\tHillside Select\t96\t200\tCabernet Sauvignon\tShafer\nItaly\tRiserva\t93\t200\tSangiovese Grosso\tPoggio di Sotto\nUS\tJ. Schram Late Disgorged 150th Anniversary Release\t96\t200\tSparkling Blend\tSchramsberg\nUS\tProfile 30th Anniversary\t93\t200\tBordeaux-style Red Blend\tMerryvale\nPortugal\tAdelaide\t93\t200\tPortuguese Red\tQuinta do Vallado\nUS\tAlder Springs Vineyard\t91\t200\tTannat\tY Rousseau\nUS\tM by Michael Mondavi\t94\t200\tCabernet Sauvignon\tMichael Mondavi Family Estate\nItaly\tSyrah\t94\t200\tSyrah\tTua Rita\nUS\tPrivate Reserve\t93\t199\tCabernet Sauvignon\tTobacco Road\nUS\tEstate Bottled\t95\t199\tBordeaux-style Red Blend\tDominus\nFrance\tComtes de Champagne Blanc de Blancs Brut\t95\t199\tChardonnay\tTaittinger\nFrance\tLouis XV Brut\t92\t199\tChampagne Blend\tDe Venoge\nItaly\tSenza Titolo\t90\t199\tRed Blend\tMusella\nSpain\tPV Petit Verdot\t87\t199\tPetit Verdot\tAbadia Retuerta\nItaly\tMazzano\t94\t198\tCorvina, Rondinella, Molinara\tMasi\nFrance\tSélection de Grains Nobles\t92\t197\tGewürztraminer\tHugel\nFrance\tClos Lanson\t96\t196\tChardonnay\tLanson\nItaly\tRiserva\t96\t195\tSangiovese\tFuligni\nSpain\tAro\t93\t195\tTempranillo Blend\tMuga\nUS\tYountville Selection Estate Grown\t92\t195\tCabernet Sauvignon\tGrgich Hills\nFrance\tClos des Cortons\t95\t195\tPinot Noir\tFaiveley\nItaly\tAsili\t89\t195\tNebbiolo\tCeretto\nItaly\tPietramarina Bianco Superiore\t92\t195\tCarricante\tBenanti\nFrance\tDomaine du Clos Frantin Les Malconsorts Premier Cru\t95\t195\tPinot Noir\tAlbert Bichot\nFrance\tCelebris Vintage Extra Brut\t96\t195\tChampagne Blend\tGosset\nFrance\tN.P.U. Nec Plus Ultra Extra Brut\t95\t195\tChampagne Blend\tBruno Paillard\nUS\tMorisoli-Borges Vineyard\t91\t195\tCabernet Sauvignon\tCastello di Amorosa\nUS\tEra\t90\t195\tBordeaux-style Red Blend\tAlpha Omega\nFrance\tDomaine des Perdrix\t94\t195\tPinot Noir\tDomaines Devillard\nUS\tCask 23\t91\t195\tCabernet Sauvignon\tStag\u0027s Leap Wine Cellars\nFrance\tClos Lanson Blanc de Blancs Brut\t95\t195\tChardonnay\tLanson\nUS\tReserve\t94\t195\tCabernet Sauvignon\tJarvis\nUS\tArdore\t96\t195\tCabernet Sauvignon\tCelani Family Vineyards\nUS\tCask 23\t92\t195\tCabernet Sauvignon\tStag\u0027s Leap Wine Cellars\nSpain\tValbuena 5\t94\t195\tTempranillo\tVega Sicilia\nFrance\tDomaine du Clos Frantin Les Malconsorts Premier Cru\t94\t195\tPinot Noir\tAlbert Bichot\nSpain\tValbuena\t89\t195\tTempranillo Blend\tVega Sicilia\nUS\tCask 23 Estate\t97\t195\tCabernet Sauvignon\tStag\u0027s Leap Wine Cellars\nItaly\tMillecento Riserva\t90\t195\tSangiovese\tCastiglion del Bosco\nFrance\tDomaine du Pavillon\t94\t194\tChardonnay\tAlbert Bichot\nFrance\tCuvée Signature\t91\t193\tPinot Noir\tBouchard Aîné \u0026 Fils\nFrance\tLes Pucelles Premier Cru\t94\t193\tChardonnay\tOlivier Leflaive\nFrance\tLes Combettes Premier Cru\t93\t191\tChardonnay\tDomaine Jacques Prieur\nAustralia\tOld Bastard\t94\t190\tShiraz\tKaesler\nItaly\tFamiglia Pasqua Riserva\t92\t190\tRed Blend\tPasqua\nItaly\tSugarille\t89\t190\tSangiovese Grosso\tPieve Santa Restituta\nSpain\tEl Carretil\t93\t190\tTempranillo\tArtadi\nItaly\tRiserva\t98\t190\tSangiovese\tConti Costanti\nUS\tReserve\t88\t190\tCabernet Sauvignon\tZD\nItaly\tRocche dell\u0027Annunziata Riserva\t96\t190\tNebbiolo\tPaolo Scavino\nItaly\tFamiglia Pasqua Riserva\t92\t190\tRed Blend\tPasqua\nArgentina\tMarchiori Vineyard\t93\t190\tMalbec\tViña Cobos\nItaly\tSugarille\t94\t190\tSangiovese Grosso\tPieve Santa Restituta\nFrance\tPavillon Blanc\t93\t190\tBordeaux-style White Blend\tChâteau Margaux\nItaly\tSassicaia\t97\t190\tRed Blend\tTenuta San Guido\nUS\tSingle Vineyard\t90\t190\tCabernet Sauvignon\tNewton\nSpain\tValbueno 5\t94\t190\tRed Blend\tVega Sicilia\nUS\tSingle Vineyard\t90\t190\tCabernet Sauvignon\tNewton\nUS\tReserve\t88\t190\tCabernet Sauvignon\tZD\nFrance\tPavillon Blanc\t93\t190\tBordeaux-style White Blend\tChâteau Margaux\nFrance\t1780 Royal Heritage\t92\t190\tRed Blend\tChâteau Labastide Orliac\nItaly\tSugarille\t89\t190\tSangiovese Grosso\tPieve Santa Restituta\nSpain\tValbuena 5°\t90\t188\tTempranillo Blend\tVega Sicilia\nAustralia\tLes Amis\t87\t188\tGrenache\tTorbreck\nFrance\tHéritiers Paul Chanson\t95\t187\tChardonnay\tDomaine Chanson\nUS\tEstate\t95\t185\tCabernet Sauvignon\tHourglass\nUS\tOld Vine Estate Grown\t92\t185\tCabernet Sauvignon\tGrgich Hills\nAustralia\tLes Amis\t95\t185\tGrenache\tTorbreck\nUS\tPedregal Vineyard\t95\t185\tCabernet Sauvignon\tRamey\nUS\tFamily Estate Grown\t98\t185\tCabernet Sauvignon\tSpottswoode\nFrance\tLes Folatières Premier Cru\t94\t185\tChardonnay\tOlivier Leflaive\nAustralia\tGrange\t96\t185\tShiraz\tPenfolds\nUS\tBeckstoffer To Kalon Vineyard\t94\t185\tCabernet Sauvignon\tB Cellars\nFrance\tCuvée Louise Brut\t92\t185\tChampagne Blend\tPommery\nAustralia\tVelvet Glove\t93\t185\tShiraz\tMollydooker\nUS\tRelevant\t95\t185\tRed Blend\tCrown Point\nUS\tBeckstoffer To Kalon Vineyard\t88\t185\tCabernet Sauvignon\tB Cellars\nFrance\tLatricières Chambertin\t93\t185\tPinot Noir\tCamille Giroud\nUS\tBeckstoffer To Kalon Vineyard\t88\t185\tCabernet Sauvignon\tB Cellars\nUS\tGrace Vineyard\t94\t185\tPinot Noir\tDomaine Serene\nUS\tCor Leonis\t90\t185\tCabernet Sauvignon\tMoone-Tsai\nFrance\tCorton Vergennes Grand Cru\t91\t184\tPinot Noir\tJean-Luc and Paul Aegerter\nSpain\tMalleolus de Sanchomartin\t93\t183\tTinto Fino\tEmilio Moro\nGermany\tKiedrich Gräfenberg Auslese\t95\t182\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Auslese\t95\t182\tRiesling\tRobert Weil\nGermany\tWildenstein R Trocken\t87\t181\tSpätburgunder\tHuber\nItaly\tAsili\t88\t181\tNebbiolo\tCeretto\nItaly\tRocche dell\u0027Annunziata Riserva\t94\t180\tNebbiolo\tPaolo Scavino\nUS\tAmbassador\u0027s 1953 Vineyard\t96\t180\tChardonnay\tHanzell\nAustralia\tThe Visionary Exceptional Parcel Release\t92\t180\tCabernet Sauvignon\tWakefield\nItaly\tEssenzia di Caiarossa\t87\t180\tRed Blend\tCaiarossa\nItaly\tPrimum Riserva\t93\t180\tAglianico\tGuastaferro\nUS\tLake William\t90\t180\tBordeaux-style Red Blend\tJarvis\nUS\tLake William\t90\t180\tBordeaux-style Red Blend\tJarvis\nSpain\tMalleolus de Valderramiro\t97\t180\tTinto Fino\tEmilio Moro\nFrance\tAmour de Deutz Brut\t93\t180\tChampagne Blend\tDeutz\nPortugal\tTorre do Esporão Garrafeira\t95\t180\tPortuguese Red\tHerdade do Esporão\nItaly\tLupicaia\t93\t180\tRed Blend\tCastello del Terriccio\nItaly\tRiserva\t93\t180\tSangiovese Grosso\tCupano\nFrance\tLes Morgeots Premier Cru\t92\t180\tChardonnay\tJean-Luc and Paul Aegerter\nItaly\tBussia Romirasco\t94\t180\tNebbiolo\tPoderi Aldo Conterno\nItaly\tBiserno\t95\t180\tRed Blend\tTenuta di Biserno\nItaly\tLavinia Maria\t93\t180\tCabernet Franc\tTenuta Argentiera\nUS\tSpecial Selection\t90\t180\tCabernet Sauvignon\tCaymus\nItaly\tAsili\t93\t180\tNebbiolo\tCeretto\nItaly\tAscheri\t94\t180\tNebbiolo\tAscheri\nUS\tEstate Bottled\t94\t180\tCabernet Sauvignon\tFar Niente\nAustralia\tThe Visionary Limited Release\t91\t180\tCabernet Sauvignon\tWakefield\nFrance\tAmour de Deutz Brut\t94\t180\tChampagne Blend\tDeutz\nFrance\tLes Echansons Brut\t94\t180\tChampagne Blend\tMailly Grand Cru\nFrance\tBlanc de Blancs Brut\t94\t180\tChardonnay\tBruno Paillard\nFrance\tCuvée des Cadettes\t94\t180\tRhône-style Red Blend\tChâteau La Nerthe\nFrance\tCristal Brut\t92\t179\tChampagne Blend\tLouis Roederer\nSpain\tMalleolus de Sanchomartin\t94\t179\tTempranillo\tEmilio Moro\nSpain\tMalleolus de Sanchomartín\t94\t179\tTinto Fino\tEmilio Moro\nUS\tJoy! Blanc de Blancs\t97\t179\tSparkling Blend\tIron Horse\nGermany\tCasteller Schlossberg Trockenbeerenauslese\t90\t177\tSilvaner\tCastell\nSpain\tMalleolus de Valderramiro\t93\t176\tTinto Fino\tEmilio Moro\nUS\tWallah Wallah Special #5\t93\t175\tSyrah\tCayuse\nUS\tBeckstoffer To Kalon Vineyard\t94\t175\tCabernet Sauvignon\tJanzen\nFrance\tCuvée Sous Bois Brut\t93\t175\tChampagne Blend\tBoizel\nUS\tSeraphim\t91\t175\tCabernet Sauvignon\tWallis Family Estate\nItaly\tColonnello\t93\t175\tNebbiolo\tPoderi Aldo Conterno\nUS\tPurple Mountain\t85\t175\tCabernet Sauvignon\tCielo Malibu Estate Vineyards\nUS\tBeckstoffer Las Piedras Vineyard\t94\t175\tCabernet Sauvignon\tPaul Hobbs\nUS\tHaLo\t95\t175\tCabernet Sauvignon\tTrefethen\nItaly\tScrio\t91\t175\tSyrah\tLe Macchiole\nFrance\tBrut Cuvée Rare Millesimée\t94\t175\tChampagne Blend\tPiper-Heidsieck\nArgentina\tCobos Marchiori Vineyard\t92\t175\tMalbec\tViña Cobos\nUS\tThe Black Cordon Vineyard\t92\t175\tCabernet Sauvignon\tBlack Cordon\nUS\tBeckstoffer To Kalon Vineyard\t90\t175\tCabernet Sauvignon\tJanzen\nUS\tEpisode\t90\t175\tBordeaux-style Red Blend\tTerlato\nUS\tRattlesnake\t94\t175\tCabernet Sauvignon\tBarnett\nUS\tHaLo\t95\t175\tCabernet Sauvignon\tTrefethen\nItaly\tBiserno\t94\t175\tRed Blend\tTenuta di Biserno\nUS\tBeckstoffer Las Piedras Vineyard\t93\t175\tCabernet Sauvignon\tPaul Hobbs\nUS\tGrace Vineyard\t93\t175\tPinot Noir\tDomaine Serene\nArgentina\tRoll Fermentor\t87\t175\tMalbec\tAntonio Mas\nUS\tBeckstoffer Las Piedras Vineyard\t93\t175\tCabernet Sauvignon\tPaul Hobbs\nItaly\tMazzano\t96\t175\tCorvina, Rondinella, Molinara\tMasi\nUS\tBeckstoffer To Kalon Vineyard\t94\t175\tCabernet Sauvignon\tJanzen\nUS\tEpisode\t94\t175\tBordeaux-style Red Blend\tTerlato\nUS\tElevation 1147\u0027\t95\t175\tCabernet Sauvignon\tDavid Arthur\nPortugal\tColheita Tawny\t93\t175\tPort\tBarros\nChile\tSilencio\t88\t175\tCabernet Sauvignon\tCono Sur\nFrance\tLa Turque\t95\t175\tRhône-style Red Blend\tE. Guigal\nUS\tBeckstoffer To Kalon Vineyard\t97\t175\tCabernet Sauvignon\tMacauley\nItaly\tLupi e Sirene Riserva\t91\t175\tSangiovese\tPodere Le Ripi\nItaly\tScrio\t91\t175\tSyrah\tLe Macchiole\nAustralia\tThe Armagh\t89\t175\tShiraz\tJim Barry\nFrance\tLes Forts de Latour\t93\t175\tBordeaux-style Red Blend\tChâteau Latour\nFrance\tCuvée Perle d\u0027Ayala Millesimé Brut\t93\t175\tChampagne Blend\tAyala\nUS\tThe Lion Estate Grown\t92\t175\tCabernet Sauvignon\tHess Collection\nHungary\tMézes Mály Aszú 6 Puttonyos\t94\t175\tTokaji\tRoyal Tokaji\nUS\tRed Rock Terrace\t92\t175\tCabernet Sauvignon\tDiamond Creek\nUS\tGravelly Meadow\t96\t175\tCabernet Sauvignon\tDiamond Creek\nUS\tVolcanic Hill\t96\t175\tCabernet Sauvignon\tDiamond Creek\nUS\tRed Rock Terrace\t95\t175\tCabernet Sauvignon\tDiamond Creek\nItaly\tOrnellaia\t98\t175\tRed Blend\tTenuta dell\u0027Ornellaia\nUS\tCor Leonis\t96\t175\tCabernet Sauvignon\tMoone-Tsai\nUS\tFortis\t93\t175\tCabernet Sauvignon\tPine Ridge\nUS\tBeckstoffer Dr. Crane Vineyard\t94\t175\tCabernet Sauvignon\tPaul Hobbs\nUS\tChateau Grand Reserve\t94\t175\tCabernet Sauvignon\tBuena Vista\nUS\tStagecoach Vineyard Select Barrel Reserve\t94\t175\tCabernet Sauvignon\tPatland\nItaly\tPetrucci\t90\t175\tSangiovese\tPodere Forte\nUS\tProfile\t91\t175\tBordeaux-style Red Blend\tMerryvale\nArgentina\tRoll Fermentor\t91\t175\tCabernet Sauvignon\tAntonio Mas\nGermany\tScharzhofberger Spätlese\t95\t175\tRiesling\tEgon Müller\nUS\tNomad Beckstoffer Las Piedras\t94\t175\tCabernet Sauvignon\tStewart\nFrance\tPerrières Premier Cru\t93\t175\tChardonnay\tChanson Père et Fils\nGermany\tLeiwener Laurentiuslay Beerenauslese\t96\t175\tRiesling\tSt. Urbans-Hof\nUS\tReserve 50 Late Disgorged\t94\t175\tChampagne Blend\tSchramsberg\nUS\tEstate\t92\t175\tCabernet Sauvignon\tStaglin\nItaly\tMonprivato\t99\t175\tNebbiolo\tMascarello Giuseppe e Figlio\nItaly\tCampolongo di Torbe\t93\t175\tRed Blend\tMasi\nSpain\tConde de Aldama Amontillado\t87\t175\tPalomino\tBodegas Yuste\nUS\tBeckstoffer To Kalon Vineyard\t94\t175\tCabernet Sauvignon\tJanzen\nUS\tStagecoach Vineyard Select Barrel Reserve\t94\t175\tCabernet Sauvignon\tPatland\nUS\tJ. Schram 50 Late Disgorged\t97\t175\tChampagne Blend\tSchramsberg\nUS\tGenception of Giants\t90\t175\tSyrah\tGalatea Effect\nUS\tCor Leonis\t95\t175\tCabernet Sauvignon\tMoone-Tsai\nFrance\tLa Mouline\t96\t175\tRhône-style Red Blend\tE. Guigal\nItaly\tMazzano\t93\t175\tRed Blend\tMasi\nUS\tVolcanic Hill\t94\t175\tCabernet Sauvignon\tDiamond Creek\nItaly\tScrio\t90\t175\tSyrah\tLe Macchiole\nUS\tYountville Selection Estate Grown\t89\t175\tCabernet Sauvignon\tGrgich Hills\nGermany\tGraacher Himmelreich Vat 69 Eiswein\t93\t175\tRiesling\tS.A. Prüm\nSpain\tAmancio\t94\t174\tTempranillo\tSierra Cantabria\nSpain\tAquilon\t90\t174\tGarnacha\tAlto Moncayo\nGermany\tEiswein\t95\t172\tRiesling\tSchloss Vollrads\nFrance\tLes Folatières Premier Cru\t94\t171\tChardonnay\tChanson Père et Fils\nFrance\tComtes de Champagne Blanc de Blancs Brut\t94\t171\tChardonnay\tTaittinger\nFrance\tLes Carruades de Lafite\t93\t170\tBordeaux-style Red Blend\tChâteau Lafite Rothschild\nUS\tLake William\t92\t170\tBordeaux-style Red Blend\tJarvis\nUS\tCherryblock\t86\t170\tCabernet Sauvignon\tSebastiani\nFrance\tCuvée des Cadettes\t94\t170\tRhône-style Red Blend\tChâteau La Nerthe\nFrance\tComtes de Champagne Blanc de Blancs Brut\t95\t170\tChardonnay\tTaittinger\nUS\tPrivate Reserve\t93\t170\tCabernet Sauvignon\tBeringer\nItaly\tMadame Martis Brut Riserva\t88\t170\tSparkling Blend\tMaso Martis\nItaly\tMadame Martis Riserva\t89\t170\tSparkling Blend\tMaso Martis\nFrance\tComtes de Champagne Blanc de Blancs Brut\t89\t170\tChampagne Blend\tTaittinger\nItaly\tMadame Martis Brut Metodo Classico Riserva\t90\t170\tSparkling Blend\tMaso Martis\nUS\tMockingbird Green Label\t93\t170\tCabernet Sauvignon\tTuck Beckstoffer\nUS\tRed Label\t87\t170\tCabernet Sauvignon\tMockingbird\nFrance\tCuvée William Deutz Rosé Brut\t94\t170\tChampagne Blend\tDeutz\nItaly\tCamarcanda\t93\t170\tRed Blend\tCa\u0027 Marcanda\nItaly\tMazzano\t93\t170\tRed Blend\tMasi\nUS\tCherryblock\t89\t170\tCabernet Sauvignon\tSebastiani\nFrance\tBarrel Sample\t96\t170\tBordeaux-style White Blend\tChâteau Pape Clément\nItaly\tSolaia\t96\t170\tRed Blend\tMarchesi Antinori\nFrance\tChâteau Corton Grancey\t95\t170\tPinot Noir\tLouis Latour\nItaly\tMazzano\t92\t170\tRed Blend\tMasi\nSpain\tVinos Viejos de Hidalgo Palo Cortado Wellington 30 Years Old\t94\t170\tSherry\tBodegas Hidalgo\nUS\tERA\t94\t170\tBordeaux-style Red Blend\tAlpha Omega\nFrance\tLa Réserve de l\u0027Obédience Les Blanchots Grand Cru\t95\t170\tChardonnay\tDomaine Laroche\nUS\tCherryblock\t86\t170\tCabernet Sauvignon\tSebastiani\nItaly\t375ml\t97\t170\tWhite Blend\tAvignonesi\nFrance\tDom Pérignon Brut\t95\t170\tChampagne Blend\tMoët \u0026 Chandon\nItaly\tAleste\t97\t170\tNebbiolo\tSandrone\nSpain\tFinca El Bosque\t95\t170\tTempranillo\tSierra Cantabria\nItaly\tRiserva\t95\t170\tSangiovese\tIl Palazzone\nFrance\tGrande Cuvée 158ème Edition Brut\t94\t169\tChampagne Blend\tKrug\nItaly\tVigneto Bellavista\t90\t169\tSangiovese\tCastello di Ama\nItaly\tDieci\t92\t169\tSangiovese\tLivio Sassetti\nGermany\tCasteller Schlossberg Beerenauslese\t88\t169\tSilvaner\tCastell\nItaly\tBriccolina\t95\t169\tNebbiolo\tRivetto\nArgentina\tIcono\t91\t169\tMalbec-Cabernet Sauvignon\tLuigi Bosca\nArgentina\tIcono\t94\t169\tMalbec-Cabernet Sauvignon\tLuigi Bosca\nFrance\tClos de Beauvenir\t95\t169\tRhône-style White Blend\tChâteau La Nerthe\nItaly\tL\u0027Apparita\t96\t169\tMerlot\tCastello di Ama\nUS\tOPR\t92\t168\tCabernet Sauvignon\tCallaway\nFrance\tLavaux Saint-Jacques Premier Cru\t95\t168\tPinot Noir\tJoseph Drouhin\nSpain\tAquilon\t93\t168\tGarnacha\tAlto Moncayo\nSpain\tAquilon\t92\t168\tGarnacha\tAlto Moncayo\nFrance\tCharmes Chambertin\t94\t168\tPinot Noir\tCamille Giroud\nFrance\tCuvée William Deutz Brut\t94\t167\tChampagne Blend\tDeutz\nSpain\tAmancio\t95\t167\tTempranillo\tSierra Cantabria\nArgentina\tParcela 26 Limited Edition\t90\t167\tMalbec\tFinca Flichman\nFrance\tLes Grandes Places\t92\t166\tSyrah\tDomaine Jean-Michel Gerin\nSpain\tLa Viña de Andres Romeo\t94\t166\tTempranillo\tBenjamin Romeo\nFrance\tLes Suchots Premier Cru\t94\t166\tPinot Noir\tDomaine Chantal Lescure\nFrance\tLes Suchots Premier Cru\t93\t166\tPinot Noir\tLouis Jadot\nItaly\tCannubi Boschis\t96\t165\tNebbiolo\tSandrone\nUS\tEstate\t95\t165\tCabernet Sauvignon\tHourglass\nGermany\tErdener Prälat Réserve  Alte Reben GG Erste Lage Dry\t94\t165\tRiesling\tDr. Loosen\nSpain\tDalmau\t95\t165\tTempranillo Blend\tMarqués de Murrieta\nUS\tWallah Wallah Special #4\t94\t165\tSyrah\tCayuse\nUS\tKathryn Hall\t95\t165\tCabernet Sauvignon\tHall\nArgentina\tIcono\t93\t165\tMalbec-Cabernet\tLuigi Bosca\nUS\tBeckstoffer To Kalon Vineyard\t95\t165\tCabernet Sauvignon\tB Cellars\nSpain\tMas de la Rosa\t94\t165\tRed Blend\tVall Llach\nSpain\tMas de la Rosa\t94\t165\tRed Blend\tVall Llach\nUS\tStagecoach Vineyard M5\t91\t165\tCabernet Sauvignon\tKrupp Brothers\nItaly\tCannubi\t94\t165\tNebbiolo\tBorgogno\nUS\tFamily Estate Grown\t95\t165\tCabernet Sauvignon\tSpottswoode\nUS\tProfile\t97\t165\tBordeaux-style Red Blend\tMerryvale\nUS\tKathryn Hall\t95\t165\tCabernet Sauvignon\tHall\nUS\tExzellenz Red Wine Sacrashe Vineyard\t96\t165\tCabernet Sauvignon\tHall\nUS\tGold\t95\t165\tCabernet Sauvignon\tCaldwell\nUS\tCuvée Julia\t85\t165\tRed Blend\tDelectus\nSpain\tReal de Asúa\t94\t165\tTempranillo\tCVNE\nItaly\tCannubi Boschis\t95\t165\tNebbiolo\tLuciano Sandrone\nItaly\tCannubi Boschis\t94\t165\tNebbiolo\tSandrone\nItaly\tCannubi\t94\t165\tNebbiolo\tBorgogno\nItaly\tCampolongo di Torbe\t92\t165\tRed Blend\tMasi\nUS\tReserve Clone 4\t91\t165\tCabernet Sauvignon\tBeaulieu Vineyard\nAustralia\tPiggott Range\t92\t165\tSyrah\tClarendon Hills\nItaly\tSuolo\t87\t165\tSangiovese\tArgiano\nUS\tBeckstoffer To Kalon Vineyard\t93\t165\tCabernet Sauvignon\tCliff Lede\nFrance\tChâteau Corton Grancey\t95\t165\tPinot Noir\tLouis Latour\nUS\tMartin Stelling Vineyard\t95\t165\tCabernet Sauvignon\tNickel \u0026 Nickel\nUS\tReserve Clone 6\t92\t165\tCabernet Sauvignon\tBeaulieu Vineyard\nFrance\tGC\t95\t165\tMalbec\tChâteau du Cèdre\nSpain\tLa Nieta\t94\t165\tTempranillo\tViñedos de Paganos\nItaly\tCannubi Boschis\t96\t165\tNebbiolo\tLuciano Sandrone\nItaly\tRarità 2004\t95\t165\tPinot Bianco\tTerlan\nItaly\tSuolo\t88\t164\tSangiovese\tArgiano\nFrance\tCorton Clos du Roi\t94\t163\tPinot Noir\tDomaine de la Pousse d\u0027Or\nItaly\tMonprivato\t95\t163\tNebbiolo\tMascarello Giuseppe e Figlio\nFrance\tLes Pucelles Premier Cru\t94\t163\tChardonnay\tOlivier Leflaive\nFrance\tCorton Bressandes\t94\t163\tPinot Noir\tDomaine de la Pousse d\u0027Or\nSpain\tNoble\t93\t162\tTempranillo\tGarcía Figuero\nSpain\tNoble\t93\t162\tTempranillo\tGarcía Figuero\nSpain\tNoble\t93\t162\tTempranillo\tGarcía Figuero\nFrance\tCharmes Premier Cru\t89\t161\tChardonnay\tDomaine Faiveley\nFrance\tCharmes Premier Cru\t89\t161\tChardonnay\tDomaine Faiveley\nUS\tThe Montelena Estate\t94\t160\tCabernet Sauvignon\tChateau Montelena\nUS\tGrand Ciel\t91\t160\tCabernet Sauvignon\tDeLille\nUS\tReserve\t92\t160\tCabernet Sauvignon\tZD\nGermany\tBerncasteler Doctor Beerenauslese Goldkap\t96\t160\tRiesling\tDr. H. Thanisch (Erben Müller-Burggraef)\nUS\tClone 337 Unfiltered\t93\t160\tCabernet Sauvignon\tBell\nUS\tGrand Ciel\t91\t160\tCabernet Sauvignon\tDeLille\nFrance\tGrande Cuvée Brut\t88\t160\tChampagne Blend\tKrug\nFrance\tMillésime Premier Cru Extra Brut\t91\t160\tChampagne Blend\tYann Alexandre\nPortugal\tVinha Maria Teresa\t94\t160\tPortuguese Red\tQuinta do Crasto\nItaly\tLupicaia\t94\t160\tRed Blend\tG.A. Rossi di Medelana\nUS\tSegassia Vineyard\t92\t160\tCabernet Sauvignon\tHall\nUS\tCheckmate\t86\t160\tCabernet Sauvignon\tSummers\nItaly\tG \u0026 G\t87\t160\tRed Blend\tLuigi Righetti\nItaly\tFranci Riserva\t93\t160\tSangiovese Grosso\tTassi\nFrance\tPerle d\u0027Ayala Millesimé Brut\t92\t160\tChampagne Blend\tAyala\nFrance\tLes Demoiselles Premier Cru\t93\t160\tChardonnay\tAu Pied du Mont Chauve\nItaly\tScrio\t91\t160\tSyrah\tLe Macchiole\nFrance\tAux Malconsorts Premier Cru\t92\t160\tPinot Noir\tBouchard Père \u0026 Fils\nUS\tTesorina\t92\t160\tBordeaux-style Red Blend\tRocca\nItaly\tSugarille\t92\t160\tSangiovese\tPieve Santa Restituta\nItaly\tCamartina\t93\t160\tRed Blend\tQuerciabella\nItaly\tScrio\t91\t160\tSyrah\tLe Macchiole\nItaly\tRuncot Riserva\t90\t160\tNebbiolo\tElio Grasso\nFrance\tDiamant Rosé Brut\t86\t160\tChampagne Blend\tVranken\nUS\tJoy! Rosé\t94\t160\tSparkling Blend\tIron Horse\nFrance\tCarruades de Lafite\t94\t160\tBordeaux-style Red Blend\tChâteau Lafite Rothschild\nUS\tCherryblock Vineyard\t88\t160\tCabernet Sauvignon\tSebastiani\nItaly\tRuncot Riserva\t90\t160\tNebbiolo\tElio Grasso\nGermany\tWehlener Sonnenuhr Vat 10 Riesling Beerenauslese\t91\t160\tRiesling\tS.A. Prüm\nUS\tStags Leap District\t96\t160\tCabernet Sauvignon\tHall\nFrance\tClos Prieur Premier Cru\t93\t160\tPinot Noir\tLouis Max\nAustria\tRuster Ausbruch Turner\t96\t160\tWhite Blend\tHeidi Schröck\nFrance\tChâteau Montus La Tyre\t96\t160\tTannat\tVignobles Brumont\nItaly\tSanta Nè\t91\t160\tFrancisa\tPalari\nUS\tMartin Stelling Vineyard\t92\t160\tCabernet Sauvignon\tNickel \u0026 Nickel\nFrance\tGenevrières Premier Cru\t93\t160\tChardonnay\tDomaine Buisson Battault\nFrance\tLes Echansons\t96\t160\tChampagne Blend\tMailly Grand Cru\nUS\tProprietary\t94\t160\tRed Blend\tViader\nFrance\tLes Beaux Monts Premier Cru\t92\t160\tPinot Noir\tLouis Latour\nFrance\tCarruades de Lafite\t94\t160\tBordeaux-style Red Blend\tChâteau Lafite Rothschild\nItaly\tBiserno\t92\t160\tRed Blend\tTenuta di Biserno\nFrance\tDiamant Rosé Brut\t86\t160\tChampagne Blend\tVranken\nItaly\tCiabot Minat Riserva\t90\t160\tNebbiolo\tAttilio Ghisolfi\nItaly\tG\u0026G;\t93\t160\tCorvina, Rondinella, Molinara\tLuigi Righetti\nGermany\tRosalack No. 398 Auslese\t95\t160\tRiesling\tSchloss Johannisberger\nFrance\tCuvée Constance 500ml\t99\t159\tChenin Blanc\tDomaine Huët\nItaly\tPreve\t87\t159\tNebbiolo\tGianni Gagliardo\nFrance\tLes Folatières Premier Cru\t93\t159\tChardonnay\tOlivier Leflaive\nSpain\tLa Nieta\t93\t159\tTempranillo\tViñedos de Paganos\nFrance\tLes Morgeots Premier Cru\t91\t159\tChardonnay\tJean-Luc and Paul Aegerter\nPortugal\tMarias da Malhadinha\t92\t158\tPortuguese Red\tHerdade da Malhadinha Nova\nItaly\tIl Puro Casanova\t90\t158\tSangiovese\tVolpaia\nFrance\tClavoillon Premier Cru\t95\t158\tChardonnay\tDomaine Leflaive\nItaly\tSantigaini\t94\t157\tVermentino\tCapichera\nItaly\tBricco Boschis Vigna San Giuseppe Riserva\t93\t156\tNebbiolo\tCavallotto\nFrance\tLe Clarence de Haut-Brion\t92\t156\tBordeaux-style Red Blend\tChâteau Haut-Brion\nItaly\tBricco Asili Bernardot\t92\t155\tNebbiolo\tCeretto\nUS\tMartin Stelling Vineyard\t94\t155\tCabernet Sauvignon\tNickel \u0026 Nickel\nUS\tLineage\t93\t155\tRed Blend\tSteven Kent\nUS\tTomahawk Vineyard\t92\t155\tCabernet Sauvignon\tChimney Rock\nUS\tThe Traveler\t98\t155\tPinot Noir\tWayfarer\nItaly\t50 \u0026 50\t92\t155\tRed Blend\tAvignonesi-Capannelle\nFrance\tSous le Dos d\u0027Ane Premier Cru\t94\t155\tChardonnay\tDomaine Leflaive\nItaly\tLe Vigne\t94\t155\tNebbiolo\tLuciano Sandrone\nSpain\tOloroso Single Vintage Single Vineyard\t92\t155\tSherry\tBodegas Hidalgo\nUS\tEstate\t90\t155\tCabernet Sauvignon\tHestan\nSpain\tAquilon\t92\t155\tGarnacha\tAlto Moncayo\nUS\tEstate Bottled\t95\t155\tCabernet Sauvignon\tFar Niente\nUS\tLimited Edition\t96\t155\tBordeaux-style Red Blend\tPortfolio\nFrance\tLa Grande Année Brut\t96\t155\tChampagne Blend\tBollinger\nItaly\tLe Vigne\t94\t155\tNebbiolo\tSandrone\nFrance\tSous le Dos d\u0027Ane Premier Cru\t93\t155\tChardonnay\tDomaine Leflaive\nItaly\tLe Vigne\t94\t155\tNebbiolo\tSandrone\nSpain\tLlanos del Almendro\t93\t155\tTinto Fino\tDominio de Atauta\nUS\tPadrone\t94\t155\tCabernet Sauvignon\tSignorello\nSpain\tOloroso Single Vintage Single Vineyard\t92\t155\tSherry\tBodegas Hidalgo\nUS\tGanymede Vineyard Estate Grown\t94\t155\tCabernet Sauvignon\tChimney Rock\nUS\tEstate\t90\t155\tCabernet Sauvignon\tHestan\nUS\tTomahawk Vineyard Estate Grown\t91\t155\tCabernet Sauvignon\tChimney Rock\nUS\tOuter Limits\t94\t155\tCabernet Sauvignon\tParallel\nItaly\t50 \u0026 50\t90\t155\tRed Blend\tAvignonesi-Capannelle\nUS\tMartin Stelling Vineyard\t96\t155\tCabernet Sauvignon\tNickel \u0026 Nickel\nUS\tTo Kalon Vineyard 50th Anniversary Reserve\t95\t155\tCabernet Sauvignon\tRobert Mondavi\nUS\tJourney\t89\t155\tBordeaux-style Red Blend\tMatanzas Creek\nUS\tLake William\t92\t155\tBordeaux-style Red Blend\tJarvis\nFrance\tFleur de Celles Brut\t93\t155\tChampagne Blend\tJean Laurent\nAustralia\tEstate Vineyard\t93\t154\tChardonnay\tGiaconda\nItaly\tCampolongo di Torbe\t94\t154\tRed Blend\tMasi\nItaly\tLe Vigne\t94\t154\tNebbiolo\tLuciano Sandrone\nFrance\tDomaine Long-Depaquit Moutonne\t95\t154\tChardonnay\tAlbert Bichot\nGermany\tLorcher Schlossberg Auslese Goldkapsel\t94\t154\tRiesling\tAugust Kesseler\nFrance\tLouis XV Brut\t93\t153\tChampagne Blend\tDe Venoge\nFrance\tLes Charmes Premier Cru\t91\t153\tPinot Noir\tFaiveley\nItaly\tPergole Vece\t93\t152\tRed Blend\tLe Salette\nSpain\tFinca El Bosque\t93\t152\tTempranillo\tSierra Cantabria\nFrance\tClavoillon Premier Cru\t94\t152\tChardonnay\tDomaine Leflaive\nItaly\tRiserva\t97\t152\tSangiovese\tIl Paradiso di Manfredi\nItaly\tPergole Vece Riserva\t90\t151\tRed Blend\tLe Salette\nItaly\tVigna Rionda Riserva\t98\t151\tNebbiolo\tMassolino\nUS\tBeau Mélange\t94\t150\tBordeaux-style Red Blend\tChateau Margene\nUS\tAncient Vine Angelica Marcelina\u0027s Vineyard\t96\t150\tMission\tGypsy Canyon\nFrance\tNoble Cuvée Blanc de Blancs Brut\t95\t150\tChardonnay\tLanson\nFrance\tBarrel Sample\t95\t150\tBordeaux-style Red Blend\tChâteau Léoville Poyferré\nAustria\tZwischen den Seen Nummer 3 Kollektion L08A\t92\t150\tRosenmuskateller\tKracher\nFrance\tSous le Dos d\u0027Ane Premier Cru\t93\t150\tChardonnay\tDomaine Leflaive\nItaly\tRavera\t93\t150\tNebbiolo\tVietti\nUS\tCabernet Bosché\t94\t150\tCabernet Sauvignon\tFreemark Abbey\nAustralia\tRWT\t96\t150\tShiraz\tPenfolds\nUS\tSycamore Vineyard\t93\t150\tCabernet Sauvignon\tFreemark Abbey\nItaly\tMadonna delle Grazie\t95\t150\tSangiovese\tIl Marroneto\nUS\tThe Maiden\t97\t150\tBordeaux-style Red Blend\tHarlan Estate\nUS\tYountville Selection\t88\t150\tCabernet Sauvignon\tGrgich Hills\nFrance\tDomaine du Pavillon Clos des Maréchaudes\t94\t150\tPinot Noir\tAlbert Bichot\nFrance\tPavillon Blanc du Château Margaux\t93\t150\tBordeaux-style White Blend\tChâteau Margaux\nUS\tWalther River Block\t92\t150\tCabernet Sauvignon\tD.R. Stephens\nSpain\tReserva Real\t89\t150\tBordeaux-style Red Blend\tTorres\nFrance\tCelebris Vintage Extra Brut\t94\t150\tChampagne Blend\tGosset\nUS\tNo. 17\t94\t150\tCabernet Franc\tJCB\nUS\tThe Cornerstone\t94\t150\tBordeaux-style Red Blend\tCornerstone\nUS\tPlus Single Vineyard Selection Vyborny Vineyard\t94\t150\tCabernet Sauvignon\tGoldschmidt\nArgentina\tFinca Altamira\t93\t150\tMalbec\tAchaval-Ferrer\nUS\tTranscendent\t93\t150\tCabernet Sauvignon\tBlack Stallion\nUS\tVyborny Vineyard Plus\t93\t150\tCabernet Sauvignon\tGoldschmidt\nUS\tJ. Schram\t96\t150\tRosé\tSchramsberg\nUS\tTranscendent\t92\t150\tCabernet Sauvignon\tBlack Stallion\nItaly\tCuvée Lucrezia Extra Brut\t89\t150\tPinot Nero\tCastello Bonomi\nUS\tGreen Room Vineyard Reserve\t88\t150\tCabernet Sauvignon\tBackstage Winery\nFrance\tPalmes d\u0027Or Brut\t90\t150\tChampagne Blend\tNicolas Feuillatte\nFrance\tCollection\t91\t150\tPinot Noir\tL. Tramier \u0026 Fils\nSpain\tLlanos del Almendro\t94\t150\tTinto Fino\tDominio de Atauta\nItaly\tPoggio al Vento\t92\t150\tSangiovese Grosso\tCol d\u0027Orcia\nPortugal\tJúlio B. Bastos Grande Reserva\t92\t150\tAlicante Bouschet\tDona Maria-Júlio Bastos\nPortugal\t40 Years Old White\t91\t150\tPort\tKopke\nUS\tGame Ranch Single Vineyard Selection PLUS\t94\t150\tCabernet Sauvignon\tGoldschmidt\nItaly\tVignolo Riserva\t97\t150\tNebbiolo\tCavallotto\nUS\tFounder\u0027s Reserve Estate Grown\t93\t150\tBordeaux-style Red Blend\tKenefick Ranch\nUS\tSelect Whole Cluster\t92\t150\tPinot Noir\tHyland\nFrance\tBelle Epoque Brut\t94\t150\tChampagne Blend\tPerrier Jouët\nUS\tBeau Melange\t82\t150\tBordeaux-style Red Blend\tChateau Margene\nItaly\tPoggio all\u0027Oro Riserva\t95\t150\tSangiovese Grosso\tCastello Banfi\nUS\tWinston Hill\t93\t150\tBordeaux-style Red Blend\tFrank Family\nUS\tReserve\t92\t150\tBordeaux-style Red Blend\tLeonetti Cellar\nItaly\tSchidione\t94\t150\tRed Blend\tJacopo Biondi-Santi\nUS\tBucephalus\t90\t150\tRed Blend\tBlack Stallion\nUS\tThe Maiden\t93\t150\tBordeaux-style Red Blend\tHarlan Estate\nUS\tFinal\t88\t150\tCabernet Sauvignon\tMadrigal\nFrance\tMillésime Brut Rosé\t93\t150\tChampagne Blend\tCharles Heidsieck\nUS\tBeckstoffer To Kalon Vineyard\t86\t150\tCabernet Sauvignon\tJanzen\nUS\tMonte Bello Estate\t92\t150\tCabernet Sauvignon\tRidge\nUS\tEighty One\t94\t150\tCabernet Sauvignon\tJustin\nItaly\tDiadema\t91\t150\tRed Blend\tDiadema\nUS\tKathryn Hall\t95\t150\tCabernet Sauvignon\tHall\nUS\tStolpman Vineyard\t93\t150\tSangiovese\tTuriya\nUS\tWalther River Block\t92\t150\tCabernet Sauvignon\tD.R. Stephens\nUS\tBeckstoffer To Kalon Vineyard North\t91\t150\tCabernet Sauvignon\tAlpha Omega\nUS\tThe Traveler\t97\t150\tPinot Noir\tWayfarer\nUS\tBeckstoffer To Kalon Vineyard\t86\t150\tCabernet Sauvignon\tJanzen\nItaly\tCiliegio\t90\t150\tSangiovese\tLa Magia\nItaly\tPoggio al Vento Riserva\t95\t150\tSangiovese\tCol d\u0027Orcia\nUS\tVyborny Vineyard Plus\t93\t150\tCabernet Sauvignon\tGoldschmidt\nUS\tPickett Road\t93\t150\tCabernet Sauvignon\tVine Cliff\nUS\tVersa\t88\t150\tCabernet Sauvignon\tVice Versa\nUS\tRutherford Hillside Reserve\t94\t150\tCabernet Sauvignon\tFlora Springs\nUS\tElevation 1147\t93\t150\tCabernet Sauvignon\tDavid Arthur\nUS\tFORTIS\t94\t150\tCabernet Sauvignon\tPine Ridge\nUS\tMoose Valley Vineyard\t93\t150\tCabernet Sauvignon\tD.R. Stephens\nUS\tPlus Game Ranch Single Vineyard Selection\t96\t150\tCabernet Sauvignon\tGoldschmidt\nUS\tSoul of a Lion\t96\t150\tCabernet Sauvignon\tDaou\nAustralia\tThe Peake\t96\t150\tCabernet-Shiraz\tHickinbotham\nFrance\tGrand Cru Millésimeé\t94\t150\tChampagne Blend\tSoutiran\nUS\tLimited\t94\t150\tCabernet Sauvignon\tSilverado\nSpain\tMalleolus de Valderramiro\t95\t150\tTempranillo\tEmilio Moro\nUS\tElivette\t94\t150\tBordeaux-style Red Blend\tSpring Mountain Vineyard\nItaly\tPoggio al Vento Riserva\t90\t150\tSangiovese\tCol d\u0027Orcia\nUS\tPrecioso\t96\t150\tPinot Noir\tKeller Estate\nUS\tPrecioso\t94\t150\tChardonnay\tKeller Estate\nItaly\tIl Puro Gran Selezione\t93\t150\tSangiovese\tVolpaia\nItaly\tVillero\t93\t150\tNebbiolo\tMascarello Giuseppe e Figlio\nUS\tJ. Schram Brut Rosé\t96\t150\tChampagne Blend\tSchramsberg\nUS\t16 Rows\t96\t150\tCabernet Sauvignon\tVine Cliff\nFrance\tCuvée Josephine Brut\t94\t150\tChampagne Blend\tJoseph Perrier\nSpain\tMalleolus de Valderramiro\t97\t150\tTinto Fino\tEmilio Moro\nFrance\tBelle Epoque Brut\t95\t150\tChampagne Blend\tPerrier Jouët\nUS\tFortis\t90\t150\tCabernet Sauvignon\tPine Ridge\nItaly\tPoggio al Vento Riserva\t94\t150\tSangiovese\tCol d\u0027Orcia\nSpain\tMalleolus de Sanchomartin\t94\t150\tTinto Fino\tEmilio Moro\nSpain\tCalvario\t93\t150\tTempranillo\tFinca Allende\nUS\tYountville Selection\t88\t150\tCabernet Sauvignon\tGrgich Hills\nUS\tRennie Reserve\t90\t150\tCabernet Sauvignon\tFlora Springs\nUS\tWinston Hill\t89\t150\tBordeaux-style Red Blend\tFrank Family\nUS\tStagecoach Vineyard Select Barrel Reserve\t91\t150\tCabernet Sauvignon\tPatland\nArgentina\tAdrianna Vineyard\t92\t150\tMalbec\tBodega Catena Zapata\nItaly\tPoggio all\u0027Oro Riserva\t95\t150\tSangiovese Grosso\tCastello Banfi\nUS\tBlack Sears Vineyard\t93\t150\tCabernet Sauvignon\tArcudi\nItaly\tLazzarito\t90\t150\tNebbiolo\tVietti\nPortugal\tSímbolo\t94\t150\tPortuguese Red\tPoças\nUS\tM5 Stagecoach Vineyard\t95\t150\tCabernet Sauvignon\tKrupp Brothers\n"
+          },
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"result-alert alert-warning\" role\u003d\"alert\"\u003e\u003cbutton type\u003d\"button\" class\u003d\"close\" data-dismiss\u003d\"alert\" aria-label\u003d\"Close\"\u003e\u003cspan aria-hidden\u003d\"true\"\u003e\u0026times;\u003c/span\u003e\u003c/button\u003e\u003cstrong\u003eOutput is truncated\u003c/strong\u003e to 1000 rows. Learn more about \u003cstrong\u003ezeppelin.spark.maxResult\u003c/strong\u003e\u003c/div\u003e\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://8cd5e54c20c5:4040/jobs/job?id\u003d131"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571427225245_1498107592",
+      "id": "20191018-193345_797021543",
+      "dateCreated": "2019-10-18 19:33:45.245",
+      "dateStarted": "2019-10-18 19:33:50.267",
+      "dateFinished": "2019-10-18 19:33:51.014",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Price and Variety by Country Stats",
+      "text": "%spark\nval priceStatsByCountry \u003d wineReviews\n  .where(col(\"country\").isNotNull)\n  .groupBy(\"country\")\n  .agg(\n      count(\"*\") as \"total\",\n      min(\"price\") as \"min_price\",\n      avg(\"price\") as \"avg_price\",\n      max(\"price\") as \"max_price\"\n  )\n\npriceStatsByCountry.createOrReplaceTempView(\"pricebycountry\")\n\n/* Price Stats by country / variety */\nval priceStatsByCountryAndVariety \u003d wineReviews\n  .where(col(\"variety\").isNotNull.and(col(\"country\").isNotNull))\n  .groupBy(\"country\", \"variety\")\n  .agg(\n      count(\"*\") as \"total\",\n      min(\"price\") as \"min_price\",\n      avg(\"price\") as \"avg_price\",\n      max(\"price\") as \"max_price\"\n  )\n\npriceStatsByCountryAndVariety.createOrReplaceTempView(\"pricebycountryvariety\")\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:35:13.832",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "priceStatsByCountry: org.apache.spark.sql.DataFrame \u003d [country: string, total: bigint ... 3 more fields]\npriceStatsByCountryAndVariety: org.apache.spark.sql.DataFrame \u003d [country: string, variety: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571427230209_-700746862",
+      "id": "20191018-193350_1257034669",
+      "dateCreated": "2019-10-18 19:33:50.210",
+      "dateStarted": "2019-10-18 19:35:13.866",
+      "dateFinished": "2019-10-18 19:35:15.196",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Find Most expensive average priced wines",
+      "text": "%sql\nselect * from pricebycountry ORDER BY avg_price DESC limit 10",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:48:21.256",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "country": "string",
+                      "total": "string",
+                      "min_price": "string",
+                      "avg_price": "string",
+                      "max_price": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": true
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "country",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [
+                {
+                  "name": "avg_price",
+                  "index": 3.0,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "total",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "country\ttotal\tmin_price\tavg_price\tmax_price\nSwitzerland\t7\t21\t85.28571428571429\t160\nEngland\t74\t25\t51.68115942028985\t95\nGermany\t2165\t5\t42.25754716981132\t775\nFrance\t22093\t5\t41.139120162016205\t3300\nHungary\t146\t10\t40.648275862068964\t764\nItaly\t19540\t5\t39.663769658271256\t900\nUS\t54504\t4\t36.5734635584631\t2013\nCanada\t257\t12\t35.71259842519685\t120\nAustralia\t2329\t5\t35.43766346992153\t850\nIsrael\t505\t8\t31.768916155419223\t150\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://8cd5e54c20c5:4040/jobs/job?id\u003d145"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571427281168_187566760",
+      "id": "20191018-193441_2122678686",
+      "dateCreated": "2019-10-18 19:34:41.168",
+      "dateStarted": "2019-10-18 19:41:08.526",
+      "dateFinished": "2019-10-18 19:41:10.965",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Find Most Popular Varieties of Wine by Country TOP10",
+      "text": "%sql\nselect * from pricebycountryvariety order by total DESC limit 10",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:48:21.390",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "country": "string",
+                      "variety": "string",
+                      "total": "string",
+                      "min_price": "string",
+                      "avg_price": "string",
+                      "max_price": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": true
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "variety",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [
+                {
+                  "name": "country",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "avg_price",
+                  "index": 4.0,
+                  "aggr": "max"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "country\tvariety\ttotal\tmin_price\tavg_price\tmax_price\nUS\tPinot Noir\t9885\t7\t44.59064624124987\t275\nUS\tCabernet Sauvignon\t7315\t6\t54.78887362637363\t625\nUS\tChardonnay\t6801\t4\t30.637383729514248\t2013\nFrance\tBordeaux-style Red Blend\t4725\t7\t40.89631263788213\t3300\nItaly\tRed Blend\t3624\t6\t39.68556543058535\t500\nUS\tSyrah\t3244\t6\t38.91553217821782\t750\nUS\tRed Blend\t2972\t5\t33.65196743554952\t290\nFrance\tChardonnay\t2808\t6\t57.275336322869954\t886\nItaly\tNebbiolo\t2736\t12\t66.44724061810155\t595\nUS\tZinfandel\t2711\t5\t29.492421441774493\t100\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://8cd5e54c20c5:4040/jobs/job?id\u003d143"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571427356950_1415361061",
+      "id": "20191018-193556_169801297",
+      "dateCreated": "2019-10-18 19:35:56.950",
+      "dateStarted": "2019-10-18 19:40:01.186",
+      "dateFinished": "2019-10-18 19:40:03.912",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Fixing DataFrame Column Trick",
+      "text": "%spark\nval fixedReviews \u003d wineReviews\n  .withColumn(\"num_points\", \u0027points.cast(\"Double\"))\n  .drop(\"points\")\n  .withColumnRenamed(\"num_points\", \"points\")\n  .withColumn(\"num_price\", \u0027price.cast(\"Double\"))\n  .drop(\"price\")\n  .withColumnRenamed(\"num_price\", \"price\")\n\nwineReviews.unpersist() // remove old cache\nfixedReviews.persist() // introduce new cache\nfixedReviews.createOrReplaceTempView(\"reviews\") // replace current memory SQL table",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:43:35.971",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "fixedReviews: org.apache.spark.sql.DataFrame \u003d [country: string, description: string ... 11 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571427384099_-690538218",
+      "id": "20191018-193624_1668108506",
+      "dateCreated": "2019-10-18 19:36:24.099",
+      "dateStarted": "2019-10-18 19:43:36.026",
+      "dateFinished": "2019-10-18 19:43:37.333",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Look at the Percentiles for top 10 countries by count. Check Distributions",
+      "text": "%sql\nselect country, count(*) as total, min(price) as min, percentile_approx(price, 0.25) as p25, percentile_approx(price, 0.5) as p50, percentile_approx(price, 0.75) as p75, percentile_approx(price, 0.90) as p90, percentile_approx(price, 0.99) as p99, max(price) as max, avg(price) as avg, stddev_pop(price) as stddev\nfrom reviews group by country\norder by total DESC\nlimit 10",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:48:21.467",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "country": "string",
+                      "total": "string",
+                      "min": "string",
+                      "p25": "string",
+                      "p50": "string",
+                      "p75": "string",
+                      "p90": "string",
+                      "p99": "string",
+                      "max": "string",
+                      "avg": "string",
+                      "stddev": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": true
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "country",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "p25",
+                  "index": 3.0,
+                  "aggr": "max"
+                },
+                {
+                  "name": "p50",
+                  "index": 4.0,
+                  "aggr": "max"
+                },
+                {
+                  "name": "p75",
+                  "index": 5.0,
+                  "aggr": "max"
+                },
+                {
+                  "name": "p99",
+                  "index": 7.0,
+                  "aggr": "max"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "country\ttotal\tmin\tp25\tp50\tp75\tp90\tp99\tmax\tavg\tstddev\nUS\t54504\t4.0\t20.0\t30.0\t45.0\t64.0\t135.0\t2013.0\t36.5734635584631\t27.088607804088646\nFrance\t22093\t5.0\t16.0\t25.0\t43.0\t3300.0\t3300.0\t3300.0\t41.139120162016205\t73.76732925660612\nItaly\t19540\t5.0\t18.0\t28.0\t50.0\t900.0\t900.0\t900.0\t39.663769658271256\t38.05135441456322\nSpain\t6645\t4.0\t13.0\t18.0\t30.0\t770.0\t770.0\t770.0\t28.215274608245853\t34.6597606604753\nPortugal\t5691\t5.0\t12.0\t16.0\t28.0\t50.0\t127.0\t1000.0\t26.21825641025641\t41.17101737668977\nChile\t4472\t5.0\t12.0\t15.0\t20.0\t35.0\t95.0\t400.0\t20.786458333333332\t21.926887892214822\nArgentina\t3800\t4.0\t12.0\t17.0\t25.0\t48.0\t125.0\t230.0\t24.510117145899894\t23.427002476505628\nAustria\t3345\t7.0\t18.0\t25.0\t37.0\t55.0\t98.0\t1100.0\t30.76277241872097\t27.21993364688152\nAustralia\t2329\t5.0\t15.0\t21.0\t38.0\t70.0\t200.0\t850.0\t35.43766346992153\t49.038766339813904\nGermany\t2165\t5.0\t18.0\t26.0\t42.0\t70.0\t365.0\t775.0\t42.25754716981132\t62.84548053895605\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://8cd5e54c20c5:4040/jobs/job?id\u003d157"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571427435418_806102194",
+      "id": "20191018-193715_784500873",
+      "dateCreated": "2019-10-18 19:37:15.418",
+      "dateStarted": "2019-10-18 19:47:10.818",
+      "dateFinished": "2019-10-18 19:47:14.204",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-18 19:47:10.748",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1571428030746_-12750512",
+      "id": "20191018-194710_2055939117",
+      "dateCreated": "2019-10-18 19:47:10.746",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "SVCC/2-SparkExploratory",
+  "id": "2EQFEJF47",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

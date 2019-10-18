@@ -27,16 +27,6 @@ Additional Docker Resources:
 2. Stopping the environment: `cd /path/to/svcc-2019-realish-spark/ && ./run.sh stop`
 3. Zeppelin Info: "https://zeppelin.apache.org/docs/latest/interpreter/spark.html"
 
-### Configurations
-1. **Zeppelin Configuration** http://localhost:8080/#/configuration
-2. **Zeppelin Interpreters**  http://localhost:8080/#/interpreter (configure spark here)
-3. If you want to use `spark-redis` from Zeppelin. Update the Zeppelin Interpreter for Spark and under `Dependencies` add `com.redislabs:spark-redis:2.0.4` and restart the interpreter.
-
-Suggested Spark Configurations (double the docker cores, use 1g less than total docker memory allocation)
-~~~bash
-spark.cores.max: 4
-spark.executor.memory: 3g
-~~~
 
 #### Optional: Enhancing your Zeppelin Experience (Bring new Spark version)
 1. Jump onto the docker process: `docker exec -it zeppelin bash`
@@ -48,8 +38,18 @@ brew install wget && cd ~/Desktop && wget http://mirror.cc.columbia.edu/pub/soft
 curl -XGET http://mirror.cc.columbia.edu/pub/software/apache/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz > ~/Desktop/spark-2.4.4.tgz && cd ~/Desktop && tar -xvzf spark-2.4.4.tgz && rm spark-2.4.4.tgz
 ~~~
 
-4. Now `export SPARK_HOME=~/spark`
+4. Now `export SPARK_HOME=~/Desktop/spark-2.4.4/`
 5. Use `./run.sh deployCustom` to now use your own local Spark
+
+### Updating Configurations
+1. **Zeppelin Configuration** http://localhost:8080/#/configuration
+2. **Zeppelin Interpreters**  http://localhost:8080/#/interpreter (configure spark here)
+3. If you want to use `spark-redis` from Zeppelin. Update the Zeppelin Interpreter for Spark and under `Dependencies` add `com.redislabs:spark-redis:2.0.4` and restart the interpreter.
+4. Suggested Spark Configurations (double the docker cores, use 1g less than total docker memory allocation)
+~~~bash
+spark.cores.max: 4
+spark.executor.memory: 4g
+~~~
 
 ### Session Overview
 

@@ -3,7 +3,7 @@
     {
       "text": "%md\n### Parts 1 and 2 got us to update our data and store as parquet.\nNow we will train a model off of the wine review parquet data",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:53:20.276",
+      "dateUpdated": "2019-10-19 20:32:50.994",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -36,15 +36,15 @@
       "jobName": "paragraph_1571446072396_1175966581",
       "id": "20191019-004752_2042641129",
       "dateCreated": "2019-10-19 00:47:52.396",
-      "dateStarted": "2019-10-19 00:53:20.279",
-      "dateFinished": "2019-10-19 00:53:20.310",
+      "dateStarted": "2019-10-19 20:32:51.023",
+      "dateFinished": "2019-10-19 20:32:51.061",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark\nval trainingData \u003d spark.read.parquet(\"/svccdata/winereviews.parquet\")\ntrainingData.persist()\ntrainingData.createOrReplaceTempView(\"reviews\")",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:03:52.145",
+      "dateUpdated": "2019-10-19 20:32:51.113",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -78,7 +78,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d50"
+            "http://zeppelin:4040/jobs/job?id\u003d77"
           ],
           "interpreterSettingId": "spark"
         }
@@ -87,15 +87,15 @@
       "jobName": "paragraph_1571446400232_-1876965897",
       "id": "20191019-005320_90284605",
       "dateCreated": "2019-10-19 00:53:20.233",
-      "dateStarted": "2019-10-19 01:03:52.182",
-      "dateFinished": "2019-10-19 01:03:52.972",
+      "dateStarted": "2019-10-19 20:32:51.136",
+      "dateFinished": "2019-10-19 20:32:51.571",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark\ntrainingData.printSchema",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:03:54.516",
+      "dateUpdated": "2019-10-19 20:32:51.638",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -126,15 +126,15 @@
       "jobName": "paragraph_1571446441551_-1314716389",
       "id": "20191019-005401_287660910",
       "dateCreated": "2019-10-19 00:54:01.551",
-      "dateStarted": "2019-10-19 01:03:54.561",
-      "dateFinished": "2019-10-19 01:03:54.948",
+      "dateStarted": "2019-10-19 20:32:51.655",
+      "dateFinished": "2019-10-19 20:32:51.822",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark\n\nimport org.apache.spark.ml.fpm.FPGrowth\nimport org.apache.spark.ml.feature.StopWordsRemover\nimport org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.StringIndexer\nimport org.apache.spark.ml.feature.OneHotEncoder\nimport org.apache.spark.ml.feature.VectorAssembler\n\n/* Auto Tasting Notes */\ndef tastingNotes(\n    df: DataFrame,\n    minSupport: Double \u003d 0.05,\n    minConfidence: Double \u003d 0.6,\n    freq: Int \u003d 400): String \u003d {\n  // can mess around easily with different selection criteria by changing the minSupport and minConfidence coefficents\n  val fpg \u003d new FPGrowth()\n    .setItemsCol(\"items\")\n    .setMinSupport(minSupport)\n    .setMinConfidence(minConfidence)\n  \n  val remover \u003d new StopWordsRemover()\n    .setInputCol(\"items\")\n    .setOutputCol(\"filteredItems\")\n  \n  // Cleaning up the Wine Descriptions\n  val descriptions \u003d df\n    .select(col(\"description\")).where(col(\"description\").isNotNull)\n    .map {\n        case Row(s: String) \u003d\u003e\n          s.replace(\",\",\"\").replace(\".\",\"\").replace(\"wine\", \"\").split(\" \").toSet.toSeq\n    }\n    .toDF(\"items\")\n\t\n  // remove StopWords\n  val filteredDescriptions \u003d remover.transform(descriptions)\n  val stopWordsFiltered \u003d filteredDescriptions.select(\"filteredItems\").toDF(\"items\")\n  val model \u003d fpg.fit(stopWordsFiltered)\n  val freqItems \u003d model.freqItemsets.sort(desc(\"freq\"))\n  val notes \u003d freqItems.select(\"items\").where(col(\"freq\")\u003efreq)\n  val topWords \u003d notes.flatMap { case Row(notes: Seq[String]) \u003d\u003e notes }.groupBy(\"value\").count().sort(desc(\"count\"))\n  val tastingNotes \u003d topWords.select(\"value\").collect().map { case Row(s: String) \u003d\u003e s }.toSeq.mkString(\",\")\n  tastingNotes\n}",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:03:57.242",
+      "dateUpdated": "2019-10-19 20:32:51.855",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -157,7 +157,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "\u003cconsole\u003e:101: warning: non-variable type argument String in type pattern Seq[String] (the underlying of Seq[String]) is unchecked since it is eliminated by erasure\n         val topWords \u003d notes.flatMap { case Row(notes: Seq[String]) \u003d\u003e notes }.groupBy(\"value\").count().sort(desc(\"count\"))\n                                                        ^\nimport org.apache.spark.ml.fpm.FPGrowth\nimport org.apache.spark.ml.feature.StopWordsRemover\nimport org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.StringIndexer\nimport org.apache.spark.ml.feature.OneHotEncoder\nimport org.apache.spark.ml.feature.VectorAssembler\ntastingNotes: (df: org.apache.spark.sql.DataFrame, minSupport: Double, minConfidence: Double, freq: Int)String\n"
+            "data": "\u003cconsole\u003e:86: warning: non-variable type argument String in type pattern Seq[String] (the underlying of Seq[String]) is unchecked since it is eliminated by erasure\n         val topWords \u003d notes.flatMap { case Row(notes: Seq[String]) \u003d\u003e notes }.groupBy(\"value\").count().sort(desc(\"count\"))\n                                                        ^\nimport org.apache.spark.ml.fpm.FPGrowth\nimport org.apache.spark.ml.feature.StopWordsRemover\nimport org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.StringIndexer\nimport org.apache.spark.ml.feature.OneHotEncoder\nimport org.apache.spark.ml.feature.VectorAssembler\ntastingNotes: (df: org.apache.spark.sql.DataFrame, minSupport: Double, minConfidence: Double, freq: Int)String\n"
           }
         ]
       },
@@ -165,8 +165,8 @@
       "jobName": "paragraph_1571446465286_-61355324",
       "id": "20191019-005425_1879430322",
       "dateCreated": "2019-10-19 00:54:25.286",
-      "dateStarted": "2019-10-19 01:03:57.336",
-      "dateFinished": "2019-10-19 01:03:58.296",
+      "dateStarted": "2019-10-19 20:32:51.880",
+      "dateFinished": "2019-10-19 20:32:52.485",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -174,7 +174,7 @@
       "title": "Auto Wine Tasting Notes using Market Basket Analysis",
       "text": "%spark\nval redBlends \u003d spark.sql(\"select * from reviews where `variety` \u003d\u003d \u0027Red Blend\u0027\")\nredBlends.persist()\n// redBlends.explain(true)\nval redBlendTastingNotes \u003d tastingNotes(redBlends)\nredBlends.unpersist()",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:05:24.435",
+      "dateUpdated": "2019-10-19 20:32:52.582",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -198,7 +198,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "redBlends: org.apache.spark.sql.DataFrame \u003d [country: string, description: string ... 11 more fields]\nredBlendTastingNotes: String \u003d palate,tannins,aromas,cherry,black,blend,Cabernet,Sauvignon,flavors,Merlot,spice,finish,alongside,plum,fruit,offers,,berry,red,pepper,Syrah,Drink,Sangiovese,ripe,opens,blackberry,acidity,notes,nose,dried,delivers,licorice,oak,Franc,Petit,dark,Verdot,tobacco,juicy,leather,firm,chocolate,vanilla,clove,raspberry,hint,white,note,Aromas,lead,currant,spicy,rich,tannic,touch,along,dry,earth,whiff,fresh,Malbec,Made,espresso,soft,smooth,herb,fruits,sweet,texture,wild,cassis,herbal,Petite,coffee,Sirah,well,savory,herbs,shows,bright,mocha\nres38: redBlends.type \u003d [country: string, description: string ... 11 more fields]\n"
+            "data": "redBlends: org.apache.spark.sql.DataFrame \u003d [country: string, description: string ... 11 more fields]\nredBlendTastingNotes: String \u003d palate,tannins,aromas,cherry,black,blend,Cabernet,Sauvignon,flavors,Merlot,spice,finish,alongside,plum,fruit,offers,,berry,red,pepper,Syrah,Drink,Sangiovese,ripe,opens,blackberry,acidity,notes,nose,dried,delivers,licorice,oak,Franc,Petit,dark,Verdot,tobacco,juicy,leather,firm,chocolate,vanilla,clove,raspberry,hint,white,note,Aromas,lead,currant,spicy,rich,tannic,touch,along,dry,earth,whiff,fresh,Malbec,Made,espresso,soft,smooth,herb,fruits,sweet,texture,wild,cassis,herbal,Petite,coffee,Sirah,well,savory,herbs,shows,bright,mocha\nres20: redBlends.type \u003d [country: string, description: string ... 11 more fields]\n"
           }
         ]
       },
@@ -209,12 +209,12 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d57",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d58",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d59",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d60",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d61",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d62"
+            "http://zeppelin:4040/jobs/job?id\u003d78",
+            "http://zeppelin:4040/jobs/job?id\u003d79",
+            "http://zeppelin:4040/jobs/job?id\u003d80",
+            "http://zeppelin:4040/jobs/job?id\u003d81",
+            "http://zeppelin:4040/jobs/job?id\u003d82",
+            "http://zeppelin:4040/jobs/job?id\u003d83"
           ],
           "interpreterSettingId": "spark"
         }
@@ -223,15 +223,15 @@
       "jobName": "paragraph_1571446803185_-1924143578",
       "id": "20191019-010003_186675497",
       "dateCreated": "2019-10-19 01:00:03.185",
-      "dateStarted": "2019-10-19 01:05:24.467",
-      "dateFinished": "2019-10-19 01:05:40.564",
+      "dateStarted": "2019-10-19 20:32:52.598",
+      "dateFinished": "2019-10-19 20:33:03.802",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%md\n### Now Let us do some supervised modeling",
+      "text": "%md\n### Now Let us do some supervised modeling\nhttp://localhost:8080/#/notebook/2ER2UBWZS",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:07:30.338",
+      "dateUpdated": "2019-10-19 20:33:54.751",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -243,17 +243,30 @@
           "completionKey": "TAB",
           "completionSupport": false
         },
-        "editorMode": "ace/mode/markdown"
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
       },
       "settings": {
         "params": {},
         "forms": {}
       },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eNow Let us do some supervised modeling\u003c/h3\u003e\n\u003cp\u003e\u003ca href\u003d\"http://localhost:8080/#/notebook/2ER2UBWZS\"\u003ehttp://localhost:8080/#/notebook/2ER2UBWZS\u003c/a\u003e\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
       "apps": [],
       "jobName": "paragraph_1571447069489_1714443161",
       "id": "20191019-010429_1003228284",
       "dateCreated": "2019-10-19 01:04:29.489",
-      "status": "READY",
+      "dateStarted": "2019-10-19 20:33:54.753",
+      "dateFinished": "2019-10-19 20:33:54.763",
+      "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     }
   ],

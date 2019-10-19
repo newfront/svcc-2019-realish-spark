@@ -1,51 +1,10 @@
 {
   "paragraphs": [
     {
-      "text": "%md\n### Requires having the spark-redis library installed.\n`com.redislabs:spark-redis:2.0.4` must be added to the Spark Interpreter Settings.\n1. Go to http://localhost:8080/#/interpreter and search for `spark`\n2. Click `edit` and add `com.redislabs:spark-redis:2.0.4` undernearth **Dependencies** artifact\n3. Save and then click `restart` on the Interpreter",
-      "user": "anonymous",
-      "dateUpdated": "2019-10-19 03:07:55.452",
-      "config": {
-        "colWidth": 12.0,
-        "fontSize": 9.0,
-        "enabled": true,
-        "results": {},
-        "editorSetting": {
-          "language": "markdown",
-          "editOnDblClick": true,
-          "completionKey": "TAB",
-          "completionSupport": false
-        },
-        "editorMode": "ace/mode/markdown",
-        "editorHide": true,
-        "tableHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "HTML",
-            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eRequires having the spark-redis library installed.\u003c/h3\u003e\n\u003cp\u003e\u003ccode\u003ecom.redislabs:spark-redis:2.0.4\u003c/code\u003e must be added to the Spark Interpreter Settings.\u003cbr/\u003e1. Go to \u003ca href\u003d\"http://localhost:8080/#/interpreter\"\u003ehttp://localhost:8080/#/interpreter\u003c/a\u003e and search for \u003ccode\u003espark\u003c/code\u003e\u003cbr/\u003e2. Click \u003ccode\u003eedit\u003c/code\u003e and add \u003ccode\u003ecom.redislabs:spark-redis:2.0.4\u003c/code\u003e undernearth \u003cstrong\u003eDependencies\u003c/strong\u003e artifact\u003cbr/\u003e3. Save and then click \u003ccode\u003erestart\u003c/code\u003e on the Interpreter\u003c/p\u003e\n\u003c/div\u003e"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1571454138728_790787402",
-      "id": "20191019-030218_1843790619",
-      "dateCreated": "2019-10-19 03:02:18.728",
-      "dateStarted": "2019-10-19 03:07:55.515",
-      "dateFinished": "2019-10-19 03:07:55.536",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
       "title": "Load the Saved Model",
       "text": "%spark\nimport spark.implicits._\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.types._\nimport org.apache.spark.ml.classification.LogisticRegression\nimport org.apache.spark.ml.classification.LogisticRegressionModel\nimport org.apache.spark.ml.feature.RFormula\n\nobject model {\n    val fittedModel \u003d LogisticRegressionModel.load(\"/svccdata/simple-ml-fitted\")\n    lazy val lazyFitter: RFormula \u003d new RFormula().setFormula(\"lab ~ . + color:value1 + color:value2\")\n    \n    def prepared(df: DataFrame): DataFrame \u003d {\n        lazyFitter.fit(df).transform(df)\n    }\n    \n    def transform(df: DataFrame): DataFrame \u003d {\n        fittedModel.transform(df)\n    }\n}\n",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 03:44:17.666",
+      "dateUpdated": "2019-10-19 20:44:20.918",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -77,8 +36,8 @@
       "jobName": "paragraph_1571454475452_-829611199",
       "id": "20191019-030755_808512215",
       "dateCreated": "2019-10-19 03:07:55.452",
-      "dateStarted": "2019-10-19 03:44:17.726",
-      "dateFinished": "2019-10-19 03:44:19.735",
+      "dateStarted": "2019-10-19 20:44:20.942",
+      "dateFinished": "2019-10-19 20:44:21.722",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -86,7 +45,7 @@
       "title": "Steal the Schema Pattern",
       "text": "%spark\nval df \u003d spark.read.json(\"/svccdata/simple-ml\")\nval structure \u003d df.schema",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 03:39:25.331",
+      "dateUpdated": "2019-10-19 20:44:21.747",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -121,7 +80,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://6bb384565760:4040/jobs/job?id\u003d1"
+            "http://zeppelin:4040/jobs/job?id\u003d130"
           ],
           "interpreterSettingId": "spark"
         }
@@ -130,16 +89,16 @@
       "jobName": "paragraph_1571454615588_-193787245",
       "id": "20191019-031015_1062902648",
       "dateCreated": "2019-10-19 03:10:15.588",
-      "dateStarted": "2019-10-19 03:39:25.409",
-      "dateFinished": "2019-10-19 03:39:26.646",
+      "dateStarted": "2019-10-19 20:44:21.788",
+      "dateFinished": "2019-10-19 20:44:22.094",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "Read Stream / Transform with Model / Write Results",
-      "text": "%spark\nimport org.apache.spark.sql.streaming.OutputMode\n/*val inputStream \u003d spark.readStream\n  .format(\"redis\")\n  .option(\"stream.keys\", \"simple-ml\")\n  .schema(structure)\n  .load()\n  .writeStream\n  .foreachBatch( (df: DataFrame, batchId: Long) \u003d\u003e {\n    df\n      .transform(model.prepared)\n      .transform(model.transform)\n      .write.mode(\"overwrite\").json(\"/svccdata/simple-ml-stream-results\")\n    })\ninputStream.start()\n*/\n\nval inputStream \u003d spark.readStream\n    .schema(structure)\n    .json(\"/svccdata/simple-ml\")\n    .writeStream\n    .foreachBatch( (df: DataFrame, batchId: Long) \u003d\u003e {\n        df\n          .transform(model.prepared)\n          .transform(model.transform)\n          .write.mode(\"overwrite\").json(\"/svccdata/simple-ml-stream-results\")\n    })\n\ninputStream.start()\n\n  ",
+      "text": "%spark\nimport org.apache.spark.sql.streaming.OutputMode\n/*val inputStream \u003d spark.readStream\n  .format(\"redis\")\n  .option(\"stream.keys\", \"simple-ml\")\n  .schema(structure)\n  .load()\n  .writeStream\n  .foreachBatch( (df: DataFrame, batchId: Long) \u003d\u003e {\n    df\n      .transform(model.prepared)\n      .transform(model.transform)\n      .write.mode(\"overwrite\").json(\"/svccdata/simple-ml-stream-results\")\n    })\ninputStream.start()\n*/\n\nval inputStream \u003d spark.readStream\n    .schema(structure)\n    .json(\"/svccdata/simple-ml\")\n    .writeStream\n    .foreachBatch( (df: DataFrame, batchId: Long) \u003d\u003e {\n        df\n          .transform(model.prepared)\n          .transform(model.transform)\n          .write.mode(\"overwrite\").json(s\"/svccdata/simple-ml-stream-results/$batchId\")\n    })\n\ninputStream.start()\n\n  ",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 04:00:58.436",
+      "dateUpdated": "2019-10-19 20:44:22.173",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -163,7 +122,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "import org.apache.spark.sql.streaming.OutputMode\ninputStream: org.apache.spark.sql.streaming.DataStreamWriter[org.apache.spark.sql.Row] \u003d org.apache.spark.sql.streaming.DataStreamWriter@29ee28fc\nres13: org.apache.spark.sql.streaming.StreamingQuery \u003d org.apache.spark.sql.execution.streaming.StreamingQueryWrapper@5c1dde85\n"
+            "data": "import org.apache.spark.sql.streaming.OutputMode\ninputStream: org.apache.spark.sql.streaming.DataStreamWriter[org.apache.spark.sql.Row] \u003d org.apache.spark.sql.streaming.DataStreamWriter@4613cee8\nres30: org.apache.spark.sql.streaming.StreamingQuery \u003d org.apache.spark.sql.execution.streaming.StreamingQueryWrapper@51639c94\n"
           }
         ]
       },
@@ -171,8 +130,8 @@
       "jobName": "paragraph_1571454853588_-1063151516",
       "id": "20191019-031413_746549108",
       "dateCreated": "2019-10-19 03:14:13.588",
-      "dateStarted": "2019-10-19 04:00:43.346",
-      "dateFinished": "2019-10-19 04:00:44.307",
+      "dateStarted": "2019-10-19 20:44:22.209",
+      "dateFinished": "2019-10-19 20:44:23.091",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -180,7 +139,7 @@
       "title": "Close the Streams",
       "text": "%spark\nspark.streams.active.foreach { stream \u003d\u003e\n  println(s\"stream_name\u003d${stream.name} state\u003dactive status\u003d${stream.status} action\u003dstop_stream\")\n  stream.stop()\n}",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 04:00:14.527",
+      "dateUpdated": "2019-10-19 20:44:23.108",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -201,15 +160,191 @@
       },
       "results": {
         "code": "SUCCESS",
-        "msg": []
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "stream_name\u003dnull state\u003dactive status\u003d{\n  \"message\" : \"Getting offsets from FileStreamSource[file:/svccdata/simple-ml]\",\n  \"isDataAvailable\" : false,\n  \"isTriggerActive\" : true\n} action\u003dstop_stream\n"
+          }
+        ]
       },
       "apps": [],
       "jobName": "paragraph_1571455283500_1737120764",
       "id": "20191019-032123_1922538035",
       "dateCreated": "2019-10-19 03:21:23.500",
-      "dateStarted": "2019-10-19 04:00:14.575",
-      "dateFinished": "2019-10-19 04:00:15.168",
+      "dateStarted": "2019-10-19 20:44:23.140",
+      "dateFinished": "2019-10-19 20:44:25.516",
       "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n### Requires having the spark-redis library installed.\n`com.redislabs:spark-redis:2.0.4` must be added to the Spark Interpreter Settings.\n1. Go to http://localhost:8080/#/interpreter and search for `spark`\n2. Click `edit` and add `com.redislabs:spark-redis:2.4.0` undernearth **Dependencies** artifact\n3. Save and then click `restart` on the Interpreter\n\n### Note: There is a problem with the Docker Network and redis5 is not working to bind to from the following paragraphs. Sorry. I will update when it is fixed.",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 20:44:28.171",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eRequires having the spark-redis library installed.\u003c/h3\u003e\n\u003cp\u003e\u003ccode\u003ecom.redislabs:spark-redis:2.0.4\u003c/code\u003e must be added to the Spark Interpreter Settings.\u003cbr/\u003e1. Go to \u003ca href\u003d\"http://localhost:8080/#/interpreter\"\u003ehttp://localhost:8080/#/interpreter\u003c/a\u003e and search for \u003ccode\u003espark\u003c/code\u003e\u003cbr/\u003e2. Click \u003ccode\u003eedit\u003c/code\u003e and add \u003ccode\u003ecom.redislabs:spark-redis:2.4.0\u003c/code\u003e undernearth \u003cstrong\u003eDependencies\u003c/strong\u003e artifact\u003cbr/\u003e3. Save and then click \u003ccode\u003erestart\u003c/code\u003e on the Interpreter\u003c/p\u003e\n\u003ch3\u003eNote: There is a problem with the Docker Network and redis5 is not working to bind to from the following paragraphs. Sorry. I will update when it is fixed.\u003c/h3\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571454138728_790787402",
+      "id": "20191019-030218_1843790619",
+      "dateCreated": "2019-10-19 03:02:18.728",
+      "dateStarted": "2019-10-19 20:44:25.567",
+      "dateFinished": "2019-10-19 20:44:25.576",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n\nspark.conf.set(\"spark.redis.host\", \"redis5\")\nspark.conf.set(\"spark.redis.port\", \"6379\")\n\nval allRuntimeConf \u003d spark.conf.getAll\n\n/*\nxadd simple-ml * json \u0027{\"lab\":\"bad\",\"color\":\"blue\",\"value1\":12,\"value2\":14.386294994851129}\u0027\n*/\n\nval redisStreamStructure \u003d StructType(Array(\n    StructField(\"json\", structure)))\n\nval redisStream \u003d spark.readStream\n  .format(\"redis\")\n  .option(\"stream.keys\", \"simple-ml\")\n  .schema(redisStreamStructure)\n  .load()\n  .writeStream\n  .foreachBatch( (df: DataFrame, batchId: Long) \u003d\u003e {\n    df\n      .transform(model.prepared)\n      .transform(model.transform)\n      .write.mode(\"overwrite\").json(s\"/svccdata/simple-ml-stream-results/$batchId\")\n    })\n\nredisStream.start()",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 20:44:25.667",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "allRuntimeConf: Map[String,String] \u003d Map(spark.yarn.dist.archives -\u003e file:/spark/R/lib/sparkr.zip#sparkr, zeppelin.pyspark.python -\u003e python, spark.driver.host -\u003e zeppelin, zeppelin.dep.localrepo -\u003e local-repo, zeppelin.spark.sql.stacktrace -\u003e false, spark.driver.port -\u003e 41045, master -\u003e local[*], spark.repl.class.uri -\u003e spark://zeppelin:41045/classes, spark.jars -\u003e file:/zeppelin/interpreter/spark/spark-interpreter-0.8.1.jar,/zeppelin/local-repo/spark/commons-pool2-2.0.jar,/zeppelin/local-repo/spark/scala-library-2.11.12.jar,/zeppelin/local-repo/spark/scala-compiler-2.11.12.jar,/zeppelin/local-repo/spark/scala-parser-combinators_2.11-1.0.4.jar,/zeppelin/local-repo/spark/scala-reflect-2.11.12.jar,/zeppelin/local-repo/spark/scala-xml_2.11-1.0.5.jar,/zeppelin/local-repo/spark/jedis-3.1.0-m..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571512194415_918665400",
+      "id": "20191019-190954_1041658733",
+      "dateCreated": "2019-10-19 19:09:54.415",
+      "dateStarted": "2019-10-19 20:44:25.684",
+      "dateFinished": "2019-10-19 20:44:26.333",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nspark.streams.active.foreach { stream \u003d\u003e\n  println(s\"stream_name\u003d${stream.name} state\u003dactive status\u003d${stream.status} action\u003dstop_stream\")\n  stream.stop()\n}",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 20:44:26.386",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1571512650533_20929025",
+      "id": "20191019-191730_2000971715",
+      "dateCreated": "2019-10-19 19:17:30.533",
+      "dateStarted": "2019-10-19 20:44:26.405",
+      "dateFinished": "2019-10-19 20:44:26.688",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n### Thanks\nFind me on Twitter [@newfront](\"https://twitter.com/newfront\")\nFind me on Medium [@newfrontcreative](\"https://medium.com/@newfrontcreative\")\n\nAbout Twilio: [Twilio](\"https://twilio.com\")\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 20:49:00.836",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": false,
+        "tableHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eThanks\u003c/h3\u003e\n\u003cp\u003eFind me on Twitter \u003ca href\u003d\"\"https://twitter.com/newfront\"\"\u003e@newfront\u003c/a\u003e\u003cbr/\u003eFind me on Medium \u003ca href\u003d\"\"https://medium.com/@newfrontcreative\"\"\u003e@newfrontcreative\u003c/a\u003e\u003c/p\u003e\n\u003cp\u003eAbout Twilio: \u003ca href\u003d\"\"https://twilio.com\"\"\u003eTwilio\u003c/a\u003e\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571506169583_-171933066",
+      "id": "20191019-172929_304633679",
+      "dateCreated": "2019-10-19 17:29:29.584",
+      "dateStarted": "2019-10-19 20:44:26.730",
+      "dateFinished": "2019-10-19 20:44:26.749",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 20:44:26.708",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1571517866706_1006914373",
+      "id": "20191019-204426_1067018649",
+      "dateCreated": "2019-10-19 20:44:26.706",
+      "status": "READY",
       "progressUpdateIntervalMs": 500
     }
   ],

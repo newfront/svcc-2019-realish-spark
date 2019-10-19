@@ -4,7 +4,7 @@
       "title": "Loading important parts from Part 1",
       "text": "%spark\nimport spark.implicits._\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.types._\n\nval structTypeDDL \u003d \"`country` STRING,`description` STRING,`designation` STRING,`points`STRING,`price` BIGINT,`province` STRING,`region_1` STRING,`region_2` STRING,`taster_name` STRING,`taster_twitter_handle` STRING,`title` STRING,`variety` STRING,`winery` STRING\"\nval wineReviewSchema \u003d StructType.fromDDL(structTypeDDL)\n\nval wineReviews \u003d spark.read.option(\"inferSchema\", \"false\").schema(wineReviewSchema).json(\"/svccdata/winereviews.json\")\nwineReviews.persist()\nwineReviews.createOrReplaceTempView(\"reviews\")",
       "user": "anonymous",
-      "dateUpdated": "2019-10-18 21:36:14.567",
+      "dateUpdated": "2019-10-19 20:32:05.233",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -36,8 +36,8 @@
       "jobName": "paragraph_1571424475670_-759950399",
       "id": "20191018-184755_741757872",
       "dateCreated": "2019-10-18 18:47:55.670",
-      "dateStarted": "2019-10-18 21:36:14.670",
-      "dateFinished": "2019-10-18 21:36:17.148",
+      "dateStarted": "2019-10-19 20:32:05.265",
+      "dateFinished": "2019-10-19 20:32:06.075",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -45,7 +45,7 @@
       "title": "Find some nice Wines from France above an 88 point Rating",
       "text": "%sql\nselect winery, avg(points) as avg_rating from reviews where country \u003d \u0027France\u0027 AND region_1 \u003d \u0027Côtes de Provence\u0027 AND points \u003e 88 group by winery order by avg_rating desc",
       "user": "anonymous",
-      "dateUpdated": "2019-10-18 23:58:11.955",
+      "dateUpdated": "2019-10-19 20:32:06.163",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -120,7 +120,7 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "winery\tavg_rating\nChâteau la Vivonne\t92.0\nDomaine de la Croix\t92.0\nEstandon\t92.0\nDomaine du Clos Gautier\t92.0\nMirabeau\t92.0\nChâteau Grand Boise\t91.83333333333333\nChâteau Sainte Marguerite\t91.125\nChâteau Minuty\t91.0\nFiguière\t91.0\nDomaine de la Bastide Blanche\t91.0\nJCB\t91.0\nChâteau Miraval\t91.0\nChâteau Sainte-Marguerite\t91.0\nDomaine Saint Andrieu\t91.0\nChâteau d\u0027Esclans\t90.92592592592592\nChâteau Saint-Maur\t90.9090909090909\nChâteau Roubine\t90.85714285714286\nChâteau du Galoupet\t90.8\nChâteau la Gordonne\t90.75\nChâteau Rimauresq\t90.75\nDomaine Saint-André de Figuière\t90.72727272727273\nChâteau Riotor\t90.66666666666667\nChâteau de Berne\t90.625\nBernard Magrez\t90.55555555555556\nMaison Angelvin\t90.5\nChâteau Sainte-Béatrice\t90.5\nChâteau de Roquefort\t90.5\nDomaine Clos Gautier\t90.5\nChâteau du Carrubier\t90.5\nChâteau la Mascaronne\t90.42857142857143\nChâteau les Valentines\t90.375\nChâteau de Pampelonne\t90.33333333333333\nLes Maîtres Vignerons de la Presqu\u0027île de Saint-Tropez\t90.33333333333333\nDomaine du Grand Cros\t90.28571428571429\nLes Vignobles Gueissard\t90.25\nDomaines Ott\t90.22222222222223\nChâteau Léoube\t90.2\nDomaine Sainte-Marie\t90.16666666666667\nMathilde Chapoutier Sélection\t90.0\nProvence Wine Maker\t90.0\nClos Cibonne\t90.0\nDomaine du Jas d\u0027Esclans\t90.0\nDomaine des Mapliers\t90.0\nChâteau des Bormettes\t90.0\nChâteau Hermitage Saint-Martin\t90.0\nChâteau Carpe Diem\t90.0\nChâteau les Crostes\t90.0\nChâteau de Léoube\t90.0\nDomaine Gavoty\t90.0\nDomaine Houchart\t90.0\nChâteau Rasque\t90.0\nChâteau Barbeiranne\t90.0\nCellier Saint-Sidoine\t90.0\nDomaine du Clos d\u0027Alari\t90.0\nDomaine Jas d\u0027Esclans\t90.0\nChâteau des Demoiselles\t90.0\nLes Vins Bréban\t90.0\nDomaine les Fouques\t90.0\nChâteau Castel des Maures\t90.0\nChâteau Réal Martin\t90.0\nChâteau des Bertrands\t90.0\nChâteau Deffends\t90.0\nChâteau Sainte Roseline\t89.875\nChâteau de Brigue\t89.75\nDomaine Sorin\t89.66666666666667\nDomaine de l\u0027Amaurigue\t89.66666666666667\nDomaine de la Sauveuse\t89.5\nFabre en Provence\t89.5\nChâteau Ferry Lacombe\t89.5\nChâteau Barbanau\t89.5\nHecht \u0026 Bannier\t89.33333333333333\nChâteau de Pourcieux\t89.25\nDomaine de la Sanglière\t89.25\nChâteau Saint-Pierre\t89.2\nChâteau l\u0027Afrique\t89.0\nMeulnart Père et Fils\t89.0\nM. Chapoutier\t89.0\nClos Saint-Joseph\t89.0\nGassier\t89.0\nCommanderie de Peyrassol\t89.0\nChâteau des Sarrins\t89.0\nDomaine Jacourette\t89.0\nChâteau Thuerry\t89.0\nDomaine des Aspras\t89.0\nChâteau Saint-André de Figuière\t89.0\nDomaine du Dragon\t89.0\nRimauresq\t89.0\nChâteau de Saint-Martin\t89.0\nDomaine de Caseneuve\t89.0\nVignobles de Saint-Tropez\t89.0\nDomaine Val d\u0027Astier\t89.0\n"
+            "data": "winery\tavg_rating\nChâteau la Vivonne\t92.0\nEstandon\t92.0\nDomaine du Clos Gautier\t92.0\nDomaine de la Croix\t92.0\nMirabeau\t92.0\nChâteau Grand Boise\t91.83333333333333\nChâteau Sainte Marguerite\t91.125\nFiguière\t91.0\nDomaine de la Bastide Blanche\t91.0\nJCB\t91.0\nChâteau Miraval\t91.0\nChâteau Minuty\t91.0\nChâteau Sainte-Marguerite\t91.0\nDomaine Saint Andrieu\t91.0\nChâteau d\u0027Esclans\t90.92592592592592\nChâteau Saint-Maur\t90.9090909090909\nChâteau Roubine\t90.85714285714286\nChâteau du Galoupet\t90.8\nChâteau la Gordonne\t90.75\nChâteau Rimauresq\t90.75\nDomaine Saint-André de Figuière\t90.72727272727273\nChâteau Riotor\t90.66666666666667\nChâteau de Berne\t90.625\nBernard Magrez\t90.55555555555556\nChâteau de Roquefort\t90.5\nMaison Angelvin\t90.5\nChâteau Sainte-Béatrice\t90.5\nDomaine Clos Gautier\t90.5\nChâteau du Carrubier\t90.5\nChâteau la Mascaronne\t90.42857142857143\nChâteau les Valentines\t90.375\nLes Maîtres Vignerons de la Presqu\u0027île de Saint-Tropez\t90.33333333333333\nChâteau de Pampelonne\t90.33333333333333\nDomaine du Grand Cros\t90.28571428571429\nLes Vignobles Gueissard\t90.25\nDomaines Ott\t90.22222222222223\nChâteau Léoube\t90.2\nDomaine Sainte-Marie\t90.16666666666667\nDomaine du Clos d\u0027Alari\t90.0\nChâteau Castel des Maures\t90.0\nDomaine Houchart\t90.0\nProvence Wine Maker\t90.0\nChâteau Rasque\t90.0\nClos Cibonne\t90.0\nDomaine du Jas d\u0027Esclans\t90.0\nCellier Saint-Sidoine\t90.0\nDomaine les Fouques\t90.0\nDomaine Jas d\u0027Esclans\t90.0\nLes Vins Bréban\t90.0\nChâteau les Crostes\t90.0\nChâteau Réal Martin\t90.0\nChâteau de Léoube\t90.0\nChâteau Deffends\t90.0\nChâteau Carpe Diem\t90.0\nMathilde Chapoutier Sélection\t90.0\nChâteau Barbeiranne\t90.0\nChâteau des Bormettes\t90.0\nDomaine Gavoty\t90.0\nChâteau des Demoiselles\t90.0\nChâteau Hermitage Saint-Martin\t90.0\nDomaine des Mapliers\t90.0\nChâteau des Bertrands\t90.0\nChâteau Sainte Roseline\t89.875\nChâteau de Brigue\t89.75\nDomaine de l\u0027Amaurigue\t89.66666666666667\nDomaine Sorin\t89.66666666666667\nChâteau Barbanau\t89.5\nDomaine de la Sauveuse\t89.5\nFabre en Provence\t89.5\nChâteau Ferry Lacombe\t89.5\nHecht \u0026 Bannier\t89.33333333333333\nDomaine de la Sanglière\t89.25\nChâteau de Pourcieux\t89.25\nChâteau Saint-Pierre\t89.2\nChâteau l\u0027Afrique\t89.0\nClos Saint-Joseph\t89.0\nMeulnart Père et Fils\t89.0\nChâteau Thuerry\t89.0\nGassier\t89.0\nCommanderie de Peyrassol\t89.0\nM. Chapoutier\t89.0\nRimauresq\t89.0\nDomaine Val d\u0027Astier\t89.0\nVignobles de Saint-Tropez\t89.0\nChâteau Saint-André de Figuière\t89.0\nDomaine du Dragon\t89.0\nDomaine Jacourette\t89.0\nChâteau de Saint-Martin\t89.0\nDomaine des Aspras\t89.0\nChâteau des Sarrins\t89.0\nDomaine de Caseneuve\t89.0\n"
           },
           {
             "type": "TEXT",
@@ -135,7 +135,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d11"
+            "http://zeppelin:4040/jobs/job?id\u003d56"
           ],
           "interpreterSettingId": "spark"
         }
@@ -144,8 +144,8 @@
       "jobName": "paragraph_1571425546276_-738762107",
       "id": "20191018-190546_342063805",
       "dateCreated": "2019-10-18 19:05:46.276",
-      "dateStarted": "2019-10-18 23:58:12.015",
-      "dateFinished": "2019-10-18 23:58:15.945",
+      "dateStarted": "2019-10-19 20:32:06.190",
+      "dateFinished": "2019-10-19 20:32:07.613",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -153,7 +153,7 @@
       "title": "Some OG SQL",
       "text": "%sql\nselect country, designation, points, price, variety, winery from reviews\nwhere designation IS NOT NULL\norder by price desc limit 100",
       "user": "anonymous",
-      "dateUpdated": "2019-10-18 23:59:11.106",
+      "dateUpdated": "2019-10-19 20:32:07.696",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -210,7 +210,7 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "country\tdesignation\tpoints\tprice\tvariety\twinery\nUS\tRoger Rose Vineyard\t91.0\t2013.0\tChardonnay\tBlair\nAustria\tRied Loibenberg Smaragd\t94.0\t1100.0\tGrüner Veltliner\tEmmerich Knoll\nPortugal\t90-year Old Tawny\t97.0\t1000.0\tPort\tW. \u0026 J. Graham\u0027s\nPortugal\tColheita White\t94.0\t980.0\tPort\tKopke\nItaly\tRiserva\t94.0\t900.0\tSangiovese Grosso\tBiondi Santi\nAustralia\tGrange\t98.0\t850.0\tShiraz\tPenfolds\nAustralia\tGrange\t99.0\t850.0\tShiraz\tPenfolds\nAustralia\tHill of Grace\t96.0\t820.0\tShiraz\tHenschke\nFrance\tMorogues\t87.0\t800.0\tRosé\tDomaine Pellé\nItaly\tRiserva\t94.0\t800.0\tSangiovese\tBiondi Santi\nFrance\tClos du Mesnil Brut Blanc de Blancs\t99.0\t800.0\tChardonnay\tKrug\nPortugal\tColheita\t87.0\t790.0\tPort\tBurmester\nAustralia\tHill of Grace\t91.0\t780.0\tShiraz\tHenschke\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t97.0\t775.0\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t95.0\t775.0\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t95.0\t775.0\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t98.0\t775.0\tRiesling\tRobert Weil\nPortugal\tColheita Tawny\t93.0\t770.0\tPort\tKopke\nSpain\tEl Perer\t96.0\t770.0\tCarignan\tMarco Abella\nHungary\tEssencia\t94.0\t764.0\tFurmint\tRoyal Tokaji\nUS\tIntrepid\t92.0\t750.0\tSyrah\tLaw\nFrance\tBlanc de Blancs Brut\t92.0\t675.0\tChardonnay\tArmand de Brignac\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t96.0\t672.0\tRiesling\tRobert Weil\nPortugal\tNacional Vintage\t100.0\t650.0\tPort\tQuinta do Noval\nFrance\tLes Quatre Journaux\t95.0\t650.0\tPinot Noir\tLouis Latour\nFrance\tLe Montrachet\t96.0\t630.0\tChardonnay\tLouis Latour\nUS\tFamily Reserve\t94.0\t625.0\tCabernet Sauvignon\tYao Ming\nUS\tFamily Reserve\t98.0\t625.0\tCabernet Sauvignon\tYao Ming\nUS\tFamily Reserve\t97.0\t625.0\tCabernet Sauvignon\tYao Ming\nFrance\tLe Mesnil Blanc de Blancs Brut\t100.0\t617.0\tChardonnay\tSalon\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t97.0\t612.0\tRiesling\tRobert Weil\nSpain\tUnico Reserva Especial\t92.0\t600.0\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nFrance\tCristal Brut Rosé\t96.0\t600.0\tChampagne Blend\tLouis Roederer\nSpain\tTinus\t95.0\t600.0\tTempranillo\tGarcía Figuero\nItaly\tCà d\u0027Morissio Riserva\t99.0\t595.0\tNebbiolo\tMascarello Giuseppe e Figlio\nFrance\tCristal Brut Rosé\t96.0\t595.0\tChampagne Blend\tLouis Roederer\nPortugal\tNacional Vintage\t98.0\t595.0\tPort\tQuinta do Noval\nPortugal\tVery Old Single Harvest\t95.0\t588.0\tPort\tTaylor Fladgate\nFrance\tLes Quatre Journaux\t94.0\t580.0\tPinot Noir\tLouis Latour\nItaly\tRiserva\t95.0\t550.0\tSangiovese\tPoggio di Sotto\nItaly\tRiserva\t100.0\t550.0\tSangiovese\tBiondi Santi\nItaly\tRiserva\t96.0\t540.0\tSangiovese\tBiondi Santi\nFrance\tDomaine du Clos Frantin\t96.0\t530.0\tPinot Noir\tAlbert Bichot\nFrance\tChambertin Clos de Bèze Grand Cru\t96.0\t525.0\tPinot Noir\tDomaine Perrot-Minot\nFrance\tLe Mesnil Blanc de Blancs Brut\t98.0\t520.0\tChardonnay\tSalon\nGermany\tHattenheimer Wisselbrunnen Beernauslese Gold Cap\t90.0\t510.0\tRiesling\tBaron Knyphausen\nFrance\tMusigny\t96.0\t510.0\tPinot Noir\tDomaine Jacques Prieur\nItaly\tSorì Tildin\t92.0\t500.0\tRed Blend\tGaja\nGermany\tErbacher Marcobrunn Trockenbeerenauslese\t93.0\t500.0\tRiesling\tSchloss Reinhartshausen\nFrance\tCuvée da Capo\t93.0\t500.0\tRhône-style Red Blend\tDomaine du Pegau\nGermany\tErbacher Marcobrunn Trockenbeerenauslese\t93.0\t500.0\tRiesling\tSchloss Reinhartshausen\nAustralia\tBin 707\t95.0\t500.0\tCabernet Sauvignon\tPenfolds\nUS\tDouble Plus Estate Grown\t93.0\t500.0\tCabernet Sauvignon\tHewitt\nItaly\tVigneto di Monte Lodoletta\t95.0\t500.0\tCorvina, Rondinella, Molinara\tDal Forno Romano\nAustralia\tGrange\t96.0\t500.0\tShiraz\tPenfolds\nSpain\tUnico\t89.0\t500.0\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nItaly\tCosta Russi\t93.0\t500.0\tRed Blend\tGaja\nSpain\tUnico\t89.0\t500.0\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nPortugal\tPorto Envelhecido em Casco Colheita\t95.0\t499.0\tPort\tMessias\nItaly\tSorì San Lorenzo\t96.0\t495.0\tNebbiolo\tGaja\nItaly\tCosta Russi\t95.0\t495.0\tNebbiolo\tGaja\nPortugal\tReserva Velho\t93.0\t495.0\tRamisco\tAdega Viuva Gomes\nGermany\tTrockenbeerenauslese Goldlack\t97.0\t486.0\tRiesling\tSchloss Johannisberger\nFrance\tLes Demoiselles\t97.0\t476.0\tChardonnay\tLouis Jadot\nItaly\tVigneto di Monte Lodoletta\t96.0\t470.0\tCorvina, Rondinella, Molinara\tDal Forno Romano\nFrance\tCristal Rosé Brut\t95.0\t469.0\tChampagne Blend\tLouis Roederer\nFrance\tCristal Brut Rosé\t96.0\t469.0\tChampagne Blend\tLouis Roederer\nPortugal\tVintage\t95.0\t467.0\tPort\tDow\u0027s\nItaly\tMasseto\t100.0\t460.0\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t97.0\t460.0\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t95.0\t460.0\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t95.0\t460.0\tMerlot\tTenuta dell\u0027Ornellaia\nSpain\tClon de la Familia\t98.0\t450.0\tTinto Fino\tEmilio Moro\nPortugal\tBarca-Velha\t100.0\t450.0\tPortuguese Red\tCasa Ferreirinha\nSpain\tUnico\t92.0\t450.0\tRed Blend\tVega Sicilia\nFrance\tBrut Rosé\t89.0\t450.0\tChampagne Blend\tArmand de Brignac\nItaly\tCosta Russi\t95.0\t450.0\tNebbiolo\tGaja\nUS\tLa Joie\t94.0\t450.0\tBordeaux-style Red Blend\tVerité\nUS\tLa Joie\t96.0\t450.0\tBordeaux-style Red Blend\tVerité\nItaly\tSorì San Lorenzo\t93.0\t450.0\tNebbiolo\tGaja\nItaly\tSorì Tildin\t93.0\t450.0\tNebbiolo\tGaja\nFrance\tMC III Brut\t97.0\t450.0\tChampagne Blend\tMoët \u0026 Chandon\nSpain\tClon de la Familia\t93.0\t450.0\tTinto Fino\tEmilio Moro\nUS\tLa Muse\t100.0\t450.0\tBordeaux-style Red Blend\tVerité\nFrance\tLes Demoiselles\t96.0\t450.0\tChardonnay\tLouis Latour\nUS\tLe Desir\t97.0\t450.0\tBordeaux-style Red Blend\tVerité\nFrance\tBrut Rosé\t89.0\t450.0\tChampagne Blend\tArmand de Brignac\nItaly\tRiserva\t97.0\t450.0\tSangiovese\tPoggio di Sotto\nUS\tLe Desir\t97.0\t450.0\tBordeaux-style Red Blend\tVerité\nUS\tLa Muse\t93.0\t450.0\tBordeaux-style Red Blend\tVerité\nSpain\tUnico\t91.0\t450.0\tTempranillo Blend\tVega Sicilia\nGermany\tSerrig Schloss Saarsteiner Eiswein\t95.0\t448.0\tRiesling\tSchloss Saarstein\nGermany\tTrockenbeerenauslese\t97.0\t445.0\tRiesling\tSchloss Johannisberger\nItaly\tSorì San Lorenzo\t99.0\t440.0\tNebbiolo\tGaja\nItaly\tSorì Tildìn\t99.0\t440.0\tNebbiolo\tGaja\nGermany\tWehlener Sonnenuhr Trockenbeerenauslese Erste Lage\t97.0\t440.0\tRiesling\tS.A. Prüm\nGermany\tWehlener Sonnenuhr Trockenbeerenauslese\t96.0\t440.0\tRiesling\tS.A. Prüm\nGermany\tWehlener Sonnenuhr Vat 59 Trockenbeerenauslese\t94.0\t440.0\tRiesling\tS.A. Prüm\nPortugal\tBarca Velha\t99.0\t426.0\tPortuguese Red\tCasa Ferreirinha\nFrance\tLes Quatre Journaux\t93.0\t425.0\tPinot Noir\tLouis Latour\n"
+            "data": "country\tdesignation\tpoints\tprice\tvariety\twinery\nUS\tRoger Rose Vineyard\t91\t2013\tChardonnay\tBlair\nAustria\tRied Loibenberg Smaragd\t94\t1100\tGrüner Veltliner\tEmmerich Knoll\nPortugal\t90-year Old Tawny\t97\t1000\tPort\tW. \u0026 J. Graham\u0027s\nPortugal\tColheita White\t94\t980\tPort\tKopke\nItaly\tRiserva\t94\t900\tSangiovese Grosso\tBiondi Santi\nAustralia\tGrange\t98\t850\tShiraz\tPenfolds\nAustralia\tGrange\t99\t850\tShiraz\tPenfolds\nAustralia\tHill of Grace\t96\t820\tShiraz\tHenschke\nFrance\tMorogues\t87\t800\tRosé\tDomaine Pellé\nItaly\tRiserva\t94\t800\tSangiovese\tBiondi Santi\nFrance\tClos du Mesnil Brut Blanc de Blancs\t99\t800\tChardonnay\tKrug\nPortugal\tColheita\t87\t790\tPort\tBurmester\nAustralia\tHill of Grace\t91\t780\tShiraz\tHenschke\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t97\t775\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t95\t775\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t95\t775\tRiesling\tRobert Weil\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t98\t775\tRiesling\tRobert Weil\nPortugal\tColheita Tawny\t93\t770\tPort\tKopke\nSpain\tEl Perer\t96\t770\tCarignan\tMarco Abella\nHungary\tEssencia\t94\t764\tFurmint\tRoyal Tokaji\nUS\tIntrepid\t92\t750\tSyrah\tLaw\nFrance\tBlanc de Blancs Brut\t92\t675\tChardonnay\tArmand de Brignac\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t96\t672\tRiesling\tRobert Weil\nPortugal\tNacional Vintage\t100\t650\tPort\tQuinta do Noval\nFrance\tLes Quatre Journaux\t95\t650\tPinot Noir\tLouis Latour\nFrance\tLe Montrachet\t96\t630\tChardonnay\tLouis Latour\nUS\tFamily Reserve\t94\t625\tCabernet Sauvignon\tYao Ming\nUS\tFamily Reserve\t98\t625\tCabernet Sauvignon\tYao Ming\nUS\tFamily Reserve\t97\t625\tCabernet Sauvignon\tYao Ming\nFrance\tLe Mesnil Blanc de Blancs Brut\t100\t617\tChardonnay\tSalon\nGermany\tKiedrich Gräfenberg Trockenbeerenauslese\t97\t612\tRiesling\tRobert Weil\nSpain\tUnico Reserva Especial\t92\t600\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nFrance\tCristal Brut Rosé\t96\t600\tChampagne Blend\tLouis Roederer\nSpain\tTinus\t95\t600\tTempranillo\tGarcía Figuero\nItaly\tCà d\u0027Morissio Riserva\t99\t595\tNebbiolo\tMascarello Giuseppe e Figlio\nFrance\tCristal Brut Rosé\t96\t595\tChampagne Blend\tLouis Roederer\nPortugal\tNacional Vintage\t98\t595\tPort\tQuinta do Noval\nPortugal\tVery Old Single Harvest\t95\t588\tPort\tTaylor Fladgate\nFrance\tLes Quatre Journaux\t94\t580\tPinot Noir\tLouis Latour\nItaly\tRiserva\t95\t550\tSangiovese\tPoggio di Sotto\nItaly\tRiserva\t100\t550\tSangiovese\tBiondi Santi\nItaly\tRiserva\t96\t540\tSangiovese\tBiondi Santi\nFrance\tDomaine du Clos Frantin\t96\t530\tPinot Noir\tAlbert Bichot\nFrance\tChambertin Clos de Bèze Grand Cru\t96\t525\tPinot Noir\tDomaine Perrot-Minot\nFrance\tLe Mesnil Blanc de Blancs Brut\t98\t520\tChardonnay\tSalon\nGermany\tHattenheimer Wisselbrunnen Beernauslese Gold Cap\t90\t510\tRiesling\tBaron Knyphausen\nFrance\tMusigny\t96\t510\tPinot Noir\tDomaine Jacques Prieur\nItaly\tSorì Tildin\t92\t500\tRed Blend\tGaja\nGermany\tErbacher Marcobrunn Trockenbeerenauslese\t93\t500\tRiesling\tSchloss Reinhartshausen\nFrance\tCuvée da Capo\t93\t500\tRhône-style Red Blend\tDomaine du Pegau\nGermany\tErbacher Marcobrunn Trockenbeerenauslese\t93\t500\tRiesling\tSchloss Reinhartshausen\nAustralia\tBin 707\t95\t500\tCabernet Sauvignon\tPenfolds\nUS\tDouble Plus Estate Grown\t93\t500\tCabernet Sauvignon\tHewitt\nItaly\tVigneto di Monte Lodoletta\t95\t500\tCorvina, Rondinella, Molinara\tDal Forno Romano\nAustralia\tGrange\t96\t500\tShiraz\tPenfolds\nSpain\tUnico\t89\t500\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nItaly\tCosta Russi\t93\t500\tRed Blend\tGaja\nSpain\tUnico\t89\t500\tTempranillo-Cabernet Sauvignon\tVega Sicilia\nPortugal\tPorto Envelhecido em Casco Colheita\t95\t499\tPort\tMessias\nItaly\tSorì San Lorenzo\t96\t495\tNebbiolo\tGaja\nItaly\tCosta Russi\t95\t495\tNebbiolo\tGaja\nPortugal\tReserva Velho\t93\t495\tRamisco\tAdega Viuva Gomes\nGermany\tTrockenbeerenauslese Goldlack\t97\t486\tRiesling\tSchloss Johannisberger\nFrance\tLes Demoiselles\t97\t476\tChardonnay\tLouis Jadot\nItaly\tVigneto di Monte Lodoletta\t96\t470\tCorvina, Rondinella, Molinara\tDal Forno Romano\nFrance\tCristal Rosé Brut\t95\t469\tChampagne Blend\tLouis Roederer\nFrance\tCristal Brut Rosé\t96\t469\tChampagne Blend\tLouis Roederer\nPortugal\tVintage\t95\t467\tPort\tDow\u0027s\nItaly\tMasseto\t100\t460\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t97\t460\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t95\t460\tMerlot\tTenuta dell\u0027Ornellaia\nItaly\tMasseto\t95\t460\tMerlot\tTenuta dell\u0027Ornellaia\nSpain\tClon de la Familia\t98\t450\tTinto Fino\tEmilio Moro\nPortugal\tBarca-Velha\t100\t450\tPortuguese Red\tCasa Ferreirinha\nSpain\tUnico\t92\t450\tRed Blend\tVega Sicilia\nFrance\tBrut Rosé\t89\t450\tChampagne Blend\tArmand de Brignac\nItaly\tCosta Russi\t95\t450\tNebbiolo\tGaja\nUS\tLa Joie\t94\t450\tBordeaux-style Red Blend\tVerité\nUS\tLa Joie\t96\t450\tBordeaux-style Red Blend\tVerité\nItaly\tSorì San Lorenzo\t93\t450\tNebbiolo\tGaja\nItaly\tSorì Tildin\t93\t450\tNebbiolo\tGaja\nFrance\tMC III Brut\t97\t450\tChampagne Blend\tMoët \u0026 Chandon\nSpain\tClon de la Familia\t93\t450\tTinto Fino\tEmilio Moro\nUS\tLa Muse\t100\t450\tBordeaux-style Red Blend\tVerité\nFrance\tLes Demoiselles\t96\t450\tChardonnay\tLouis Latour\nUS\tLe Desir\t97\t450\tBordeaux-style Red Blend\tVerité\nFrance\tBrut Rosé\t89\t450\tChampagne Blend\tArmand de Brignac\nItaly\tRiserva\t97\t450\tSangiovese\tPoggio di Sotto\nUS\tLe Desir\t97\t450\tBordeaux-style Red Blend\tVerité\nUS\tLa Muse\t93\t450\tBordeaux-style Red Blend\tVerité\nSpain\tUnico\t91\t450\tTempranillo Blend\tVega Sicilia\nGermany\tSerrig Schloss Saarsteiner Eiswein\t95\t448\tRiesling\tSchloss Saarstein\nGermany\tTrockenbeerenauslese\t97\t445\tRiesling\tSchloss Johannisberger\nItaly\tSorì San Lorenzo\t99\t440\tNebbiolo\tGaja\nItaly\tSorì Tildìn\t99\t440\tNebbiolo\tGaja\nGermany\tWehlener Sonnenuhr Trockenbeerenauslese Erste Lage\t97\t440\tRiesling\tS.A. Prüm\nGermany\tWehlener Sonnenuhr Trockenbeerenauslese\t96\t440\tRiesling\tS.A. Prüm\nGermany\tWehlener Sonnenuhr Vat 59 Trockenbeerenauslese\t94\t440\tRiesling\tS.A. Prüm\nPortugal\tBarca Velha\t99\t426\tPortuguese Red\tCasa Ferreirinha\nFrance\tLes Quatre Journaux\t93\t425\tPinot Noir\tLouis Latour\n"
           },
           {
             "type": "TEXT",
@@ -225,7 +225,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d12"
+            "http://zeppelin:4040/jobs/job?id\u003d57"
           ],
           "interpreterSettingId": "spark"
         }
@@ -234,8 +234,8 @@
       "jobName": "paragraph_1571427225245_1498107592",
       "id": "20191018-193345_797021543",
       "dateCreated": "2019-10-18 19:33:45.245",
-      "dateStarted": "2019-10-18 23:59:11.177",
-      "dateFinished": "2019-10-18 23:59:11.576",
+      "dateStarted": "2019-10-19 20:32:07.727",
+      "dateFinished": "2019-10-19 20:32:08.012",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -243,7 +243,7 @@
       "title": "Price and Variety by Country Stats",
       "text": "%spark\nval priceStatsByCountry \u003d wineReviews\n  .where(col(\"country\").isNotNull)\n  .groupBy(\"country\")\n  .agg(\n      count(\"*\") as \"total\",\n      min(\"price\") as \"min_price\",\n      avg(\"price\") as \"avg_price\",\n      max(\"price\") as \"max_price\"\n  )\n\npriceStatsByCountry.createOrReplaceTempView(\"pricebycountry\")\n\n/* Price Stats by country / variety */\nval priceStatsByCountryAndVariety \u003d wineReviews\n  .where(col(\"variety\").isNotNull.and(col(\"country\").isNotNull))\n  .groupBy(\"country\", \"variety\")\n  .agg(\n      count(\"*\") as \"total\",\n      min(\"price\") as \"min_price\",\n      avg(\"price\") as \"avg_price\",\n      max(\"price\") as \"max_price\"\n  )\n\npriceStatsByCountryAndVariety.createOrReplaceTempView(\"pricebycountryvariety\")\n",
       "user": "anonymous",
-      "dateUpdated": "2019-10-18 21:36:26.050",
+      "dateUpdated": "2019-10-19 20:32:08.020",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -275,8 +275,8 @@
       "jobName": "paragraph_1571427230209_-700746862",
       "id": "20191018-193350_1257034669",
       "dateCreated": "2019-10-18 19:33:50.210",
-      "dateStarted": "2019-10-18 21:36:26.531",
-      "dateFinished": "2019-10-18 21:36:28.521",
+      "dateStarted": "2019-10-19 20:32:08.088",
+      "dateFinished": "2019-10-19 20:32:08.730",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -284,7 +284,7 @@
       "title": "Find Top10 highest average priced wines by country",
       "text": "%sql\nselect * from pricebycountry ORDER BY avg_price DESC limit 10",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:07:50.334",
+      "dateUpdated": "2019-10-19 20:33:00.109",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -384,7 +384,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d13"
+            "http://zeppelin:4040/jobs/job?id\u003d58"
           ],
           "interpreterSettingId": "spark"
         }
@@ -393,8 +393,8 @@
       "jobName": "paragraph_1571427281168_187566760",
       "id": "20191018-193441_2122678686",
       "dateCreated": "2019-10-18 19:34:41.168",
-      "dateStarted": "2019-10-18 23:59:41.936",
-      "dateFinished": "2019-10-18 23:59:46.271",
+      "dateStarted": "2019-10-19 20:32:08.825",
+      "dateFinished": "2019-10-19 20:32:10.017",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -402,7 +402,7 @@
       "title": "Find Top 10 Most Popular Varieties of Wine by Country ",
       "text": "%sql\nselect * from pricebycountryvariety order by total DESC limit 10",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:07:50.655",
+      "dateUpdated": "2019-10-19 20:33:00.167",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -503,7 +503,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d14"
+            "http://zeppelin:4040/jobs/job?id\u003d59"
           ],
           "interpreterSettingId": "spark"
         }
@@ -512,8 +512,8 @@
       "jobName": "paragraph_1571427356950_1415361061",
       "id": "20191018-193556_169801297",
       "dateCreated": "2019-10-18 19:35:56.950",
-      "dateStarted": "2019-10-19 00:00:07.739",
-      "dateFinished": "2019-10-19 00:00:13.135",
+      "dateStarted": "2019-10-19 20:32:10.108",
+      "dateFinished": "2019-10-19 20:32:11.312",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -521,7 +521,7 @@
       "title": "Fixing DataFrame Column Trick",
       "text": "%spark\nval fixedReviews \u003d wineReviews\n  .withColumn(\"num_points\", \u0027points.cast(\"Double\"))\n  .drop(\"points\")\n  .withColumnRenamed(\"num_points\", \"points\")\n  .withColumn(\"num_price\", \u0027price.cast(\"Double\"))\n  .drop(\"price\")\n  .withColumnRenamed(\"num_price\", \"price\")\n\nwineReviews.unpersist() // remove old cache\nfixedReviews.persist() // introduce new cache\nfixedReviews.createOrReplaceTempView(\"reviews\") // replace current memory SQL table",
       "user": "anonymous",
-      "dateUpdated": "2019-10-18 21:36:39.302",
+      "dateUpdated": "2019-10-19 20:32:11.411",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -553,8 +553,8 @@
       "jobName": "paragraph_1571427384099_-690538218",
       "id": "20191018-193624_1668108506",
       "dateCreated": "2019-10-18 19:36:24.099",
-      "dateStarted": "2019-10-18 21:36:39.428",
-      "dateFinished": "2019-10-18 21:36:40.549",
+      "dateStarted": "2019-10-19 20:32:11.437",
+      "dateFinished": "2019-10-19 20:32:11.748",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -562,7 +562,7 @@
       "title": "Look at the Percentiles for top 10 countries by count. Check Distributions",
       "text": "%sql\nselect country, count(*) as total, min(price) as min, percentile_approx(price, 0.25) as p25, percentile_approx(price, 0.5) as p50, percentile_approx(price, 0.75) as p75, percentile_approx(price, 0.90) as p90, percentile_approx(price, 0.99) as p99, max(price) as max, avg(price) as avg, stddev_pop(price) as stddev\nfrom reviews group by country\norder by total DESC\nlimit 10",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:07:50.716",
+      "dateUpdated": "2019-10-19 20:33:00.220",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -677,7 +677,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d10"
+            "http://zeppelin:4040/jobs/job?id\u003d60"
           ],
           "interpreterSettingId": "spark"
         }
@@ -686,15 +686,15 @@
       "jobName": "paragraph_1571427435418_806102194",
       "id": "20191018-193715_784500873",
       "dateCreated": "2019-10-18 19:37:15.418",
-      "dateStarted": "2019-10-18 21:36:40.723",
-      "dateFinished": "2019-10-18 21:36:43.993",
+      "dateStarted": "2019-10-19 20:32:11.878",
+      "dateFinished": "2019-10-19 20:32:16.386",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark\nval tryIt \u003d fixedReviews\n  .select(col(\"price\"))\n  .where(col(\"price\").isNotNull)\n  .agg(\n      avg(col(\"price\")) as \"avg\",\n      stddev_pop(col(\"price\")) as \"sd\"\n  )\nval head \u003d tryIt.head match {\n    case Row(a: Double, s: Double) \u003d\u003e (a, s)\n    case _ \u003d\u003e (0.0, 0.0)\n}\n\ntryIt.printSchema\ntryIt.show\n",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:17:37.741",
+      "dateUpdated": "2019-10-19 20:32:16.402",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -728,8 +728,8 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d20",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d21"
+            "http://zeppelin:4040/jobs/job?id\u003d61",
+            "http://zeppelin:4040/jobs/job?id\u003d62"
           ],
           "interpreterSettingId": "spark"
         }
@@ -738,8 +738,8 @@
       "jobName": "paragraph_1571443723262_-646827600",
       "id": "20191019-000843_1953511724",
       "dateCreated": "2019-10-19 00:08:43.263",
-      "dateStarted": "2019-10-19 00:17:07.550",
-      "dateFinished": "2019-10-19 00:17:10.190",
+      "dateStarted": "2019-10-19 20:32:16.434",
+      "dateFinished": "2019-10-19 20:32:17.108",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -747,7 +747,7 @@
       "title": "Create and use UDFs",
       "text": "%spark\nimport org.apache.spark.sql.functions.udf\n\ndef zScore(value: Double, mean: Double, sd: Double): Double \u003d {\n    (value-mean)/sd\n}\n\nval rowZScore : (Double, Double, Double) \u003d\u003e Double \u003d zScore(_,_,_)\nval zScoreFun \u003d udf(rowZScore)\n\ndef withZScore(df: DataFrame, col: Column): DataFrame \u003d {\n  val stats \u003d df\n    .select(col)\n    .where(col.isNotNull)\n    .agg(\n        avg(col) as \"avg\",\n        stddev_pop(col) as \"sd\"\n    )\n  val data \u003d stats.head match {\n      case Row(a: Double, s: Double) \u003d\u003e (a, s)\n      case _ \u003d\u003e (0.01, 0.01)\n  }\n  val mean \u003d data._1\n  val sd \u003d data._2\n  \n  df.withColumn(\"zscore\", zScoreFun(col, lit(mean), lit(sd)))\n}\n",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:28:19.109",
+      "dateUpdated": "2019-10-19 20:32:17.140",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -779,8 +779,8 @@
       "jobName": "paragraph_1571428030746_-12750512",
       "id": "20191018-194710_2055939117",
       "dateCreated": "2019-10-18 19:47:10.746",
-      "dateStarted": "2019-10-19 00:28:19.176",
-      "dateFinished": "2019-10-19 00:28:20.236",
+      "dateStarted": "2019-10-19 20:32:17.174",
+      "dateFinished": "2019-10-19 20:32:17.591",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -788,7 +788,7 @@
       "title": "Aggregate after Transformation",
       "text": "%spark\n\nval zscored \u003d withZScore(fixedReviews, col(\"price\"))\nzscored\n  .select(\"country\", \"price\", \"zscore\")\n  .groupBy(\"country\")\n  .agg(\n      avg(col(\"zscore\")) as \"avg_zscore\"\n   ).show",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:28:46.630",
+      "dateUpdated": "2019-10-19 20:32:17.675",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -823,11 +823,11 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d34",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d35",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d36",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d37",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d38"
+            "http://zeppelin:4040/jobs/job?id\u003d63",
+            "http://zeppelin:4040/jobs/job?id\u003d64",
+            "http://zeppelin:4040/jobs/job?id\u003d65",
+            "http://zeppelin:4040/jobs/job?id\u003d66",
+            "http://zeppelin:4040/jobs/job?id\u003d67"
           ],
           "interpreterSettingId": "spark"
         }
@@ -836,15 +836,15 @@
       "jobName": "paragraph_1571444576588_984688781",
       "id": "20191019-002256_1028536767",
       "dateCreated": "2019-10-19 00:22:56.588",
-      "dateStarted": "2019-10-19 00:28:46.679",
-      "dateFinished": "2019-10-19 00:28:49.763",
+      "dateStarted": "2019-10-19 20:32:17.718",
+      "dateFinished": "2019-10-19 20:32:18.963",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark\nval fullPriceData \u003d spark.sql(\"select country, count(*) as total, min(price) as min, percentile_approx(price, 0.25) as p25, percentile_approx(price, 0.5) as p50, percentile_approx(price, 0.75) as p75, percentile_approx(price, 0.90) as p90, percentile_approx(price, 0.99) as p99, max(price) as max, avg(price) as avg, stddev_pop(price) as sd_pop, stddev_samp(price) as sd_sample from reviews group by country\")\n\nval missingPriceRows \u003d fixedReviews\n  .where(col(\"price\").isNull.and(col(\"country\").isNotNull)).groupBy(\"country\")\n  .agg(count(\"*\") as \"missing\")\n\nval joinedWithOtherPrices \u003d missingPriceRows\n  .join(fullPriceData, \"country\")\n  .withColumn(\"miss_perc\", ((col(\"missing\")/col(\"total\"))*100).cast(\"Float\"))\n  .withColumn(\"iqr\", (col(\"p75\")-col(\"p25\")).cast(\"Float\"))\n  .withColumn(\"min_max_dist\", (col(\"max\")-col(\"min\")).cast(\"Integer\"))\n  .withColumn(\"median_mean_dist\", (col(\"p50\")-col(\"avg\")).cast(\"Float\")).where(col(\"total\") \u003e 1)\n\njoinedWithOtherPrices.createOrReplaceTempView(\"priceimputation\")\njoinedWithOtherPrices.printSchema",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:30:18.553",
+      "dateUpdated": "2019-10-19 20:32:19.016",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -875,15 +875,15 @@
       "jobName": "paragraph_1571444640088_1313491690",
       "id": "20191019-002400_1829385340",
       "dateCreated": "2019-10-19 00:24:00.088",
-      "dateStarted": "2019-10-19 00:30:18.637",
-      "dateFinished": "2019-10-19 00:30:19.562",
+      "dateStarted": "2019-10-19 20:32:19.059",
+      "dateFinished": "2019-10-19 20:32:19.429",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%sql\nselect country,miss_perc,avg,p50,median_mean_dist,iqr,p99,sd_sample from priceimputation",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:30:44.192",
+      "dateUpdated": "2019-10-19 20:32:19.460",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -956,12 +956,12 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d39",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d40",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d41",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d42",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d43",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d44"
+            "http://zeppelin:4040/jobs/job?id\u003d68",
+            "http://zeppelin:4040/jobs/job?id\u003d69",
+            "http://zeppelin:4040/jobs/job?id\u003d70",
+            "http://zeppelin:4040/jobs/job?id\u003d71",
+            "http://zeppelin:4040/jobs/job?id\u003d72",
+            "http://zeppelin:4040/jobs/job?id\u003d73"
           ],
           "interpreterSettingId": "spark"
         }
@@ -970,15 +970,15 @@
       "jobName": "paragraph_1571445000032_243521319",
       "id": "20191019-003000_705037805",
       "dateCreated": "2019-10-19 00:30:00.032",
-      "dateStarted": "2019-10-19 00:30:35.722",
-      "dateFinished": "2019-10-19 00:30:43.458",
+      "dateStarted": "2019-10-19 20:32:19.495",
+      "dateFinished": "2019-10-19 20:32:21.944",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark\n/* Use imputation data to fill in unknown prices */\nval missingPriceDf \u003d fixedReviews.where(col(\"price\").isNull.and(col(\"country\").isNotNull))\nval normalDf \u003d fixedReviews.where(col(\"price\").isNotNull)\n\nval imputedPrice \u003d missingPriceDf\n  .join(joinedWithOtherPrices, \"country\")\n  .withColumn(\"price\", when(col(\"avg\")\u003ecol(\"p50\"), col(\"p50\")).otherwise(col(\"avg\")))\n  .drop(\"total\",\"min\",\"p25\",\"p50\",\"p75\",\"p90\",\"p99\",\"max\",\"avg\",\"sd_pop\",\"sd_sample\"\n  ,\"miss_perc\",\"iqR\",\"min_max_dist\",\"median_mean_dist\", \"missing\")\n/* both schemas must match for union */\nval filledPriceDf \u003d normalDf.union(imputedPrice)\nfilledPriceDf.persist()\nfilledPriceDf.createOrReplaceTempView(\"reviews\")",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:33:21.342",
+      "dateUpdated": "2019-10-19 20:32:22.009",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -1009,15 +1009,15 @@
       "jobName": "paragraph_1571445035659_-273986329",
       "id": "20191019-003035_1580762260",
       "dateCreated": "2019-10-19 00:30:35.659",
-      "dateStarted": "2019-10-19 00:32:18.434",
-      "dateFinished": "2019-10-19 00:32:20.118",
+      "dateStarted": "2019-10-19 20:32:22.036",
+      "dateFinished": "2019-10-19 20:32:22.519",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark\nfilledPriceDf\n  .where(col(\"price\").isNull)\n  .agg(count(\"*\") as \"total\").show",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:32:34.268",
+      "dateUpdated": "2019-10-19 20:32:22.534",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -1051,8 +1051,8 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d45",
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d46"
+            "http://zeppelin:4040/jobs/job?id\u003d74",
+            "http://zeppelin:4040/jobs/job?id\u003d75"
           ],
           "interpreterSettingId": "spark"
         }
@@ -1061,8 +1061,8 @@
       "jobName": "paragraph_1571445114553_-1334043734",
       "id": "20191019-003154_976766151",
       "dateCreated": "2019-10-19 00:31:54.554",
-      "dateStarted": "2019-10-19 00:32:34.338",
-      "dateFinished": "2019-10-19 00:32:56.170",
+      "dateStarted": "2019-10-19 20:32:22.568",
+      "dateFinished": "2019-10-19 20:32:26.911",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -1070,7 +1070,7 @@
       "title": "Save this Off for Modeling",
       "text": "%spark\nfilledPriceDf.write.mode(\"overwrite\").parquet(\"/svccdata/winereviews.parquet\")",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:51:49.929",
+      "dateUpdated": "2019-10-19 20:32:26.985",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -1100,7 +1100,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d48"
+            "http://zeppelin:4040/jobs/job?id\u003d76"
           ],
           "interpreterSettingId": "spark"
         }
@@ -1109,15 +1109,15 @@
       "jobName": "paragraph_1571446094663_59458331",
       "id": "20191019-004814_887493231",
       "dateCreated": "2019-10-19 00:48:14.663",
-      "dateStarted": "2019-10-19 00:51:49.999",
-      "dateFinished": "2019-10-19 00:52:02.324",
+      "dateStarted": "2019-10-19 20:32:27.012",
+      "dateFinished": "2019-10-19 20:32:33.061",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%md\n### Next Section. The Fun Stuff (Modeling)\nhttp://localhost:8080/#/notebook/2ER82RDYH",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:08:13.163",
+      "dateUpdated": "2019-10-19 20:32:33.126",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -1150,8 +1150,8 @@
       "jobName": "paragraph_1571445154269_515219443",
       "id": "20191019-003234_388760875",
       "dateCreated": "2019-10-19 00:32:34.269",
-      "dateStarted": "2019-10-19 01:08:01.263",
-      "dateFinished": "2019-10-19 01:08:01.362",
+      "dateStarted": "2019-10-19 20:32:33.150",
+      "dateFinished": "2019-10-19 20:32:33.162",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     }

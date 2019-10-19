@@ -1,0 +1,57 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n### Requires having the spark-redis library installed.\n`com.redislabs:spark-redis:2.0.4` must be added to the Spark Interpreter Settings.\n1. Go to http://localhost:8080/#/interpreter and search for `spark`\n2. Click `edit` and add `com.redislabs:spark-redis:2.0.4` undernearth **Dependencies** artifact\n3. Save and then click `restart` on the Interpreter",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 03:05:03.083",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eRequires having the spark-redis library installed.\u003c/h3\u003e\n\u003cp\u003e\u003ccode\u003ecom.redislabs:spark-redis:2.0.4\u003c/code\u003e must be added to the Spark Interpreter Settings.\u003cbr/\u003e1. Go to \u003ca href\u003d\"http://localhost:8080/#/interpreter\"\u003ehttp://localhost:8080/#/interpreter\u003c/a\u003e and search for \u003ccode\u003espark\u003c/code\u003e\u003cbr/\u003e2. Click \u003ccode\u003eedit\u003c/code\u003e and add \u003ccode\u003ecom.redislabs:spark-redis:2.0.4\u003c/code\u003e undernearth \u003cstrong\u003eDependencies\u003c/strong\u003e artifact\u003cbr/\u003e3. Save and then click \u003ccode\u003erestart\u003c/code\u003e on the Interpreter\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571454138728_790787402",
+      "id": "20191019-030218_1843790619",
+      "dateCreated": "2019-10-19 03:02:18.728",
+      "dateStarted": "2019-10-19 03:05:03.109",
+      "dateFinished": "2019-10-19 03:05:03.185",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "SVCC/5-Streaming",
+  "id": "2EPXVUGQC",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

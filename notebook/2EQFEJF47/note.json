@@ -284,7 +284,7 @@
       "title": "Find Top10 highest average priced wines by country",
       "text": "%sql\nselect * from pricebycountry ORDER BY avg_price DESC limit 10",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:33:00.324",
+      "dateUpdated": "2019-10-19 01:07:50.334",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -402,7 +402,7 @@
       "title": "Find Top 10 Most Popular Varieties of Wine by Country ",
       "text": "%sql\nselect * from pricebycountryvariety order by total DESC limit 10",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:33:00.406",
+      "dateUpdated": "2019-10-19 01:07:50.655",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -562,7 +562,7 @@
       "title": "Look at the Percentiles for top 10 countries by count. Check Distributions",
       "text": "%sql\nselect country, count(*) as total, min(price) as min, percentile_approx(price, 0.25) as p25, percentile_approx(price, 0.5) as p50, percentile_approx(price, 0.75) as p75, percentile_approx(price, 0.90) as p90, percentile_approx(price, 0.99) as p99, max(price) as max, avg(price) as avg, stddev_pop(price) as stddev\nfrom reviews group by country\norder by total DESC\nlimit 10",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:33:00.479",
+      "dateUpdated": "2019-10-19 01:07:50.716",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -1067,9 +1067,57 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%md\n### Next Section. The Fun Stuff (Modeling)",
+      "title": "Save this Off for Modeling",
+      "text": "%spark\nfilledPriceDf.write.mode(\"overwrite\").parquet(\"/svccdata/winereviews.parquet\")",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 00:33:47.646",
+      "dateUpdated": "2019-10-19 00:51:49.929",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://2cd1b9b392ef:4040/jobs/job?id\u003d48"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571446094663_59458331",
+      "id": "20191019-004814_887493231",
+      "dateCreated": "2019-10-19 00:48:14.663",
+      "dateStarted": "2019-10-19 00:51:49.999",
+      "dateFinished": "2019-10-19 00:52:02.324",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n### Next Section. The Fun Stuff (Modeling)\nhttp://localhost:8080/#/notebook/2ER82RDYH",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 01:08:13.163",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -1094,7 +1142,7 @@
         "msg": [
           {
             "type": "HTML",
-            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eNext Section. The Fun Stuff (Modeling)\u003c/h3\u003e\n\u003c/div\u003e"
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eNext Section. The Fun Stuff (Modeling)\u003c/h3\u003e\n\u003cp\u003e\u003ca href\u003d\"http://localhost:8080/#/notebook/2ER82RDYH\"\u003ehttp://localhost:8080/#/notebook/2ER82RDYH\u003c/a\u003e\u003c/p\u003e\n\u003c/div\u003e"
           }
         ]
       },
@@ -1102,8 +1150,8 @@
       "jobName": "paragraph_1571445154269_515219443",
       "id": "20191019-003234_388760875",
       "dateCreated": "2019-10-19 00:32:34.269",
-      "dateStarted": "2019-10-19 00:33:47.672",
-      "dateFinished": "2019-10-19 00:33:51.414",
+      "dateStarted": "2019-10-19 01:08:01.263",
+      "dateFinished": "2019-10-19 01:08:01.362",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     }

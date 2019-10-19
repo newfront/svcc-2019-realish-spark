@@ -6,8 +6,6 @@ Find me on Twitter: [@newfront](https://twitter.com/newfront)
 Find me on Medium [@newfrontcreative](https://medium.com/@newfrontcreative)
 About Twilio: [Twilio](https://twilio.com)
 
-## Note: Dockerfile, Materials and Presentation will be uploaded on October 16th, 2019.
-
 [Session Overview Link](https://www.siliconvalley-codecamp.com/Session/2019/real-ish-time-predictive-analytics-with-spark-structured-streaming)
 
 ### Follow Along Requirements

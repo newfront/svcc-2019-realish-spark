@@ -2,9 +2,9 @@
 This is the material for the 2019 Silicon Valley Code Camp Session "Realish Time Predictive Analytics with Spark Structured Streaming"
 
 ### About the Speaker
-Find me on Twitter [@newfront]("https://twitter.com/newfront")
-Find me on Medium [@newfrontcreative]("https://medium.com/@newfrontcreative")
-About Twilio: [Twilio]("https://twilio.com")
+Find me on Twitter (@newfront)["https://twitter.com/newfront"]
+Find me on Medium (@newfrontcreative)["https://medium.com/@newfrontcreative"]
+About Twilio: (Twilio)["https://twilio.com"]
 
 ## Note: Dockerfile, Materials and Presentation will be uploaded on October 16th, 2019.
 

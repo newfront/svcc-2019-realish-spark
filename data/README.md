@@ -1,2 +1,2 @@
-### The data/ directory will store redis rdb
-The Redis RDB is the database. This directory will store the small rdb that is created when running the workshop materials
+### The data/ directory will store datasets and model output
+The winereviews.json.zip needs to be unzipped for this to work

@@ -3,7 +3,7 @@
     {
       "text": "%md\n### Requires having the spark-redis library installed.\n`com.redislabs:spark-redis:2.0.4` must be added to the Spark Interpreter Settings.\n1. Go to http://localhost:8080/#/interpreter and search for `spark`\n2. Click `edit` and add `com.redislabs:spark-redis:2.0.4` undernearth **Dependencies** artifact\n3. Save and then click `restart` on the Interpreter",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 03:05:03.083",
+      "dateUpdated": "2019-10-19 03:07:55.452",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -36,8 +36,179 @@
       "jobName": "paragraph_1571454138728_790787402",
       "id": "20191019-030218_1843790619",
       "dateCreated": "2019-10-19 03:02:18.728",
-      "dateStarted": "2019-10-19 03:05:03.109",
-      "dateFinished": "2019-10-19 03:05:03.185",
+      "dateStarted": "2019-10-19 03:07:55.515",
+      "dateFinished": "2019-10-19 03:07:55.536",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load the Saved Model",
+      "text": "%spark\nimport spark.implicits._\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.types._\nimport org.apache.spark.ml.classification.LogisticRegression\nimport org.apache.spark.ml.classification.LogisticRegressionModel\nimport org.apache.spark.ml.feature.RFormula\n\nobject model {\n    val fittedModel \u003d LogisticRegressionModel.load(\"/svccdata/simple-ml-fitted\")\n    lazy val lazyFitter: RFormula \u003d new RFormula().setFormula(\"lab ~ . + color:value1 + color:value2\")\n    \n    def prepared(df: DataFrame): DataFrame \u003d {\n        lazyFitter.fit(df).transform(df)\n    }\n    \n    def transform(df: DataFrame): DataFrame \u003d {\n        fittedModel.transform(df)\n    }\n}\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 03:44:17.666",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import spark.implicits._\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.types._\nimport org.apache.spark.ml.classification.LogisticRegression\nimport org.apache.spark.ml.classification.LogisticRegressionModel\nimport org.apache.spark.ml.feature.RFormula\ndefined object model\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571454475452_-829611199",
+      "id": "20191019-030755_808512215",
+      "dateCreated": "2019-10-19 03:07:55.452",
+      "dateStarted": "2019-10-19 03:44:17.726",
+      "dateFinished": "2019-10-19 03:44:19.735",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Steal the Schema Pattern",
+      "text": "%spark\nval df \u003d spark.read.json(\"/svccdata/simple-ml\")\nval structure \u003d df.schema",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 03:39:25.331",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "df: org.apache.spark.sql.DataFrame \u003d [color: string, lab: string ... 2 more fields]\nstructure: org.apache.spark.sql.types.StructType \u003d StructType(StructField(color,StringType,true), StructField(lab,StringType,true), StructField(value1,LongType,true), StructField(value2,DoubleType,true))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://6bb384565760:4040/jobs/job?id\u003d1"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571454615588_-193787245",
+      "id": "20191019-031015_1062902648",
+      "dateCreated": "2019-10-19 03:10:15.588",
+      "dateStarted": "2019-10-19 03:39:25.409",
+      "dateFinished": "2019-10-19 03:39:26.646",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Read Stream / Transform with Model / Write Results",
+      "text": "%spark\nimport org.apache.spark.sql.streaming.OutputMode\n/*val inputStream \u003d spark.readStream\n  .format(\"redis\")\n  .option(\"stream.keys\", \"simple-ml\")\n  .schema(structure)\n  .load()\n  .writeStream\n  .foreachBatch( (df: DataFrame, batchId: Long) \u003d\u003e {\n    df\n      .transform(model.prepared)\n      .transform(model.transform)\n      .write.mode(\"overwrite\").json(\"/svccdata/simple-ml-stream-results\")\n    })\ninputStream.start()\n*/\n\nval inputStream \u003d spark.readStream\n    .schema(structure)\n    .json(\"/svccdata/simple-ml\")\n    .writeStream\n    .foreachBatch( (df: DataFrame, batchId: Long) \u003d\u003e {\n        df\n          .transform(model.prepared)\n          .transform(model.transform)\n          .write.mode(\"overwrite\").json(\"/svccdata/simple-ml-stream-results\")\n    })\n\ninputStream.start()\n\n  ",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 04:00:58.436",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql.streaming.OutputMode\ninputStream: org.apache.spark.sql.streaming.DataStreamWriter[org.apache.spark.sql.Row] \u003d org.apache.spark.sql.streaming.DataStreamWriter@29ee28fc\nres13: org.apache.spark.sql.streaming.StreamingQuery \u003d org.apache.spark.sql.execution.streaming.StreamingQueryWrapper@5c1dde85\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571454853588_-1063151516",
+      "id": "20191019-031413_746549108",
+      "dateCreated": "2019-10-19 03:14:13.588",
+      "dateStarted": "2019-10-19 04:00:43.346",
+      "dateFinished": "2019-10-19 04:00:44.307",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Close the Streams",
+      "text": "%spark\nspark.streams.active.foreach { stream \u003d\u003e\n  println(s\"stream_name\u003d${stream.name} state\u003dactive status\u003d${stream.status} action\u003dstop_stream\")\n  stream.stop()\n}",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 04:00:14.527",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1571455283500_1737120764",
+      "id": "20191019-032123_1922538035",
+      "dateCreated": "2019-10-19 03:21:23.500",
+      "dateStarted": "2019-10-19 04:00:14.575",
+      "dateFinished": "2019-10-19 04:00:15.168",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     }

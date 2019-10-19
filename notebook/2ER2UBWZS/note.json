@@ -1,9 +1,9 @@
 {
   "paragraphs": [
     {
-      "text": "%spark\nval trainingData \u003d spark.read.parquet(\"/svccdata/winereviews.parquet\")\ntrainingData.persist()\ntrainingData.createOrReplaceTempView(\"reviews\")",
+      "text": "%spark\nval trainingData \u003d spark.read.parquet(\"/svccdata/winereviews.parquet\")\n  .where(\n      col(\"variety\").isNotNull\n      .and(col(\"country\").isNotNull\n      .and(col(\"taster_twitter_handle\").isNotNull)))\ntrainingData.persist()\ntrainingData.createOrReplaceTempView(\"reviews\")",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:08:55.659",
+      "dateUpdated": "2019-10-19 02:52:30.087",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -26,7 +26,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "trainingData: org.apache.spark.sql.DataFrame \u003d [country: string, description: string ... 11 more fields]\n"
+            "data": "trainingData: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [country: string, description: string ... 11 more fields]\n"
           }
         ]
       },
@@ -37,7 +37,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://2cd1b9b392ef:4040/jobs/job?id\u003d63"
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d0"
           ],
           "interpreterSettingId": "spark"
         }
@@ -46,25 +46,560 @@
       "jobName": "paragraph_1571447314007_303083308",
       "id": "20191019-010834_1092523114",
       "dateCreated": "2019-10-19 01:08:34.007",
-      "dateStarted": "2019-10-19 01:08:55.702",
-      "dateFinished": "2019-10-19 01:08:56.489",
+      "dateStarted": "2019-10-19 02:52:32.371",
+      "dateFinished": "2019-10-19 02:52:59.514",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%spark\n",
+      "text": "%spark\ntrainingData.printSchema",
       "user": "anonymous",
-      "dateUpdated": "2019-10-19 01:08:55.660",
-      "config": {},
+      "dateUpdated": "2019-10-19 01:42:36.665",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
       "settings": {
         "params": {},
         "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- country: string (nullable \u003d true)\n |-- description: string (nullable \u003d true)\n |-- designation: string (nullable \u003d true)\n |-- province: string (nullable \u003d true)\n |-- region_1: string (nullable \u003d true)\n |-- region_2: string (nullable \u003d true)\n |-- taster_name: string (nullable \u003d true)\n |-- taster_twitter_handle: string (nullable \u003d true)\n |-- title: string (nullable \u003d true)\n |-- variety: string (nullable \u003d true)\n |-- winery: string (nullable \u003d true)\n |-- points: double (nullable \u003d true)\n |-- price: double (nullable \u003d true)\n\n"
+          }
+        ]
       },
       "apps": [],
       "jobName": "paragraph_1571447335659_-125547905",
       "id": "20191019-010855_1596874007",
       "dateCreated": "2019-10-19 01:08:55.659",
-      "status": "READY",
+      "dateStarted": "2019-10-19 01:42:36.732",
+      "dateFinished": "2019-10-19 01:42:37.436",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nselect percentile_approx(price, 0.25) as p25, percentile_approx(price, 0.5) as p50, percentile_approx(price, 0.75) as p75, percentile_approx(price, 0.95) as p95 from reviews\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 01:42:38.781",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "p25": "string",
+                      "p50": "string",
+                      "p75": "string",
+                      "p95": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "p25\tp50\tp75\tp95\n17.0\t25.0\t40.0\t3300.0\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571448228460_-254255292",
+      "id": "20191019-012348_1754251913",
+      "dateCreated": "2019-10-19 01:23:48.460",
+      "dateStarted": "2019-10-19 01:42:38.847",
+      "dateFinished": "2019-10-19 01:42:40.872",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n// assumption that good wines are 90 point or above\n// assumption that bad wines are below 90 points\n// guess the points from price/country/\n\nimport org.apache.spark.ml.feature.Bucketizer\n\nval splits \u003d Array(0.0, 17.0, 25.0, 40.0, 80.0, Double.PositiveInfinity)\n\nval bucketizer \u003d new Bucketizer()\n  .setInputCol(\"price\")\n  .setOutputCol(\"bucketedPrice\")\n  .setSplits(splits)\n  \nval bucketedData \u003d bucketizer.transform(trainingData)\nbucketedData.persist()\nbucketedData.createOrReplaceTempView(\"bucketed\")",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 02:53:58.337",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.ml.feature.Bucketizer\nsplits: Array[Double] \u003d Array(0.0, 17.0, 25.0, 40.0, 80.0, Infinity)\nbucketizer: org.apache.spark.ml.feature.Bucketizer \u003d bucketizer_38700071812a\nbucketedData: org.apache.spark.sql.DataFrame \u003d [country: string, description: string ... 12 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571447507317_282227333",
+      "id": "20191019-011147_171854104",
+      "dateCreated": "2019-10-19 01:11:47.317",
+      "dateStarted": "2019-10-19 02:53:58.435",
+      "dateFinished": "2019-10-19 02:54:00.488",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nselect title, country, price, bucketedPrice from bucketed limit 100",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 02:54:03.279",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "title": "string",
+                      "country": "string",
+                      "price": "string",
+                      "bucketedPrice": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "title\tcountry\tprice\tbucketedPrice\nQuinta dos Avidagos 2011 Avidagos Red (Douro)\tPortugal\t15.0\t0.0\nRainstorm 2013 Pinot Gris (Willamette Valley)\tUS\t14.0\t0.0\nSweet Cheeks 2012 Vintner\u0027s Reserve Wild Child Block Pinot Noir (Willamette Valley)\tUS\t65.0\t3.0\nTandem 2011 Ars In Vitro Tempranillo-Merlot (Navarra)\tSpain\t15.0\t0.0\nTerre di Giurfo 2013 Belsito Frappato (Vittoria)\tItaly\t16.0\t0.0\nTrimbach 2012 Gewurztraminer (Alsace)\tFrance\t24.0\t1.0\nJean-Baptiste Adam 2012 Les Natures Pinot Gris (Alsace)\tFrance\t27.0\t2.0\nKirkland Signature 2011 Mountain Cuvée Cabernet Sauvignon (Napa Valley)\tUS\t19.0\t1.0\nLeon Beyer 2012 Gewurztraminer (Alsace)\tFrance\t30.0\t2.0\nLouis M. Martini 2012 Cabernet Sauvignon (Alexander Valley)\tUS\t34.0\t2.0\nMirassou 2012 Chardonnay (Central Coast)\tUS\t12.0\t0.0\nFelix Lavaque 2010 Felix Malbec (Cafayate)\tArgentina\t30.0\t2.0\nGaucho Andino 2011 Winemaker Selection Malbec (Mendoza)\tArgentina\t13.0\t0.0\nPradorey 2010 Vendimia Seleccionada Finca Valdelayegua Single Vineyard Crianza  (Ribera del Duero)\tSpain\t28.0\t2.0\nAcrobat 2013 Pinot Noir (Oregon)\tUS\t20.0\t1.0\nBaglio di Pianetto 2007 Ficiligno White (Sicilia)\tItaly\t19.0\t1.0\nBianchi 2011 Signature Selection Merlot (Paso Robles)\tUS\t22.0\t1.0\nCanicattì 2009 Aynat Nero d\u0027Avola (Sicilia)\tItaly\t35.0\t2.0\nCastello di Amorosa 2011 King Ridge Vineyard Pinot Noir (Sonoma Coast)\tUS\t69.0\t3.0\nStemmari 2013 Dalila White (Terre Siciliane)\tItaly\t13.0\t0.0\nStemmari 2013 Nero d\u0027Avola (Terre Siciliane)\tItaly\t10.0\t0.0\nTerre di Giurfo 2011 Mascaria Barricato  (Cerasuolo di Vittoria)\tItaly\t17.0\t1.0\nClarksburg Wine Company 2010 Chenin Blanc (Clarksburg)\tUS\t16.0\t0.0\nErath 2010 Hyland Pinot Noir (McMinnville)\tUS\t50.0\t3.0\nEstampa 2011 Estate Viognier-Chardonnay (Colchagua Valley)\tChile\t15.0\t0.0\nHawkins Cellars 2009 Pinot Noir (Willamette Valley)\tUS\t22.0\t1.0\nHenry Fessy 2012 Nouveau  (Beaujolais)\tFrance\t9.0\t0.0\nSundance 2011 Merlot (Maule Valley)\tChile\t9.0\t0.0\nVignerons de Bel Air 2011 Eté Indien  (Brouilly)\tFrance\t14.0\t0.0\nCasa Silva 2008 Gran Reserva Petit Verdot (Colchagua Valley)\tChile\t22.0\t1.0\nChâteau de Sours 2011 La Fleur d\u0027Amélie  (Bordeaux Blanc)\tFrance\t15.0\t0.0\nSouverain 2010 Chardonnay (North Coast)\tUS\t14.0\t0.0\nTres Palacios 2011 Reserve Pinot Noir (Maipo Valley)\tChile\t13.0\t0.0\nMellisoni 2014 Malbec (Columbia Valley (WA))\tUS\t55.0\t3.0\nOkapi 2013 Estate Cabernet Sauvignon (Napa Valley)\tUS\t100.0\t4.0\nPodere dal Nespoli 2015 Prugneto Sangiovese (Romagna)\tItaly\t17.0\t1.0\nRam 2014 Alder Ridge Vineyard Cabernet Franc (Columbia Valley (WA))\tUS\t25.0\t2.0\nRoland Champion NV Brut Rosé  (Champagne)\tFrance\t58.0\t3.0\nSevtap 2015 Golden Horn Sauvignon Blanc (Santa Ynez Valley)\tUS\t26.0\t2.0\nSimonnet-Febvre 2015  Chablis\tFrance\t24.0\t1.0\nVignerons des Terres Secrètes 2015  Mâcon-Milly Lamartine\tFrance\t15.0\t0.0\nBasel Cellars 2013 Inspired Red (Columbia Valley (WA))\tUS\t46.0\t3.0\nCocobon 2014 Red (California)\tUS\t12.0\t0.0\nCollet NV Brut Rosé  (Champagne)\tFrance\t55.0\t3.0\nDrumheller 2014 Chardonnay (Columbia Valley (WA))\tUS\t12.0\t0.0\nEco Terreno 2013 Old Vine Cabernet Sauvignon (Alexander Valley)\tUS\t40.0\t3.0\nGrifalco 2013 Daginestra  (Aglianico del Vulture)\tItaly\t32.0\t2.0\nHindsight 2013 Bella Vetta Vineyard Cabernet Sauvignon (Howell Mountain)\tUS\t75.0\t3.0\nHindsight 2012 Estate Grown Petite Sirah (Calistoga)\tUS\t55.0\t3.0\nMulvane Wine Co. 2013 The Cypher Red (Napa Valley)\tUS\t75.0\t3.0\nYalumba 2016 Made With Organic Grapes Chardonnay (South Australia)\tAustralia\t18.0\t1.0\nZ\u0027IVO 2015 Rosé of Pinot Noir (Eola-Amity Hills)\tUS\t25.0\t2.0\nAresti 2014 Special Release Reserva Carmenère (Rapel Valley)\tChile\t12.0\t0.0\nSpyro 2014 Albariño (Rías Baixas)\tSpain\t16.0\t0.0\nLionel Osmin \u0026 Cie 2016 La Réserve Petit Manseng (Vin de France)\tFrance\t11.0\t0.0\nMitolo 2016 Jester Sangiovese Rosé (McLaren Vale)\tAustralia\t20.0\t1.0\nNapa Cellars 2014 Classic Zinfandel (Napa Valley)\tUS\t24.0\t1.0\nPalencia 2016 Albariño (Ancient Lakes)\tUS\t20.0\t1.0\nPassaggio 2014 Blau Vineyards Merlot (Knights Valley)\tUS\t55.0\t3.0\nPoggio Alloro 2014 Le Mandorle Riserva  (Vernaccia di San Gimignano)\tItaly\t29.0\t2.0\nFattoria Sardi 2015 Rosato (Toscana)\tItaly\t19.0\t1.0\nFerrari-Carano 2014 Siena Red (Sonoma County)\tUS\t23.0\t1.0\nFolie à Deux 2015 Pinot Gris (Sonoma Coast)\tUS\t18.0\t1.0\nFranciscan 2013 Magnificat Meritage (Napa Valley)\tUS\t55.0\t3.0\nFuchs 2015 Grüner Veltliner (Burgenland)\tAustria\t12.0\t0.0\nGård 2014 Grand Klasse Reserve Lawrence Vineyards Viognier (Columbia Valley (WA))\tUS\t22.0\t1.0\nHenry Fessy 2015  Juliénas\tFrance\t20.0\t1.0\nHenry Fessy 2015  Régnié\tFrance\t18.0\t1.0\nSerpaia di Endrizzi 2010 Dono Riserva  (Morellino di Scansano)\tItaly\t30.0\t2.0\nSoquel Vineyards 2013 Intreccio Library Selection Red (Napa Valley)\tUS\t75.0\t3.0\nLeyda 2015 Single Vineyard Falaris Hill Chardonnay (Leyda Valley)\tChile\t18.0\t1.0\nMadonna Alta 2014 Nativo Red (Toscana)\tItaly\t16.0\t0.0\nMarchesi Antinori 2015 Villa Antinori White (Toscana)\tItaly\t14.0\t0.0\nMarchesi de\u0027 Frescobaldi 2014 Castiglioni Red (Toscana)\tItaly\t30.0\t2.0\nMarchesi de\u0027 Frescobaldi 2015 Ammiraglia Massovivo Vermentino (Toscana)\tItaly\t18.0\t1.0\nMartin Ranch 2014 J.D. Hurley Zinfandel (Santa Clara Valley)\tUS\t26.0\t2.0\nOrnellaia 2014 Le Volte Red (Toscana)\tItaly\t30.0\t2.0\nPardon et Fils 2015 Les Quartelets  (Brouilly)\tFrance\t23.0\t1.0\nPiña 2013 Wolff Vineyard Cabernet Sauvignon (Yountville)\tUS\t85.0\t4.0\nPodere Ciona 2014 Semifonte Red (Toscana)\tItaly\t15.0\t0.0\nPoggioventoso 2015 Poetico White (Toscana)\tItaly\t19.0\t1.0\nPull 2012 BDX Red (Paso Robles)\tUS\t18.0\t1.0\nPull 2013 Chardonnay (Paso Robles)\tUS\t18.0\t1.0\nR2 2013 Camp 4 Vineyard Grenache Blanc (Santa Ynez Valley)\tUS\t25.0\t2.0\nRideau 2014 Estate Syrah\tUS\t44.0\t3.0\nTenuta Forconi 2013 Toscano Red (Toscana)\tItaly\t80.0\t4.0\nHenry\u0027s Drive Vignerons 2006 Parson\u0027s Flat Shiraz-Cabernet Sauvignon (Padthaway)\tAustralia\t40.0\t3.0\nLe Riche 2003 Cabernet Sauvignon Reserve Cabernet Sauvignon (Stellenbosch)\tSouth Africa\t45.0\t3.0\nDelheim 2001 Grand Reserve Cabernet Sauvignon (Simonsberg-Stellenbosch)\tSouth Africa\t30.0\t2.0\nLassègue 2003  Saint-Émilion\tFrance\t50.0\t3.0\nTerra Valentine 2013 K Block Cabernet Sauvignon (Spring Mountain District)\tUS\t85.0\t4.0\nTestarossa 2013 Guidotti Vineyard Pinot Noir (Santa Lucia Highlands)\tUS\t64.0\t3.0\nVincent Vineyards 2010 Family Reserve Cabernet Sauvignon (Santa Ynez Valley)\tUS\t68.0\t3.0\nVincent Vineyards 2012 Family Reserve Cabernet Sauvignon (Santa Ynez Valley)\tUS\t68.0\t3.0\nWrath 2013 Destruction Level Red (Monterey)\tUS\t35.0\t2.0\nYardstick 2013 Ruth\u0027s Reach Cabernet Sauvignon (Napa Valley)\tUS\t25.0\t2.0\nHerdade Grande 2014 Gerações Colheita Seleccionada Branco White (Alentejano)\tPortugal\t30.0\t2.0\nAlbatross Ridge 2012 Estate Reserve Pinot Noir (Carmel Valley)\tUS\t55.0\t3.0\nAlta Colina 2012 Old 900 Syrah (Paso Robles)\tUS\t46.0\t3.0\nMarques de Griñon 2010 Single Vineyard Estate Bottled Graciano (Dominio de Valdepusa)\tSpain\t50.0\t3.0\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d1"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571448404073_-651894653",
+      "id": "20191019-012644_791620066",
+      "dateCreated": "2019-10-19 01:26:44.073",
+      "dateStarted": "2019-10-19 02:54:03.390",
+      "dateFinished": "2019-10-19 02:54:10.914",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nval df \u003d spark.read.json(\"/svccdata/simple-ml\")",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 02:54:18.942",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "df: org.apache.spark.sql.DataFrame \u003d [color: string, lab: string ... 2 more fields]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d2"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571449373267_192150372",
+      "id": "20191019-014253_1794303402",
+      "dateCreated": "2019-10-19 01:42:53.267",
+      "dateStarted": "2019-10-19 02:54:19.029",
+      "dateFinished": "2019-10-19 02:54:20.124",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\ndf.printSchema",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 02:54:29.207",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {}
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- color: string (nullable \u003d true)\n |-- lab: string (nullable \u003d true)\n |-- value1: long (nullable \u003d true)\n |-- value2: double (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571451834499_1819081292",
+      "id": "20191019-022354_849084112",
+      "dateCreated": "2019-10-19 02:23:54.499",
+      "dateStarted": "2019-10-19 02:54:29.331",
+      "dateFinished": "2019-10-19 02:54:29.822",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nimport org.apache.spark.ml.feature.RFormula\nval supervised \u003d new RFormula().setFormula(\"lab ~ . + color:value1 + color:value2\")\nval fittedRF \u003d supervised.fit(df)\nval preparedDF \u003d fittedRF.transform(df)\npreparedDF.show()",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 02:55:15.912",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----+----+------+------------------+--------------------+-----+\n|color| lab|value1|            value2|            features|label|\n+-----+----+------+------------------+--------------------+-----+\n|green|good|     1|14.386294994851129|(10,[1,2,3,5,8],[...|  1.0|\n| blue| bad|     8|14.386294994851129|(10,[2,3,6,9],[8....|  0.0|\n| blue| bad|    12|14.386294994851129|(10,[2,3,6,9],[12...|  0.0|\n|green|good|    15| 38.97187133755819|(10,[1,2,3,5,8],[...|  1.0|\n|green|good|    12|14.386294994851129|(10,[1,2,3,5,8],[...|  1.0|\n|green| bad|    16|14.386294994851129|(10,[1,2,3,5,8],[...|  0.0|\n|  red|good|    35|14.386294994851129|(10,[0,2,3,4,7],[...|  1.0|\n|  red| bad|     1| 38.97187133755819|(10,[0,2,3,4,7],[...|  0.0|\n|  red| bad|     2|14.386294994851129|(10,[0,2,3,4,7],[...|  0.0|\n|  red| bad|    16|14.386294994851129|(10,[0,2,3,4,7],[...|  0.0|\n|  red|good|    45| 38.97187133755819|(10,[0,2,3,4,7],[...|  1.0|\n|green|good|     1|14.386294994851129|(10,[1,2,3,5,8],[...|  1.0|\n| blue| bad|     8|14.386294994851129|(10,[2,3,6,9],[8....|  0.0|\n| blue| bad|    12|14.386294994851129|(10,[2,3,6,9],[12...|  0.0|\n|green|good|    15| 38.97187133755819|(10,[1,2,3,5,8],[...|  1.0|\n|green|good|    12|14.386294994851129|(10,[1,2,3,5,8],[...|  1.0|\n|green| bad|    16|14.386294994851129|(10,[1,2,3,5,8],[...|  0.0|\n|  red|good|    35|14.386294994851129|(10,[0,2,3,4,7],[...|  1.0|\n|  red| bad|     1| 38.97187133755819|(10,[0,2,3,4,7],[...|  0.0|\n|  red| bad|     2|14.386294994851129|(10,[0,2,3,4,7],[...|  0.0|\n+-----+----+------+------------------+--------------------+-----+\nonly showing top 20 rows\n\nimport org.apache.spark.ml.feature.RFormula\nsupervised: org.apache.spark.ml.feature.RFormula \u003d RFormula(lab ~ . + color:value1 + color:value2) (uid\u003drFormula_fc61672765e6)\nfittedRF: org.apache.spark.ml.feature.RFormulaModel \u003d RFormulaModel(ResolvedRFormula(label\u003dlab, terms\u003d[color,value1,value2,{color,value1},{color,value2}], hasIntercept\u003dtrue)) (uid\u003drFormula_fc61672765e6)\npreparedDF: org.apache.spark.sql.DataFrame \u003d [color: string, lab: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d3",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d4",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d5"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571453669207_2059307264",
+      "id": "20191019-025429_818377051",
+      "dateCreated": "2019-10-19 02:54:29.207",
+      "dateStarted": "2019-10-19 02:55:15.976",
+      "dateFinished": "2019-10-19 02:55:19.254",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\nval Array(train, test) \u003d preparedDF.randomSplit(Array(0.7, 0.3), 10L)\nimport org.apache.spark.ml.classification.LogisticRegression\n\nval lr \u003d new LogisticRegression()\n    .setLabelCol(\"label\")\n    .setFeaturesCol(\"features\")\n\nprintln(lr.explainParams())\n\nval fittedLR \u003d lr.fit(train)\nval results \u003d fittedLR.transform(test)\n\nresults.printSchema\n\nresults.select(\"label\",\"prediction\").show",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 02:56:37.900",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "aggregationDepth: suggested depth for treeAggregate (\u003e\u003d 2) (default: 2)\nelasticNetParam: the ElasticNet mixing parameter, in range [0, 1]. For alpha \u003d 0, the penalty is an L2 penalty. For alpha \u003d 1, it is an L1 penalty (default: 0.0)\nfamily: The name of family which is a description of the label distribution to be used in the model. Supported options: auto, binomial, multinomial. (default: auto)\nfeaturesCol: features column name (default: features, current: features)\nfitIntercept: whether to fit an intercept term (default: true)\nlabelCol: label column name (default: label, current: label)\nlowerBoundsOnCoefficients: The lower bounds on coefficients if fitting under bound constrained optimization. (undefined)\nlowerBoundsOnIntercepts: The lower bounds on intercepts if fitting under bound constrained optimization. (undefined)\nmaxIter: maximum number of iterations (\u003e\u003d 0) (default: 100)\npredictionCol: prediction column name (default: prediction)\nprobabilityCol: Column name for predicted class conditional probabilities. Note: Not all models output well-calibrated probability estimates! These probabilities should be treated as confidences, not precise probabilities (default: probability)\nrawPredictionCol: raw prediction (a.k.a. confidence) column name (default: rawPrediction)\nregParam: regularization parameter (\u003e\u003d 0) (default: 0.0)\nstandardization: whether to standardize the training features before fitting the model (default: true)\nthreshold: threshold in binary classification prediction, in range [0, 1] (default: 0.5)\nthresholds: Thresholds in multi-class classification to adjust the probability of predicting each class. Array must have length equal to the number of classes, with values \u003e 0 excepting that at most one value may be 0. The class with largest value p/t is predicted, where p is the original probability of that class and t is the class\u0027s threshold (undefined)\ntol: the convergence tolerance for iterative algorithms (\u003e\u003d 0) (default: 1.0E-6)\nupperBoundsOnCoefficients: The upper bounds on coefficients if fitting under bound constrained optimization. (undefined)\nupperBoundsOnIntercepts: The upper bounds on intercepts if fitting under bound constrained optimization. (undefined)\nweightCol: weight column name. If this is not set or empty, we treat all instance weights as 1.0 (undefined)\nroot\n |-- color: string (nullable \u003d true)\n |-- lab: string (nullable \u003d true)\n |-- value1: long (nullable \u003d true)\n |-- value2: double (nullable \u003d true)\n |-- features: vector (nullable \u003d true)\n |-- label: double (nullable \u003d false)\n |-- rawPrediction: vector (nullable \u003d true)\n |-- probability: vector (nullable \u003d true)\n |-- prediction: double (nullable \u003d false)\n\n+-----+----------+\n|label|prediction|\n+-----+----------+\n|  0.0|       0.0|\n|  0.0|       0.0|\n|  0.0|       0.0|\n|  0.0|       0.0|\n|  0.0|       0.0|\n|  0.0|       0.0|\n|  0.0|       0.0|\n|  0.0|       0.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n|  1.0|       1.0|\n+-----+----------+\nonly showing top 20 rows\n\ntrain: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [color: string, lab: string ... 4 more fields]\ntest: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [color: string, lab: string ... 4 more fields]\nimport org.apache.spark.ml.classification.LogisticRegression\nlr: org.apache.spark.ml.classification.LogisticRegression \u003d logreg_3f6f46b592e0\nfittedLR: org.apache.spark.ml.classification.LogisticRegressionModel \u003d LogisticRegressionModel: uid \u003d logreg_3f6f46b592e0, numClasses \u003d 2, numFeatures \u003d 10\nresults: org.apache.spark.sql.DataFrame \u003d [color: string, lab: string ... 7 more fields]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d6",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d7",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d8",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d9",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d10",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d11",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d12",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d13",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d14",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d15",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d16",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d17",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d18",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d19",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d20",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d21",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d22",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d23",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d24",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d25",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d26",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d27",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d28",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d29",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d30",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d31",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d32",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d33",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d34",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d35",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d36",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d37",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d38",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d39",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d40",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d41"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571453706622_319292552",
+      "id": "20191019-025506_1241180809",
+      "dateCreated": "2019-10-19 02:55:06.622",
+      "dateStarted": "2019-10-19 02:56:38.012",
+      "dateFinished": "2019-10-19 02:56:48.329",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Save Fitted Model for Streaming Reuse",
+      "text": "%spark\nfittedLR.write.overwrite.save(\"/svccdata/simple-ml-fitted\")",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 03:01:16.114",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d44",
+            "http://cb4e1aa40d42:4040/jobs/job?id\u003d45"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1571453797900_1350359362",
+      "id": "20191019-025637_1888543251",
+      "dateCreated": "2019-10-19 02:56:37.900",
+      "dateStarted": "2019-10-19 03:01:16.167",
+      "dateFinished": "2019-10-19 03:01:17.963",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n### And finally the streaming one",
+      "user": "anonymous",
+      "dateUpdated": "2019-10-19 03:01:39.118",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eAnd finally the streaming one\u003c/h3\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1571453956784_1844783460",
+      "id": "20191019-025916_1800356963",
+      "dateCreated": "2019-10-19 02:59:16.784",
+      "dateStarted": "2019-10-19 03:01:39.138",
+      "dateFinished": "2019-10-19 03:01:41.146",
+      "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     }
   ],
